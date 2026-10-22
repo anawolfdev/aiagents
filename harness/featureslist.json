@@ -327,12 +327,14 @@
         "Los cambios materiales se detectan y bloquean",
         "No confunde consolidar con aprobar"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002"
       ],
-      "geas_ticket_id": "b4fc99bd-b474-4005-b61e-a2472fa7f5eb"
+      "geas_ticket_id": "b4fc99bd-b474-4005-b61e-a2472fa7f5eb",
+      "geas_commit_after": "474f6e30c86c8f9f1e2c1dc14888e16690ff0363",
+      "closed": "2026-10-22"
     },
     {
       "id": "FAB-006",

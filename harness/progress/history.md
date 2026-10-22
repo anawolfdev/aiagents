@@ -297,3 +297,19 @@ docs/design/roles/A2-riesgos-vigilancia.md: modos inicial y periódico, cobertur
 ```
 
 </details>
+
+## FAB-005 — Instrucción de sistema A3 — arquitecto y consolidador
+
+- **Cerrada:** 2026-10-22
+- **Verificación:** ./init.sh en verde · 612 passed, 15 skipped in 48.08s
+- **Cambios:** docs/design/roles/A3-arquitecto.md
+- **Decisiones:** GATE 1 sobre spec consolidado; cambios materiales vuelven a evaluación; A3 no aprueba
+- **Pendiente:** Umbrales concretos de riesgo y presupuesto
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/roles/A3-arquitecto.md: consolidación con tratamiento por hallazgo, alternativas comparadas, arquitectura mínima, matriz requisito-capacidad-permiso-prueba, GATE 1, cambios materiales y separación consolidar/aprobar. Revisión independiente aprobada (reviewer-FAB-005.md). ./init.sh: ENTORNO LISTO, 612 passed, 15 skipped, 0 avisos.
+```
+
+</details>
