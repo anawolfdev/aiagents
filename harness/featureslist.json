@@ -283,14 +283,16 @@
         "No inventa decisiones",
         "Exige validación humana del resultado"
       ],
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002"
       ],
       "geas_ticket_id": "6890d71a-f627-4a77-a169-37dc5c0b4cee",
       "started": "2026-10-22",
-      "review_rounds": 0
+      "review_rounds": 0,
+      "geas_commit_after": "a84a92f7f2002a6f8a103e24c8d66c3e776259fe",
+      "closed": "2026-10-22"
     },
     {
       "id": "FAB-004",

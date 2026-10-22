@@ -265,3 +265,19 @@ docs/design/03-necesidad-proporcionalidad.md (140 líneas): matriz de 13 filas o
 ```
 
 </details>
+
+## FAB-003 — Instrucción de sistema A1 — analista y entrevistador
+
+- **Cerrada:** 2026-10-22
+- **Verificación:** ./init.sh en verde · 612 passed, 15 skipped in 47.94s
+- **Cambios:** docs/design/roles/A1-analista.md
+- **Decisiones:** Una pregunta por turno; supuestos explícitos; requisitos y extras separados; validación humana del spec
+- **Pendiente:** Herramientas y permisos concretos del propietario
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/roles/A1-analista.md: perfil autosuficiente con misión, entradas, procedimiento de una pregunta por turno, spec de 16 apartados, pruebas mínimas, requisitos vs extras, prohibiciones, bloqueos, destinatario y validación humana. Revisión independiente aprobada (reviewer-FAB-003.md). ./init.sh: ENTORNO LISTO, 612 passed, 15 skipped, 0 avisos.
+```
+
+</details>
