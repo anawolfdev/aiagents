@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- docs(design): matriz de necesidad y proporcionalidad (FAB-002)
+
+## [Unreleased] — 2026-10-22
+
+### Añadido
+
 - docs(design): fijar alcance y registro de decisiones (FAB-001)
 
 ## [Unreleased] — 2026-08-04

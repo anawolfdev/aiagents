@@ -249,6 +249,25 @@
       "review_rounds": 0,
       "geas_commit_after": "0a519a1afa59d26e07703188dfe48e19990382c9",
       "closed": "2026-10-22"
+    },
+    {
+      "id": "FAB-002",
+      "title": "Matriz de necesidad y proporcionalidad; política de extras y exclusiones",
+      "description": "Aplicar necesidad y proporcionalidad a cada capacidad antes de aprobarla. Entregable: docs/design/03-necesidad-proporcionalidad.md con plantilla y matriz rellenada. No implementar ni activar nada.",
+      "acceptance_criteria": [
+        "Cada fila de la matriz tiene origen y decisión",
+        "La vigilancia diaria de A2 queda justificada como requisito confirmado",
+        "Los extras no aprobados quedan excluidos o pospuestos",
+        "Toda decisión de mantener tiene prueba o argumento de proporcionalidad",
+        "No hay filas sin coste y riesgo estimados o marcados como pendientes"
+      ],
+      "status": "in_progress",
+      "depends_on": [
+        "FAB-001"
+      ],
+      "geas_ticket_id": "9880bc7b-24c0-4d27-82b3-b49e480c4550",
+      "started": "2026-10-22",
+      "review_rounds": 1
     }
   ]
 }
