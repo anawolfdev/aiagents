@@ -72,20 +72,41 @@ class GitTool:
     def _exclusive(self):
         # fetch/pull comparten FETCH_HEAD. Dos preflights simultáneos del
         # mismo clon no pueden intercalar sus comandos (ni con un publish).
-        import fcntl
+        # Windows no tiene fcntl: allí el bloqueo lo da msvcrt.
+        import os
 
         directory = Path(self.checked("rev-parse", "--git-common-dir"))
         if not directory.is_absolute():
             directory = self.repo_root / directory
-        with (directory / "geas-sync.lock").open("a") as lock:
-            try:
-                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except BlockingIOError as exc:
-                raise ValueError("Otra sincronización/publicación Git de este clon está en curso; repite.") from exc
-            try:
-                yield
-            finally:
-                fcntl.flock(lock, fcntl.LOCK_UN)
+        directory.mkdir(parents=True, exist_ok=True)
+        with (directory / "geas-sync.lock").open("a+") as lock:
+            if os.name == "nt":
+                import msvcrt
+
+                try:
+                    lock.seek(0)
+                    msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
+                except OSError as exc:
+                    raise ValueError("Otra sincronización/publicación Git de este clon está en curso; repite.") from exc
+                try:
+                    yield
+                finally:
+                    try:
+                        lock.seek(0)
+                        msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
+                    except OSError:
+                        pass
+            else:
+                import fcntl
+
+                try:
+                    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                except BlockingIOError as exc:
+                    raise ValueError("Otra sincronización/publicación Git de este clon está en curso; repite.") from exc
+                try:
+                    yield
+                finally:
+                    fcntl.flock(lock, fcntl.LOCK_UN)
 
     def _sync_upstream(self) -> dict:
         state = self.upstream()
