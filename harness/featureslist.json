@@ -306,12 +306,14 @@
         "Incluye defensa frente a prompt injection",
         "La vigilancia diaria queda marcada como pendiente de activación"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002"
       ],
-      "geas_ticket_id": "64d54df1-fcbe-4f0d-a4c8-a6673c23532a"
+      "geas_ticket_id": "64d54df1-fcbe-4f0d-a4c8-a6673c23532a",
+      "geas_commit_after": "5492cf7606a6a80ff79d026f64f110553fae8097",
+      "closed": "2026-10-22"
     },
     {
       "id": "FAB-005",

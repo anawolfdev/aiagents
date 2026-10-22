@@ -281,3 +281,19 @@ docs/design/roles/A1-analista.md: perfil autosuficiente con misión, entradas, p
 ```
 
 </details>
+
+## FAB-004 — Instrucción de sistema A2 — revisión inicial y vigilancia
+
+- **Cerrada:** 2026-10-22
+- **Verificación:** ./init.sh en verde · 612 passed, 15 skipped in 45.01s
+- **Cambios:** docs/design/roles/A2-riesgos-vigilancia.md
+- **Decisiones:** Modo inicial y periódico separados; cobertura independiente del spec; regla de 7 días; vigilancia diaria pendiente de activación
+- **Pendiente:** Activar GitHub Actions y definir fuentes autorizadas cuando el propietario lo autorice
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/roles/A2-riesgos-vigilancia.md: modos inicial y periódico, cobertura independiente del spec, regla de siete días, fuentes inaccesibles/caducadas/contradictorias, defensa ante prompt injection y vigilancia diaria pendiente de activación. Revisión independiente aprobada (reviewer-FAB-004.md). ./init.sh: ENTORNO LISTO, 612 passed, 15 skipped, 0 avisos.
+```
+
+</details>
