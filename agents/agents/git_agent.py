@@ -20,7 +20,7 @@ from datetime import date
 
 from agents.core.base_agent import AgentResult, BaseAgent
 from agents.core.registry import register_agent
-from agents.exceptions import MissingDependencyError
+from agents.exceptions import MissingDependencyError, ToolExecutionError
 from agents.tools.git_tool import GitTool
 from agents.tools.process_tool import ProcessResult, run_command
 
@@ -67,7 +67,20 @@ class GitAgent(BaseAgent):
             "tag_release": self.tag_release,
             "create_branch": self.create_branch,
             "merge_branch": self.merge_branch,
+            "publish": self.publish,
         }
+
+    def publish(self, *, expected_head: str, expected_destination: dict | None = None,
+                confirm: bool = False) -> AgentResult:
+        """Push explícitamente autorizado, sin commit/force, y read-back del SHA."""
+        if confirm is not True:
+            return AgentResult(False, self.name, "publish", "Push requiere confirm=True o --yes.",
+                               needs=["¿Autorizas publicar el SHA probado en el upstream?"])
+        try:
+            data = self.git.publish(expected_head, expected_destination)
+        except (MissingDependencyError, ToolExecutionError, ValueError, OSError) as exc:
+            return AgentResult(False, self.name, "publish", f"Push no verificado: {exc}")
+        return AgentResult(True, self.name, "publish", "SHA publicado y verificado.", data=data)
 
     def _guard_repo(self, action: str) -> AgentResult | None:
         try:

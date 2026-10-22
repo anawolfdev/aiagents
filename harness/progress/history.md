@@ -201,3 +201,19 @@ $ ./init.sh                                            ->  ENTORNO LISTO  0 avis
 ```
 
 </details>
+
+## REPAIR-001 — Recuperar las definiciones y el entorno del arnés
+
+- **Cerrada:** 2026-10-22
+- **Verificación:** ./init.sh en verde · 7 passed in 0.18s
+- **Cambios:** Restauradas seis definiciones OpenCode, espejos Claude, referencias prompt válidas y checker con 17 regresiones. Entorno Python 3.12 y extra dev instalados.
+- **Decisiones:** Reparación explícitamente autorizada. Se conserva modelo y nombres de agentes y el cambio previo uv.lock. No se inventa objetivo SCOPE/ONBOARD.
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+Revisión independiente: uv run pytest -> 538 passed, 15 skipped (extras opcionales fastapi/chromadb). ./init.sh -> ENTORNO LISTO, 7 passed, 0 avisos. make opencode-check y uv run python -m agents.prompts_sync pasan. OpenCode carga los seis prompts con options={}. Ver harness/progress/implementer-REPAIR-001.md y reviewer-REPAIR-001.md para salida completa.
+```
+
+</details>

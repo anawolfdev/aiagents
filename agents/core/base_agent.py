@@ -127,7 +127,7 @@ class BaseAgent(ABC):
                 f"Acciones disponibles: {sorted(available)}"
             )
 
-        confirmado = bool(kwargs.pop("confirm", False))
+        confirmado = kwargs.pop("confirm", False) is True
         if not confirmado and permissions.requiere_confirmacion(
             self.name, action, kwargs, available[action],
         ):
@@ -144,6 +144,9 @@ class BaseAgent(ABC):
 
         start = time.perf_counter()
         try:
+            # Solo métodos que declaran confirm lo reciben; **kwargs no basta.
+            if "confirm" in inspect.signature(available[action]).parameters:
+                kwargs["confirm"] = confirmado or permissions.puerta_desactivada()
             result = available[action](**kwargs)
         except Exception as exc:
             # Los agentes no deberían dejar escapar excepciones (ver docstring

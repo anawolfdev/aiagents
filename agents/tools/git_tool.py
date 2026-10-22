@@ -8,6 +8,7 @@ menos y cubre el 100% de lo que necesita `GitAgent` (diff, log, status).
 from __future__ import annotations
 
 import re
+from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -42,6 +43,115 @@ class GitTool:
 
     def is_repo(self) -> bool:
         return self._git("rev-parse", "--is-inside-work-tree").ok
+
+    def checked(self, *args: str) -> str:
+        """Git con error explícito; también propaga timeouts del process_tool."""
+        return self._git(*args, check=True).stdout.rstrip("\r\n")
+
+    def upstream(self) -> dict:
+        branch = self.checked("symbolic-ref", "--quiet", "--short", "HEAD")
+        remote = self.checked("config", "--get", f"branch.{branch}.remote")
+        ref = self.checked("config", "--get", f"branch.{branch}.merge")
+        if remote == "." or not ref.startswith("refs/heads/") or "\n" in ref:
+            raise ValueError("Se requiere un upstream remoto único de rama.")
+        upstream = self.checked("rev-parse", "--symbolic-full-name", "@{upstream}")
+        fetch_urls = self.checked("remote", "get-url", "--all", remote).splitlines()
+        push_urls = self.checked("remote", "get-url", "--push", "--all", remote).splitlines()
+        if len(fetch_urls) != 1 or len(push_urls) != 1:
+            raise ValueError("Se requiere una única URL de fetch y de push.")
+        return {"branch": branch, "remote": remote, "ref": ref, "upstream": upstream,
+                "fetch_urls": fetch_urls, "push_urls": push_urls,
+                "fetch_url": fetch_urls[0], "push_url": push_urls[0]}
+
+    def sync_upstream(self) -> dict:
+        """Fetch + pull ff-only. Árbol sucio solo si no hay nada que integrar."""
+        with self._exclusive():
+            return self._sync_upstream()
+
+    @contextmanager
+    def _exclusive(self):
+        # fetch/pull comparten FETCH_HEAD. Dos preflights simultáneos del
+        # mismo clon no pueden intercalar sus comandos (ni con un publish).
+        import fcntl
+
+        directory = Path(self.checked("rev-parse", "--git-common-dir"))
+        if not directory.is_absolute():
+            directory = self.repo_root / directory
+        with (directory / "geas-sync.lock").open("a") as lock:
+            try:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError as exc:
+                raise ValueError("Otra sincronización/publicación Git de este clon está en curso; repite.") from exc
+            try:
+                yield
+            finally:
+                fcntl.flock(lock, fcntl.LOCK_UN)
+
+    def _sync_upstream(self) -> dict:
+        state = self.upstream()
+        if state["fetch_urls"] != state["push_urls"]:
+            raise ValueError("pushurl difiere del remoto de lectura; no se puede verificar la publicación.")
+        if self.checked("ls-files", "--unmerged"):
+            raise ValueError("Git tiene conflictos sin resolver.")
+        for marker in ("MERGE_HEAD", "rebase-merge", "rebase-apply", "CHERRY_PICK_HEAD", "REVERT_HEAD"):
+            path = Path(self.checked("rev-parse", "--git-path", marker))
+            if not path.is_absolute():
+                path = self.repo_root / path
+            if path.exists():
+                raise ValueError(f"Git tiene una operación pendiente: {marker}.")
+        self.checked("fetch", "--", state["remote"])
+        ahead, behind = map(int, self.checked(
+            "rev-list", "--left-right", "--count", "HEAD...@{upstream}"
+        ).split())
+        if ahead and behind:
+            raise ValueError("Git divergente: resuelve la divergencia antes de trabajar.")
+        dirty = bool(self.checked("status", "--porcelain", "--untracked-files=all"))
+        if behind and dirty:
+            raise ValueError("Hay commits entrantes y árbol sucio; conserva/commitea tu trabajo antes del pull.")
+        if not dirty:
+            # `pull` vuelve a hacer fetch. Con árbol sucio no se llama para que
+            # un commit llegado entre ambos fetch no se integre a escondidas.
+            self.checked("-c", "rebase.autoStash=false", "-c", "merge.autoStash=false",
+                         "pull", "--ff-only", "--no-rebase", "--no-autostash",
+                         "--", state["remote"], state["ref"])
+        final = self.upstream()
+        if self._destination(final) != self._destination(state):
+            raise ValueError("El destino Git cambió durante la sincronización.")
+        return {**state, "head": self.checked("rev-parse", "HEAD"), "ahead": ahead}
+
+    @staticmethod
+    def _destination(state: dict) -> dict:
+        return {key: state.get(key) for key in (
+            "branch", "remote", "ref", "upstream", "fetch_urls", "push_urls",
+        )}
+
+    def publish(self, expected_head: str, expected_destination: dict | None = None) -> dict:
+        """Publica exactamente el SHA probado y verifica el remoto por ls-remote."""
+        with self._exclusive():
+            return self._publish(expected_head, expected_destination)
+
+    def _publish(self, expected_head: str, expected_destination: dict | None = None) -> dict:
+        state = self.upstream()
+        if state["fetch_urls"] != state["push_urls"]:
+            raise ValueError("pushurl difiere del remoto de lectura; no se puede verificar la publicación.")
+        if expected_destination and self._destination(state) != self._destination(expected_destination):
+            raise ValueError("El destino Git cambió después de la puerta; repite el cierre.")
+        if self.checked("rev-parse", "HEAD") != expected_head:
+            raise ValueError("HEAD cambió después de la puerta; vuelve a verificar.")
+        # Se publica contra la URL fijada, no contra el nombre del remoto: un
+        # `remote set-url` concurrente no puede desviar el push.
+        self.checked("push", "--porcelain", "--no-follow-tags", "--",
+                     state["push_url"], f"{expected_head}:{state['ref']}")
+        lines = self.checked("ls-remote", "--exit-code", "--refs",
+                             state["push_url"], state["ref"]).splitlines()
+        if lines != [f"{expected_head}\t{state['ref']}"]:
+            raise ValueError("El SHA publicado no coincide con HEAD probado.")
+        if self.checked("rev-parse", "HEAD") != expected_head:
+            raise ValueError("HEAD cambió durante el push; vuelve a verificar.")
+        final = self.upstream()
+        if self._destination(final) != self._destination(state):
+            raise ValueError("El destino Git cambió durante el push; repite el cierre.")
+        return {**state, "published": expected_head}
 
     def status_porcelain(self) -> list[tuple[str, str]]:
         """Devuelve [(código_estado, ruta), ...] tal y como `git status --porcelain`."""

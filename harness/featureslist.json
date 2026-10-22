@@ -190,6 +190,44 @@
       "started": "2026-08-04",
       "review_rounds": 0,
       "closed": "2026-08-04"
+    },
+    {
+      "id": "REPAIR-001",
+      "title": "Recuperar las definiciones y el entorno del arnés",
+      "description": "Reparación explícitamente solicitada por el usuario para desbloquear init.sh antes de integrar GEAS. Recuperar las definiciones OpenCode y corregir solo los bloqueos reales de la puerta.",
+      "acceptance_criteria": [
+        "Existen las definiciones lider, explorer, implementer y reviewer y los agentes referenciados en opencode.json",
+        "OpenCode carga los prompts desde definiciones válidas",
+        "El entorno de desarrollo ejecuta los tests del proyecto y agentes",
+        "./init.sh termina con ENTORNO LISTO"
+      ],
+      "status": "done",
+      "depends_on": [],
+      "started": "2026-10-22",
+      "review_rounds": 0,
+      "closed": "2026-10-22"
+    },
+    {
+      "id": "GEAS-001",
+      "title": "Sincronización remota GEAS y Git obligatoria en init y arnés",
+      "description": "Petición del usuario: sincronizar antes de trabajar y al reclamar/cerrar tickets, con pull y push. Usar la API HTTP de la instancia GEAS compartida, no acceso directo a SQLite. Las fallas de red, permisos, Git o cierre deben bloquear el avance y conservar estado recuperable.",
+      "acceptance_criteria": [
+        "init.sh sincroniza Git y GEAS antes de permitir trabajar con configuración remota válida",
+        "harness sincroniza antes de leer o mutar trabajo operativo y reclama tickets atómicamente mediante API con identidad del actor",
+        "Al reclamar se hace fetch y pull ff-only sin sobrescribir cambios locales y no se permite reclamar si sync falla",
+        "Al cerrar se ejecuta la puerta con evidencia y se verifica pull y push de commits antes de completar ticket remoto o marcar done local",
+        "El flujo respeta autorización de push y no crea commits ni fuerza push silenciosamente",
+        "Errores HTTP, autorización, actor ausente, timeout, conflictos y fallos Git dejan estados recuperables sin falsos éxitos",
+        "Hay tests deterministas de API y repos Git temporales y documentación de configuración, sync, start y finish",
+        "./init.sh termina con ENTORNO LISTO y las suites pertinentes pasan"
+      ],
+      "status": "in_progress",
+      "depends_on": [
+        "REPAIR-001"
+      ],
+      "started": "2026-10-22",
+      "review_rounds": 1,
+      "geas_ticket_id": "52ea8564-36d2-4a22-858c-7740f4ba1810"
     }
   ]
 }

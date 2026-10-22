@@ -48,12 +48,14 @@ Ver el ciclo completo: `skill harness_workflow`.
 |--------|------------|
 | `run harness status` | — |
 | `run harness next` | — |
-| `run harness start` | `--id`, `--owner` |
-| `run harness finish` | `--id`, `--evidence`, `--changes`, `--decisions`, `--pending` |
+| `run harness start` | `--id`, `--owner`, `--ticket_id` |
+| `run harness finish` | `--id`, `--evidence`, `--changes`, `--decisions`, `--pending`, `--confirm` |
 | `run harness block` | `--id`, `--reason` |
 | `run harness record` | `--agent`, `--id`, `--content`, `--verdict` |
 | `run harness gate` | `--quick` |
-| `run harness add` | `--id`, `--title`, `--description`, `--criteria`, `--depends_on` |
+| `run harness add` | `--id`, `--title`, `--description`, `--criteria`, `--depends_on`, `--ticket_id` |
+| `run harness sync` | — |
+| `run harness link` | `--id`, `--ticket_id` |
 
 ## Límites
 
@@ -69,6 +71,6 @@ Ver el ciclo completo: `skill harness_workflow`.
 
 **Escribe en (nadie más toca esto):** harness/featureslist.json, harness/progress/, harness/memory.md
 
-**Se apoya en:** plan, test, review, memory
+**Se apoya en:** plan, test, review, memory, git
 
 <!-- END AUTOGEN -->

@@ -44,16 +44,17 @@ commitea todo con `feat(<id>): <título>`.
 | `run git tag_release` ⚠️ pide confirmación | `--version` (obligatorio) · `--message`, `--since_tag` |
 | `run git create_branch` ⚠️ pide confirmación | `--branch_name` (obligatorio) · `--base_branch` |
 | `run git merge_branch` ⚠️ pide confirmación | `--source_branch` (obligatorio) · `--target_branch` |
+| `run git publish` ⚠️ pide confirmación | `--expected_head` (obligatorio) · `--expected_destination`, `--confirm` |
 
 ## Límites
 
 **Rol.** Único agente que escribe en el historial git: commits, tags, releases.
 
-**No se deshacen** (la puerta de permisos las bloquea sin `--yes`; propón, no ejecutes): `commit_with_changelog`, `commit_feature`, `tag_release`, `create_branch`, `merge_branch`
+**No se deshacen** (la puerta de permisos las bloquea sin `--yes`; propón, no ejecutes): `commit_with_changelog`, `commit_feature`, `tag_release`, `create_branch`, `merge_branch`, `publish`
 
 **No hace:**
 - escribir CHANGELOG.md/README.md él mismo → delega en documentation (su dueño)
-- hacer push a remotos — decisión del humano
+- hacer push sin autorización del humano o forzar un push
 
 **Necesita que le den:** la versión, para tag_release; el mensaje, para commit si no quiere el sugerido; el id y el título de la feature, para commit_feature
 

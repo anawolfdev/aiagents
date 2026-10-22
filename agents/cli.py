@@ -79,7 +79,7 @@ def _parse_kwargs(pairs: list[str]) -> dict[str, Any]:
     # `--yes` es el nombre corto de la autorización de la puerta de permisos
     # (ver agents/permissions.py). Se traduce aquí para que quien escribe en
     # el terminal no tenga que saber cómo se llama el argumento por dentro.
-    if kwargs.pop("yes", False):
+    if kwargs.pop("yes", False) is True:
         kwargs["confirm"] = True
     return kwargs
 

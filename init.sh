@@ -38,6 +38,23 @@ ERRORS=0
 WARNINGS=0
 REPORT=""
 
+render_report() {
+  REPORT="$REPORT" ERRORS="$ERRORS" WARNINGS="$WARNINGS" "$PY" - <<'PYEOF'
+import json
+import os
+
+checks = []
+for line in os.environ.get("REPORT", "").splitlines():
+    parts = line.split("\t", 2)
+    if len(parts) == 3:
+        checks.append(dict(zip(("status", "check", "detail"), parts, strict=True)))
+errors = int(os.environ["ERRORS"])
+print(json.dumps({"ready": errors == 0, "errors": errors,
+                  "warnings": int(os.environ["WARNINGS"]), "checks": checks},
+                 indent=2, ensure_ascii=False))
+PYEOF
+}
+
 record() {  # record <status> <check> <detail>
   REPORT="${REPORT}${1}"$'\t'"${2}"$'\t'"${3}"$'\n'
 }
@@ -49,6 +66,22 @@ fail() { record "fail" "$1" "$2"; ERRORS=$((ERRORS + 1));   [ "$JSON" -eq 1 ] ||
 section() { [ "$JSON" -eq 1 ] || printf '\n\033[1m%s\033[0m\n' "$1"; }
 
 [ "$JSON" -eq 1 ] || printf '\n\033[1m━━ init.sh · arnés de MeshHarmes ━━\033[0m\n'
+
+# Primero sync, incluso --quick: hoja Python stdlib, no gate→init→gate.
+section "Sincronización Git + GEAS"
+PY="python3"
+[ ! -x .venv/bin/python ] || PY="./.venv/bin/python"
+if SYNC_OUT="$("$PY" -m agents.geas_sync 2>&1)"; then
+  ok "sync" "$SYNC_OUT"
+else
+  fail "sync" "$SYNC_OUT"
+  if [ "$JSON" -eq 1 ]; then
+    render_report
+  else
+    printf '\nENTORNO BLOQUEADO — sincronización fallida; no se permite trabajar.\n'
+  fi
+  exit 1
+fi
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  1. Entorno de ejecución
@@ -266,7 +299,7 @@ elif [ "$ERRORS" -gt 0 ]; then
   warn "pytest" "omitido — hay errores estructurales que arreglar antes"
 else
   TEST_LOG="$(mktemp)"
-  if $RUNNER pytest tests/ -q --no-header >"$TEST_LOG" 2>&1; then
+  if $RUNNER pytest tests/ agents/tests/ -q --no-header >"$TEST_LOG" 2>&1; then
     SUMMARY="$(grep -Eo '[0-9]+ passed[^=]*' "$TEST_LOG" | tail -1 | sed 's/[[:space:]]*$//')"
     ok "pytest" "${SUMMARY:-suite en verde}"
   else
@@ -280,27 +313,7 @@ fi
 #  Veredicto
 # ─────────────────────────────────────────────────────────────────────────────
 if [ "$JSON" -eq 1 ]; then
-  REPORT="$REPORT" ERRORS="$ERRORS" WARNINGS="$WARNINGS" "$PY" - <<'PYEOF'
-import json
-import os
-
-checks = []
-for line in os.environ.get("REPORT", "").splitlines():
-    if not line.strip():
-        continue
-    parts = line.split("\t")
-    if len(parts) < 3:
-        continue
-    checks.append({"status": parts[0], "check": parts[1], "detail": parts[2]})
-
-errors = int(os.environ.get("ERRORS", "0"))
-print(json.dumps({
-    "ready": errors == 0,
-    "errors": errors,
-    "warnings": int(os.environ.get("WARNINGS", "0")),
-    "checks": checks,
-}, indent=2, ensure_ascii=False))
-PYEOF
+  render_report
 elif [ "$ERRORS" -eq 0 ]; then
   printf '\n\033[1;32m━━ ENTORNO LISTO ━━\033[0m  %d aviso(s)\n' "$WARNINGS"
   printf 'Puedes trabajar. Siguiente paso: lee harness/progress/current.md y elige la primera feature pendiente.\n\n'

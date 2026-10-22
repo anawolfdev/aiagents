@@ -113,6 +113,80 @@ confirmación tuya antes de ejecutarlo). El push siempre es decisión tuya.
 
 El protocolo completo está en [`AGENTS.md`](AGENTS.md).
 
+### GEAS remoto + Git local
+
+Con `.geas.yml`, `init.sh` (también `--quick`) y las operaciones del arnés
+sincronizan **antes de decidir o modificar trabajo**: API HTTP de GEAS y
+`git fetch` + `git pull --ff-only --no-rebase --no-autostash` en este clon.
+No usan la CLI local de GEAS, SQLite ni el tool `sync` del servidor (que ve
+otro directorio). La puerta completa ejecuta `tests/` y `agents/tests/`.
+
+Configuración mínima: YAML plano, sin listas ni objetos anidados:
+
+```yaml
+mcp_url: http://servidor-geas:8787
+organization_id: <UUID-organización>
+repository_id: <UUID-repositorio>
+```
+
+La identidad es **por persona/sesión**, nunca un administrador versionado:
+
+```bash
+export GEAS_ACTOR_ID="<tu-UUID-personal>"  # también se admite GEAS_ACTOR
+./init.sh
+./sync.sh
+make backlog       # harness status sincronizado; incluye estado remoto y mapping
+uv run python -m agents --json run harness link --id API-001 --ticket-id <UUID-ticket>
+./start.sh API-001  # o ./start.sh API-001 --ticket-id <UUID-ticket>
+```
+
+`geas_ticket_id` asocia explícitamente una feature con un ticket existente del
+repositorio configurado. No se asocian títulos ni se crean tickets implícitos.
+`start` reclama por API y relee `IN_PROGRESS`, actor y `commit_before` antes
+del cambio local. Repetirlo retoma un ticket propio conservando informe,
+fecha y rondas. `link` permite reconciliar una feature local ya abierta con
+su ticket propio. Los cierres históricos pueden carecer de asociación.
+
+Para cerrar en modo remoto, primero revisión, evidencia y **commit autorizado
+de los entregables** (incluidos versión/README/CHANGELOG cuando correspondan).
+`git commit_feature --dry-run true` permite proponerlo antes de pedir permiso.
+Después:
+
+```bash
+./finish.sh API-001 --evidence "<salida real por criterio>" --yes
+# equivalente:
+uv run python -m agents --json run harness finish --id API-001 --evidence "<salida real>" --yes
+```
+
+`--yes` / `--confirm true` autoriza **el push al upstream**, no un commit.
+El arnés exige propiedad del ticket y árbol limpio, ejecuta la puerta completa,
+resincroniza sin cambiar el HEAD probado, delega el push en `git publish` y
+comprueba el SHA con `ls-remote`. Solo después completa GEAS y marca `done`
+local. **Los metadatos del cierre quedan sin commitear**, para un commit
+posterior explícito; el SHA remoto corresponde a los entregables probados.
+
+Si faltan actor/permisos, falla HTTP/red, no hay upstream, HEAD está detached,
+hay conflictos/divergencia, o falla pull/push, la operación queda bloqueada.
+El árbol sucio se tolera al sincronizar solo si no entran commits; nunca se
+hace stash/reset/force automático. Resuelve la causa y repite el mismo comando.
+Dos sincronizaciones/publicaciones simultáneas del arnés en el mismo clon se
+excluyen para no intercalar `FETCH_HEAD`; la segunda devuelve un bloqueo
+recuperable y se repite cuando termine la primera.
+Una respuesta perdida se reconcilia por lectura: un `DONE` del mismo actor y
+SHA permite terminar las escrituras locales sin completar GEAS otra vez ni
+duplicar el histórico. Solo se tolera suciedad de los tres metadatos de cierre
+en ese reintento; cambios de producto requieren un commit y nueva verificación.
+
+La API upstream usa CAS al reclamar, pero su MCP no propaga siempre el
+resultado y el cierre no hace CAS de propietario. Las lecturas posteriores
+detectan discrepancias: **esto no es una transacción distribuida**. Una
+discrepancia requiere reconciliar el estado antes de avanzar.
+
+Sin `.geas.yml`, plantillas y proyectos locales conservan el flujo anterior
+(sin red, identidad ni push obligatorio). Una configuración presente inválida
+nunca degrada silenciosamente a modo local. Los wrappers se pueden llamar
+desde cualquier directorio: siempre operan sobre la raíz donde están instalados.
+
 ---
 
 ## Sistema de agentes

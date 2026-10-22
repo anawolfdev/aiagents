@@ -271,10 +271,11 @@ CONTRACTS: dict[str, Contract] = {
             "mensajes Conventional Commits desde el diff real, changelog, resumen de PR",
             "commit_with_changelog, commit_feature y tag_release (flujos que encadenan documentation + git)",
             "commit_feature: cierre del arnés con bump de versión + changelog + commit, sin tag",
+            "publish: push al upstream del SHA probado, solo con autorización explícita y verificación remota",
         ),
         cannot=(
             "escribir CHANGELOG.md/README.md él mismo → delega en documentation (su dueño)",
-            "hacer push a remotos — decisión del humano",
+            "hacer push sin autorización del humano o forzar un push",
         ),
         needs=(
             "la versión, para tag_release",
@@ -285,7 +286,7 @@ CONTRACTS: dict[str, Contract] = {
         collaborates=("documentation", "cicd"),
         destructive=(
             "commit_with_changelog", "commit_feature", "tag_release",
-            "create_branch", "merge_branch",
+            "create_branch", "merge_branch", "publish",
         ),
     ),
     "documentation": Contract(
@@ -443,6 +444,7 @@ CONTRACTS: dict[str, Contract] = {
             "guardar los informes de los subagentes en harness/progress/<agente>-<FEATURE-ID>.md",
             "ejecutar ./init.sh y devolver el veredicto estructurado",
             "rechazar el cierre de una feature si la puerta no pasa o si no hay evidencia",
+            "sincronizar Git local + API GEAS antes de decisiones, asociar feature a ticket y verificar claim/cierre remoto",
         ),
         cannot=(
             "decidir QUÉ feature toca ni cómo implementarla → eso lo razonan los agentes "
@@ -453,7 +455,7 @@ CONTRACTS: dict[str, Contract] = {
         ),
         needs=("el id de la feature", "la evidencia real de verificación para cerrarla"),
         owns=("harness/featureslist.json", "harness/progress/", "harness/memory.md"),
-        collaborates=("plan", "test", "review", "memory"),
+        collaborates=("plan", "test", "review", "memory", "git"),
     ),
 }
 

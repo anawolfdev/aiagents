@@ -13,13 +13,13 @@ sigue estos pasos **en orden**, antes de escribir una sola línea de código.
 
 ```
 0. run bootstrap status         ¿primera ejecución?      si sí → arranque en frío
-1. ./init.sh                    ¿el entorno está sano?   si no → PARA
+1. ./init.sh                    sync Git + GEAS, puerta   si no → PARA
 2. harness/progress/current.md          ¿hay trabajo a medias?   si sí → retómalo
 3. harness/featureslist.json            primera feature pendiente con deps en done
 4. marcar in_progress           en harness/featureslist.json + rellenar current.md
 5. delegar                      explorer → implementer → reviewer
 6. verificar                    ./init.sh en verde + criterios uno a uno
-7. done                         harness/featureslist.json + resumen en history.md
+7. done                         remoto: commit autorizado → finish --yes (push) → done
 8. commit_feature               README + versión al día, propón commit, confirma
 ```
 
@@ -94,6 +94,16 @@ uv run python -m agents --json run harness gate    # lo mismo, vía agente
 
 ## Cierre de una feature: versión + commit
 
+**Con GEAS remoto**, el orden cambia: propone versión/README/CHANGELOG y el
+commit de entregables **antes** de `harness finish`. Espera autorización para
+ese commit. Después `finish --evidence "..." --yes` ejecuta la puerta completa,
+comprueba que HEAD no cambió al sincronizar, hace push autorizado mediante
+`git publish`, verifica el SHA publicado, completa GEAS y finalmente escribe
+`done` local. Sin commit de entregables, evidencia o permiso de push se bloquea.
+Los metadatos de cierre quedan para **otro commit explícito** posterior; no
+se incluyen mágicamente en el SHA ya publicado. Sin `.geas.yml` sigue el
+orden local descrito a continuación.
+
 Al marcar una feature `done`, el líder cierra el ciclo con `git commit_feature`:
 sube el **patch** de la versión (`0.1.0` → `0.1.1`) en `pyproject.toml` y el
 badge del README, añade la feature al CHANGELOG y commitea todo con un mensaje
@@ -142,6 +152,49 @@ uv run python -m agents --json run harness block --id FEAT-001 --reason "falta d
 uv run python -m agents --json run harness add --id API-002 --title "..." --criteria "a;b"
 uv run python -m agents --json run git commit_feature --id FEAT-001 --title "..." --dry-run true
 ```
+
+## Sincronización obligatoria con GEAS
+
+Con `.geas.yml` presente, antes de leer progreso o decidir trabajo ejecuta
+`./init.sh`: sincroniza por API HTTP (`GET /health`, `POST /api/tools/<tool>`,
+headers `X-Geas-Actor` y `X-Geas-Organization`) y Git **de este clon**. No uses
+SQLite, la CLI GEAS local ni el `sync` remoto que solo ve el cwd del servidor.
+`--quick` omite tests pero nunca sync. La puerta completa incluye `agents/tests/`.
+
+La configuración plana contiene `mcp_url`, `organization_id`, `repository_id`;
+el actor personal se exporta como `GEAS_ACTOR_ID` (alias `GEAS_ACTOR`), nunca
+como administrador en el repositorio. Ausencia de configuración conserva modo
+local; configuración presente inválida, falta de actor, permisos o red bloquean.
+
+`harness status/next/start/finish/block/add/record/link/sync` comparten un
+preflight no recursivo antes de sus decisiones/escrituras. `gate` llama a
+`init`, que usa esa misma hoja de sync. `make backlog` pasa por `harness status`.
+El pull es ff-only, sin rebase/autostash. Suciedad local solo si no entran
+commits; divergencia, conflictos, detached HEAD o falta de upstream bloquean.
+No hay commit, stash, reset ni push forzado automático.
+Sync/publish se excluyen por clon para no intercalar `FETCH_HEAD`; una
+operación concurrente bloquea de forma recuperable y se repite al terminar la otra.
+
+```bash
+export GEAS_ACTOR_ID="<UUID-personal>"
+./sync.sh
+uv run python -m agents --json run harness link --id FEAT-001 --ticket-id <UUID-ticket>
+./start.sh FEAT-001                  # también admite --ticket-id al abrir
+./finish.sh FEAT-001 --evidence "<salida real>" --yes  # autoriza push, no commit
+```
+
+El campo `geas_ticket_id` es una asociación explícita validada por repositorio,
+no por título. Históricos `done` pueden no tener ticket. El claim remoto se
+relee (`IN_PROGRESS`, actor, SHA) antes de abrir localmente. Retomar el propio
+ticket no reinicia informes, fecha ni rondas; un dueño ajeno bloquea.
+Tras una respuesta perdida, repite: se reconcilia por lectura, sin doble claim
+ni doble cierre. `DONE` remoto solo se acepta para el mismo actor y SHA publicado;
+el reintento local no duplica histórico y solo admite cambios pendientes en
+backlog/current/history del cierre. Las discrepancias o cambios de entregables
+bloquean. Upstream no garantiza CAS de propietario al completar y el MCP de
+claim ignora el booleano de CAS: el cliente verifica read-back, sin prometer
+una transacción distribuida perfecta. Errores devuelven `success=false` y estado
+recuperable; corrige la causa antes de repetir.
 
 ## Memoria externa: por qué existe `harness/progress/`
 

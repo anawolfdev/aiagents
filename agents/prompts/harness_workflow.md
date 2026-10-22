@@ -38,12 +38,48 @@ agente edita `harness/featureslist.json` ni `harness/progress/` a mano.
 
 ## El cierre (README + versión + commit)
 
-`harness finish` marca la feature `done`; `git commit_feature` cierra el ciclo:
+Sin `.geas.yml`, `harness finish` marca `done`; `git commit_feature` cierra el ciclo:
 
 - `--dry-run true` devuelve la propuesta (siguiente versión patch, mensaje
   `feat(<id>): <título>`, ficheros que entrarían) **sin escribir nada**.
 - Solo tras la confirmación del usuario se ejecuta sin `--dry-run`: bump de
   versión, entrada en CHANGELOG y commit. Sin tag, sin push.
+
+### Modo GEAS remoto
+
+Exporta `GEAS_ACTOR_ID=<UUID-personal>` (alias `GEAS_ACTOR`), sin versionar un
+actor administrador. `.geas.yml` declara `mcp_url`, `organization_id` y
+`repository_id` en YAML plano. Antes de leer progreso/decidir: `init.sh`
+sincroniza API HTTP + Git local. También `--quick`; no sustituye la puerta completa.
+`harness status/next/start/finish/block/add/record/link/sync` sincronizan antes
+de operar; `gate → init → sync` usa la misma hoja, sin recursión.
+
+Asocia explícitamente con `harness link --id <FEATURE> --ticket-id <UUID>` o
+`start --ticket-id <UUID>`. Se valida repositorio, no se buscan títulos ni se
+crean tickets. Históricos cerrados pueden no tener asociación. `start` reclama
+por API y verifica mediante read-back estado, actor y `commit_before` antes
+de modificar local. Retomar un ticket propio conserva el informe. El CAS
+upstream y las lecturas no equivalen a una transacción distribuida perfecta:
+el MCP puede ignorar un fallo CAS y complete no comprueba propietario por CAS.
+
+1. Revisión, evidencia y puerta completa (`tests/` + `agents/tests/`) en verde.
+2. Proponer README/versión/CHANGELOG y **commit de entregables**, pedir OK y
+   ejecutar el commit autorizado antes del cierre.
+3. `harness finish --id <FEATURE> --evidence "<salida real>" --yes`: propiedad,
+   árbol limpio, puerta completa, re-sync sin mover HEAD, push por `git publish`,
+   SHA publicado verificado con `ls-remote`, complete GEAS con read-back y **al
+   final** done local. `--yes` autoriza push; no crea commits ni fuerza push.
+4. Backlog/current/history de cierre quedan para otro commit explícito posterior.
+
+`fetch`/`pull --ff-only --no-rebase --no-autostash` nunca pisan trabajo local.
+Árbol sucio solo si no entran commits. Divergencia, conflictos, sin upstream,
+detached, actor/config inválidos, permisos/red/timeout y push/pull fallidos
+bloquean sin done falso. Corrige la causa y repite. Respuestas perdidas se
+reconcilian por actor/SHA; DONE coincidente permite reintentar las escrituras
+locales sin repetir complete ni duplicar histórico (solo suciedad de los tres
+metadatos de cierre). Sin config se mantiene modo local; config rota no lo activa.
+`start.sh`, `finish.sh`, `sync.sh`, `status.sh` son wrappers root-relative de
+este flujo y usan API remota, nunca CLI GEAS/SQLite/sync del cwd del servidor.
 
 ## Contexto: qué NO hacer
 
@@ -58,7 +94,7 @@ El arnés decide y verifica; el trabajo determinista lo hacen los agentes:
 
 | Necesidad del arnés | Agente | Acción |
 |---------------------|--------|--------|
-| Backlog y progreso (todo cambio de estado) | `harness` | `status`, `next`, `start`, `finish`, `block`, `record`, `add`, `gate` |
+| Backlog y progreso (todo cambio de estado) | `harness` | `status`, `next`, `start`, `finish`, `block`, `record`, `add`, `gate`, `sync`, `link` |
 | Descomponer una feature en pasos | `plan` | `brief`, `answer`, `execute` |
 | Comprobar que la suite pasa | `test` | `run_tests`, `coverage_summary` |
 | Revisar el código de una feature | `review` | `review_package` |

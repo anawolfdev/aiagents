@@ -162,10 +162,7 @@ harness-check:
 	@./init.sh --quick
 
 backlog:
-	@uv run $(PYTHON) -c "import json; d=json.load(open('harness/featureslist.json')); \
-	print(); print('  Backlog de MeshHarmes'); print(); \
-	[print('  [%-11s] %-10s %s' % (f['status'], f['id'], f['title'])) for f in d['features']]; \
-	print()"
+	@uv run $(PYTHON) -m agents --json run harness status
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  Sistema de agentes
@@ -230,20 +227,9 @@ skills:
 
 opencode-check:
 	@echo "▶  Verificando configuración opencode..."
-	@errors=0; \
-	for f in opencode.json .opencode/agents/orquestador.md; do \
-		if [ ! -f "$$f" ]; then echo "  ✘ falta $$f"; errors=$$((errors + 1)); \
-		else echo "  ✔ $$f"; fi; \
-	done; \
-	for a in lider implementer reviewer explorer; do \
-		if [ ! -f ".opencode/agents/$$a.md" ]; then \
-			echo "  ✘ falta .opencode/agents/$$a.md (agente del arnés)"; errors=$$((errors + 1)); \
-		else echo "  ✔ .opencode/agents/$$a.md"; fi; \
-	done; \
-	count=$$(ls agents/prompts/*.md 2>/dev/null | wc -l); \
-	echo "  ✔ $$count prompts fuente disponibles."; \
-	if [ "$$errors" -eq 0 ]; then echo "  ✔ Todo correcto."; else \
-		echo "  ✘ $$errors error(es) encontrados."; exit 1; fi
+	@uv run python -m agents.opencode_check
+	@count=$$(ls agents/prompts/*.md 2>/dev/null | wc -l); \
+	echo "  ✔ $$count prompts fuente disponibles."
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  Limpieza

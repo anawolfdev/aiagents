@@ -14,13 +14,20 @@ forma de saltársela pidiéndoselo amablemente al modelo.
 
 from __future__ import annotations
 
+import fcntl
 import json
+from contextlib import contextmanager
 from datetime import date
+from functools import wraps
 from pathlib import Path
 from typing import Any
 
 from agents.core.base_agent import AgentResult, BaseAgent
 from agents.core.registry import register_agent
+from agents.exceptions import MissingDependencyError, ToolExecutionError
+from agents.geas_sync import synchronize
+from agents.tools.geas_tool import GeasError
+from agents.tools.git_tool import GitTool
 from agents.tools.process_tool import run_command
 
 VALID_STATUS = ("pending", "in_progress", "done", "blocked")
@@ -36,6 +43,28 @@ _RECHAZOS = ("rechazado", "rechaza", "rejected", "fail", "ko")
 
 def _es_rechazo(verdict: str) -> bool:
     return verdict.strip().lower() in _RECHAZOS
+
+
+def synchronized(method):
+    """También cubre llamadas directas, no solo BaseAgent.run/CLI."""
+    @wraps(method)
+    def wrapped(self, *args, **kwargs):
+        try:
+            self._synced = synchronize(self.ctx.root)
+            return method(self, *args, **kwargs)
+        except (GeasError, MissingDependencyError, ToolExecutionError, OSError, ValueError) as exc:
+            return self._fail(method.__name__, str(exc),
+                              data={"code": getattr(exc, "code", "LOCAL"), "recoverable": True})
+    return wrapped
+
+
+def serialized(method):
+    """Serializa el ciclo leer-modificar-escribir del backlog por clon."""
+    @wraps(method)
+    def wrapped(self, *args, **kwargs):
+        with self._state_guard():
+            return method(self, *args, **kwargs)
+    return wrapped
 
 CURRENT_TEMPLATE = """# Tarea actual
 
@@ -115,6 +144,8 @@ class HarnessAgent(BaseAgent):
             "record": self.record,
             "gate": self.gate,
             "add": self.add,
+            "sync": self.sync,
+            "link": self.link,
         }
 
     # -- rutas ---------------------------------------------------------------
@@ -145,6 +176,39 @@ class HarnessAgent(BaseAgent):
     def _history_file(self) -> Path:
         return self._progress_dir / "history.md"
 
+    @contextmanager
+    def _state_guard(self):
+        """Lock de estado del clon; reentrante para llamadas anidadas del arnés."""
+        depth = getattr(self, "_state_depth", 0)
+        if depth:
+            self._state_depth = depth + 1
+            try:
+                yield
+            finally:
+                self._state_depth -= 1
+            return
+
+        try:
+            directory = Path(GitTool(self.ctx.root).checked("rev-parse", "--git-common-dir"))
+            if not directory.is_absolute():
+                directory = self.ctx.root / directory
+        except (MissingDependencyError, ToolExecutionError, OSError):
+            directory = self._harness_dir
+            directory.mkdir(parents=True, exist_ok=True)
+        with (directory / "geas-state.lock").open("a") as lock:
+            try:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError as exc:
+                raise ValueError(
+                    "Otra operación del arnés está modificando este clon; repite cuando termine."
+                ) from exc
+            self._state_depth = 1
+            try:
+                yield
+            finally:
+                self._state_depth = 0
+                fcntl.flock(lock, fcntl.LOCK_UN)
+
     # -- backlog -------------------------------------------------------------
     def _load(self) -> tuple[dict | None, str]:
         """Devuelve (documento, error). Si error != "", el documento es None."""
@@ -159,9 +223,16 @@ class HarnessAgent(BaseAgent):
         return doc, ""
 
     def _save(self, doc: dict) -> None:
-        self._backlog_file.write_text(
-            json.dumps(doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-        )
+        self._write_atomic(self._backlog_file, json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
+
+    @staticmethod
+    def _write_atomic(path: Path, content: str) -> None:
+        temporary = path.with_name(path.name + ".tmp")
+        try:
+            temporary.write_text(content, encoding="utf-8")
+            temporary.replace(path)
+        finally:
+            temporary.unlink(missing_ok=True)
 
     @staticmethod
     def _find(doc: dict, feature_id: str) -> dict | None:
@@ -185,6 +256,52 @@ class HarnessAgent(BaseAgent):
         return AgentResult(success=False, agent=self.name, action=action, message=message, **kw)
 
     # -- acciones ------------------------------------------------------------
+    @synchronized
+    def sync(self) -> AgentResult:
+        """Sincroniza Git local y estado GEAS sin reclamar, commitear ni publicar."""
+        return AgentResult(True, self.name, "sync", "Sincronización completa.",
+                           data=self._synced.as_dict())
+
+    def _ticket_id(self, doc: dict, feat: dict, ticket_id: str = "") -> str:
+        existing = feat.get("geas_ticket_id", "")
+        if existing and ticket_id and existing != ticket_id:
+            raise GeasError("MAPPING", "La feature ya está asociada a otro ticket.")
+        ticket_id = ticket_id or existing
+        if not ticket_id:
+            raise GeasError("MAPPING", "Falta asociación explícita: harness link --id <FEATURE> --ticket-id <UUID>.")
+        if any(f.get("geas_ticket_id") == ticket_id and f["id"] != feat["id"] for f in doc["features"]):
+            raise GeasError("MAPPING", "Ese ticket ya está asociado a otra feature.")
+        return ticket_id
+
+    def _owned_ticket(self, doc: dict, feat: dict) -> dict:
+        client = self._synced.client
+        ticket = client.ticket(self._ticket_id(doc, feat))
+        if ticket.get("assigned_actor_id") != client.actor_id:
+            raise GeasError("OWNERSHIP", "El ticket pertenece a otro actor.")
+        return ticket
+
+    @synchronized
+    @serialized
+    def link(self, *, id: str = "", ticket_id: str = "") -> AgentResult:
+        """Asocia por UUID explícito, sin reiniciar el progreso ni reclamar."""
+        if not self._synced.client:
+            return self._fail("link", "link requiere .geas.yml y GEAS remoto.")
+        doc, error = self._load()
+        if doc is None:
+            return self._fail("link", error)
+        feat = self._find(doc, id)
+        if feat is None or not ticket_id:
+            return self._fail("link", "Indica --id <FEATURE> y --ticket-id <UUID> existentes.")
+        ticket_id = self._ticket_id(doc, feat, ticket_id)
+        ticket = self._synced.client.ticket(ticket_id)
+        if feat.get("status") == "in_progress":
+            self._synced.client.owned(ticket, "IN_PROGRESS", ticket.get("commit_before"), "commit_before")
+            GitTool(self.ctx.root).checked("merge-base", "--is-ancestor", ticket.get("commit_before", ""), "HEAD")
+        feat["geas_ticket_id"] = ticket_id
+        self._save(doc)
+        return AgentResult(True, self.name, "link", f"{id} asociada a {ticket_id}; progreso conservado.", data=feat)
+
+    @synchronized
     def status(self) -> AgentResult:
         """Estado del backlog y de la tarea en curso."""
         doc, error = self._load()
@@ -219,13 +336,18 @@ class HarnessAgent(BaseAgent):
                 "in_progress": running,
                 "eligible": [f["id"] for f in eligible],
                 "features": [
-                    {"id": f.get("id"), "title": f.get("title"), "status": f.get("status")}
+                    {"id": f.get("id"), "title": f.get("title"), "status": f.get("status"),
+                     "geas_ticket_id": f.get("geas_ticket_id")}
                     for f in features
                 ],
+                "sync": self._synced.as_dict(),
+                "tickets": [self._synced.client.ticket(f["geas_ticket_id"])
+                            for f in features if self._synced.client and f.get("geas_ticket_id")],
             },
             warnings=warnings,
         )
 
+    @synchronized
     def next(self) -> AgentResult:
         """La feature que toca: la in_progress si la hay, si no la primera elegible."""
         doc, error = self._load()
@@ -297,7 +419,9 @@ class HarnessAgent(BaseAgent):
             if "error" not in h
         ]
 
-    def start(self, *, id: str = "", owner: str = "implementer") -> AgentResult:
+    @synchronized
+    @serialized
+    def start(self, *, id: str = "", owner: str = "implementer", ticket_id: str = "") -> AgentResult:
         """Abre una feature: status in_progress y harness/progress/current.md rellenado."""
         if not id:
             return self._fail("start", "Falta el id de la feature.",
@@ -310,6 +434,8 @@ class HarnessAgent(BaseAgent):
         feat = self._find(doc, id)
         if feat is None:
             return self._fail("start", f"No existe la feature '{id}' en el backlog.")
+        if feat.get("status") == "done":
+            return self._fail("start", f"'{id}' ya está en done.")
 
         running = [f["id"] for f in doc["features"] if f.get("status") == "in_progress"]
         if running and running != [id]:
@@ -328,6 +454,17 @@ class HarnessAgent(BaseAgent):
                 data={"missing_deps": missing_deps},
             )
 
+        if self._synced.client:
+            linked = self._ticket_id(doc, feat, ticket_id)
+            ticket = self._synced.client.claim(linked, self._synced.git["head"])
+            if GitTool(self.ctx.root).checked("rev-parse", "HEAD") != self._synced.git["head"]:
+                raise GeasError("HEAD_CHANGED", "HEAD cambió durante el claim; retoma tras sincronizar.")
+            GitTool(self.ctx.root).checked("merge-base", "--is-ancestor", ticket["commit_before"], "HEAD")
+            feat["geas_ticket_id"] = linked
+        if feat.get("status") == "in_progress":
+            self._save(doc)
+            return AgentResult(True, self.name, "start", f"Retoma {id}; informe y fecha conservados.", data=feat)
+
         feat["status"] = "in_progress"
         feat["started"] = date.today().isoformat()
         # Abrir una feature reinicia el contador de rondas: si venía bloqueada
@@ -335,23 +472,25 @@ class HarnessAgent(BaseAgent):
         # humano ya intervino, no tiene sentido heredar el castigo anterior.
         feat["review_rounds"] = 0
         feat.pop("blocked_reason", None)
-        self._save(doc)
 
         self._progress_dir.mkdir(parents=True, exist_ok=True)
         criteria = "\n".join(f"- [ ] {c}" for c in feat.get("acceptance_criteria", []))
-        self._current_file.write_text(
-            CURRENT_TEMPLATE.format(
-                fid=feat["id"],
-                status="in_progress",
-                started=feat["started"],
-                owner=owner,
-                description=feat.get("description", ""),
-                criteria=criteria or "_(sin criterios definidos)_",
-                log="_(pendiente)_",
-                blockers="_(ninguno)_",
-            ),
-            encoding="utf-8",
-        )
+        existing = self._current_file.read_text(encoding="utf-8") if self._current_file.exists() else ""
+        if f"**Feature:** {feat['id']}" not in existing:
+            self._write_atomic(
+                self._current_file,
+                CURRENT_TEMPLATE.format(
+                    fid=feat["id"],
+                    status="in_progress",
+                    started=feat["started"],
+                    owner=owner,
+                    description=feat.get("description", ""),
+                    criteria=criteria or "_(sin criterios definidos)_",
+                    log="_(pendiente)_",
+                    blockers="_(ninguno)_",
+                ),
+            )
+        self._save(doc)
 
         return AgentResult(
             success=True, agent=self.name, action="start",
@@ -368,7 +507,10 @@ class HarnessAgent(BaseAgent):
         args = ["bash", str(script), "--json"]
         if quick:
             args.append("--quick")
-        proc = run_command(args, cwd=self.ctx.root, timeout=900)
+        try:
+            proc = run_command(args, cwd=self.ctx.root, timeout=900)
+        except (MissingDependencyError, ToolExecutionError, OSError) as exc:
+            return self._fail("gate", f"Puerta no ejecutada: {exc}")
 
         try:
             report = json.loads(proc.stdout)
@@ -379,22 +521,27 @@ class HarnessAgent(BaseAgent):
                 data={"stdout": proc.stdout[-2000:], "stderr": proc.stderr[-2000:]},
             )
 
+        if (not isinstance(report, dict) or not isinstance(report.get("checks", []), list)
+                or not all(isinstance(c, dict) for c in report.get("checks", []))):
+            return self._fail("gate", "init.sh devolvió un informe JSON inválido.")
         failed = [c for c in report.get("checks", []) if c.get("status") == "fail"]
         return AgentResult(
-            success=bool(report.get("ready")),
+            success=proc.ok and report.get("ready") is True,
             agent=self.name,
             action="gate",
             message=(
                 "ENTORNO LISTO — se puede trabajar."
-                if report.get("ready")
+                if proc.ok and report.get("ready") is True
                 else f"ENTORNO BLOQUEADO — {len(failed)} check(s) fallando."
             ),
             data=report,
             warnings=[f"{c['check']}: {c['detail']}" for c in failed],
         )
 
+    @synchronized
+    @serialized
     def finish(self, *, id: str = "", evidence: str = "", changes: str = "",
-               decisions: str = "", pending: str = "") -> AgentResult:
+               decisions: str = "", pending: str = "", confirm: bool = False) -> AgentResult:
         """
         Cierra una feature. REHÚSA si ./init.sh no pasa en verde: es la regla
         del arnés, y aquí es código, no una instrucción que se pueda ignorar.
@@ -410,8 +557,28 @@ class HarnessAgent(BaseAgent):
         feat = self._find(doc, id)
         if feat is None:
             return self._fail("finish", f"No existe la feature '{id}' en el backlog.")
-        if feat.get("status") == "done":
+        if feat.get("status") == "done" and not self._synced.client:
             return self._fail("finish", f"'{id}' ya está en done.")
+
+        if not evidence.strip():
+            return self._fail("finish", f"'{id}' no se cierra sin evidencia.",
+                              needs=["Pega la salida real que demuestra cada criterio."])
+
+        client = self._synced.client
+        tested_head = self._synced.git.get("head")
+        tested_destination = dict(self._synced.git)
+        if client:
+            if any(f.get("status") == "in_progress" and f["id"] != id for f in doc["features"]):
+                raise GeasError("ACTIVE_FEATURE", "Hay otra feature abierta; no se sobrescribe su progreso.")
+            ticket = self._owned_ticket(doc, feat)
+            if ticket.get("status") not in ("IN_PROGRESS", "DONE"):
+                raise GeasError("OWNERSHIP", "El ticket debe estar IN_PROGRESS o DONE reconciliable.")
+            if ticket.get("status") == "DONE":
+                client.owned(ticket, "DONE", tested_head, "commit_after")
+            else:
+                client.owned(ticket, "IN_PROGRESS", ticket.get("commit_before"), "commit_before")
+                GitTool(self.ctx.root).checked("merge-base", "--is-ancestor", ticket["commit_before"], "HEAD")
+            self._committed(ticket.get("status") == "DONE")
 
         gate = self.gate()
         if not gate.success:
@@ -422,19 +589,28 @@ class HarnessAgent(BaseAgent):
                 warnings=gate.warnings,
             )
 
-        if not evidence:
-            return self._fail(
-                "finish",
-                f"'{id}' no se cierra sin evidencia.",
-                needs=[
-                    "Pega la salida real del comando que demuestra cada criterio "
-                    "(pytest, make check, ./init.sh). Una afirmación no es evidencia."
-                ],
+        if client:
+            # init vuelve a sincronizar: ni ese pull ni el posterior pueden
+            # cambiar el SHA contra el que se ejecutó la puerta.
+            refreshed = synchronize(self.ctx.root)
+            if (refreshed.git != self._synced.git
+                    or refreshed.client != client):
+                raise GeasError("HEAD_CHANGED", "Git/config cambió durante la puerta; repite el cierre.")
+            self._committed(ticket.get("status") == "DONE")
+            from agents.agents.git_agent import GitAgent
+
+            push = GitAgent(context=self.ctx).run(
+                "publish", expected_head=tested_head, expected_destination=tested_destination,
+                confirm=confirm,
             )
+            if not push.success:
+                return self._fail("finish", push.message, needs=push.needs)
+            self._committed(ticket.get("status") == "DONE")
+            client.complete(self._ticket_id(doc, feat), tested_head, evidence)
+            feat["geas_commit_after"] = tested_head
 
         feat["status"] = "done"
         feat["closed"] = date.today().isoformat()
-        self._save(doc)
 
         gate_line = gate.data.get("checks", []) if isinstance(gate.data, dict) else []
         pytest_line = next(
@@ -451,10 +627,14 @@ class HarnessAgent(BaseAgent):
             f"<details><summary>Evidencia</summary>\n\n```\n{evidence.strip()}\n```\n\n</details>\n"
         )
         self._progress_dir.mkdir(parents=True, exist_ok=True)
-        with self._history_file.open("a", encoding="utf-8") as fh:
-            fh.write(entry)
+        history = self._history_file.read_text(encoding="utf-8") if self._history_file.exists() else ""
+        if f"\n## {id} — " not in history:
+            self._write_atomic(self._history_file, history + entry)
 
-        self._current_file.write_text(IDLE_CURRENT, encoding="utf-8")
+        self._write_atomic(self._current_file, IDLE_CURRENT)
+        # done es la última escritura. Si falla, DONE remoto + SHA permiten
+        # reintentar sin repetir complete_ticket ni duplicar el histórico.
+        self._save(doc)
 
         return AgentResult(
             success=True, agent=self.name, action="finish",
@@ -462,6 +642,15 @@ class HarnessAgent(BaseAgent):
             data={"id": id, "closed": feat["closed"]},
         )
 
+    def _committed(self, remote_done: bool) -> None:
+        git = GitTool(self.ctx.root)
+        paths = git.checked("status", "--porcelain", "--untracked-files=all").splitlines()
+        closure_paths = {"harness/featureslist.json", "harness/progress/current.md", "harness/progress/history.md"}
+        if paths and not (remote_done and all(p[3:] in closure_paths for p in paths)):
+            raise GeasError("UNCOMMITTED", "Cierre bloqueado: commitea los entregables antes de autorizar el push.")
+
+    @synchronized
+    @serialized
     def block(self, *, id: str = "", reason: str = "") -> AgentResult:
         """Marca una feature como bloqueada, con el motivo."""
         if not id or not reason:
@@ -480,6 +669,15 @@ class HarnessAgent(BaseAgent):
         if feat is None:
             return self._fail("block", f"No existe la feature '{id}' en el backlog.")
 
+        if self._synced.client:
+            ticket = self._owned_ticket(doc, feat)
+            if ticket.get("status") != "BLOCKED":
+                if ticket.get("status") != "IN_PROGRESS":
+                    raise GeasError("OWNERSHIP", "Solo se bloquea un ticket propio IN_PROGRESS.")
+                self._synced.client.call("block_ticket", ticket_id=ticket["id"], reason=reason)
+            ticket = self._owned_ticket(doc, feat)
+            if ticket.get("status") != "BLOCKED":
+                raise GeasError("REMOTE", "Bloqueo remoto no confirmado.")
         feat["status"] = "blocked"
         feat["blocked_reason"] = reason
         self._save(doc)
@@ -489,6 +687,8 @@ class HarnessAgent(BaseAgent):
             data={"id": id, "reason": reason},
         )
 
+    @synchronized
+    @serialized
     def record(self, *, agent: str = "", id: str = "", content: str = "",
                verdict: str = "ok") -> AgentResult:
         """Guarda el informe de un subagente en harness/progress/<agente>-<ID>.md."""
@@ -502,6 +702,17 @@ class HarnessAgent(BaseAgent):
                 missing.append("¿Qué contenido? El informe no puede ir vacío.")
             return self._fail("record", "Faltan datos para guardar el informe.", needs=missing)
 
+        if self._synced.client:
+            doc, error = self._load()
+            if doc is None:
+                return self._fail("record", error)
+            feat = self._find(doc, id)
+            if feat is None:
+                return self._fail("record", "Feature inexistente.")
+            if feat.get("status") != "done" or feat.get("geas_ticket_id"):
+                self._owned_ticket(doc, feat)
+        if any("/" in value or "\\" in value or value in (".", "..") for value in (agent, id)):
+            return self._fail("record", "agent/id no pueden ser rutas.")
         self._progress_dir.mkdir(parents=True, exist_ok=True)
         path = self._progress_dir / f"{agent}-{id}.md"
         header = (
@@ -561,8 +772,10 @@ class HarnessAgent(BaseAgent):
                   "review_rounds": rounds},
         )
 
+    @synchronized
+    @serialized
     def add(self, *, id: str = "", title: str = "", description: str = "",
-            criteria: str = "", depends_on: str = "") -> AgentResult:
+            criteria: str = "", depends_on: str = "", ticket_id: str = "") -> AgentResult:
         """Añade una feature al backlog. `criteria` y `depends_on` van separados por `;`."""
         missing = []
         if not id:
@@ -592,6 +805,11 @@ class HarnessAgent(BaseAgent):
         if unknown:
             return self._fail("add", f"depends_on apunta a features que no existen: {', '.join(unknown)}.")
 
+        if ticket_id:
+            if not self._synced.client:
+                return self._fail("add", "ticket_id requiere GEAS remoto.")
+            self._synced.client.ticket(self._ticket_id(doc, feature, ticket_id))
+            feature["geas_ticket_id"] = ticket_id
         doc["features"].append(feature)
         self._save(doc)
         return AgentResult(
