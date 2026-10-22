@@ -13,8 +13,8 @@ authentication: "none"
 harness: ""
 
 server:
-  bind: "100.91.42.55"
+  bind: "192.168.180.142"
   port: 8787
-  url: "http://cacelas.tail8c8ee0.ts.net:8787"
+  url: "http://192.168.180.142:8787"
 
 database_path: "/home/cancelas/.local/share/geas/geas.db"

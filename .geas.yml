@@ -7,4 +7,4 @@ repository: aiagents
 repository_id: a2e97838-a521-40b7-913e-81ae79511a21
 provider: local
 url: 
-mcp_url: http://cacelas.tail8c8ee0.ts.net:8787
+mcp_url: http://192.168.180.142:8787

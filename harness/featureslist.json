@@ -230,6 +230,23 @@
       "geas_ticket_id": "52ea8564-36d2-4a22-858c-7740f4ba1810",
       "geas_commit_after": "5ab1a2568f7a0f9ed4ab3937155bd9e7fe4e4bb3",
       "closed": "2026-10-22"
+    },
+    {
+      "id": "FAB-001",
+      "title": "Alcance, principios y registro de decisiones del paquete de diseño",
+      "description": "Fijar el alcance y las decisiones del paquete de diseño antes de producir los demás artefactos. Entregable: docs/design/00-alcance-decisiones.md. Secciones 1, 2 y 17 del documento de diseño.",
+      "acceptance_criteria": [
+        "Existe docs/design/00-alcance-decisiones.md con alcance, propietario único, entornos autorizados, portabilidad, principio rector, no-goals y tabla de decisiones confirmadas frente a decisiones de diseño",
+        "Cada decisión confirmada cita su origen y las decisiones de diseño llevan etiqueta explícita",
+        "Incluye registro de parámetros pendientes de activación sin inventar valores",
+        "Distingue DISEÑADO de CONFIGURADO, PROBADO y DESPLEGADO y no atribuye ninguna ejecución",
+        "./init.sh termina con ENTORNO LISTO"
+      ],
+      "status": "in_progress",
+      "depends_on": [],
+      "geas_ticket_id": "b21b4d29-7d9c-4099-b693-3c1d67ae9311",
+      "started": "2026-10-22",
+      "review_rounds": 0
     }
   ]
 }
