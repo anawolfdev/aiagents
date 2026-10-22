@@ -1,26 +1,26 @@
 # Tarea actual
 
-**Feature:** FAB-001
-**Estado:** in_progress
-**Iniciada:** 2026-10-22
-**Responsable:** implementer
+> Estado vivo de la ejecución en curso. Es la memoria **fuera** de la ventana de
+> contexto: cualquier agente que arranque de cero lee este fichero y sabe dónde
+> está el trabajo sin releer el proyecto entero.
+
+**Feature:** _(ninguna)_
+**Estado:** idle
+**Iniciada:** —
+**Responsable:** —
 
 ## Objetivo
 
-Fijar el alcance y las decisiones del paquete de diseño antes de producir los demás artefactos. Entregable: docs/design/00-alcance-decisiones.md. Secciones 1, 2 y 17 del documento de diseño.
+_(sin trabajo en curso)_
 
 ## Criterios de aceptación
 
-- [ ] Existe docs/design/00-alcance-decisiones.md con alcance, propietario único, entornos autorizados, portabilidad, principio rector, no-goals y tabla de decisiones confirmadas frente a decisiones de diseño
-- [ ] Cada decisión confirmada cita su origen y las decisiones de diseño llevan etiqueta explícita
-- [ ] Incluye registro de parámetros pendientes de activación sin inventar valores
-- [ ] Distingue DISEÑADO de CONFIGURADO, PROBADO y DESPLEGADO y no atribuye ninguna ejecución
-- [ ] ./init.sh termina con ENTORNO LISTO
+_(copiar aquí los `acceptance_criteria` de la feature al empezar)_
 
 ## Bitácora
 
-_(pendiente)_
+_(una línea por paso: qué se hizo, qué fichero se tocó, qué verificó)_
 
 ## Bloqueos
 
-_(ninguno)_
+_(qué impide avanzar y qué se necesita para desbloquearlo — vacío si nada)_

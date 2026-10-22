@@ -242,11 +242,13 @@
         "Distingue DISEÑADO de CONFIGURADO, PROBADO y DESPLEGADO y no atribuye ninguna ejecución",
         "./init.sh termina con ENTORNO LISTO"
       ],
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [],
       "geas_ticket_id": "b21b4d29-7d9c-4099-b693-3c1d67ae9311",
       "started": "2026-10-22",
-      "review_rounds": 0
+      "review_rounds": 0,
+      "geas_commit_after": "0a519a1afa59d26e07703188dfe48e19990382c9",
+      "closed": "2026-10-22"
     }
   ]
 }

@@ -233,3 +233,19 @@ Correcciones ronda 1 verificadas: add concurrente sin pérdida de escritura conf
 ```
 
 </details>
+
+## FAB-001 — Alcance, principios y registro de decisiones del paquete de diseño
+
+- **Cerrada:** 2026-10-22
+- **Verificación:** ./init.sh en verde · 612 passed, 15 skipped in 51.01s
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/00-alcance-decisiones.md (271 líneas) cubre alcance, propietario, entornos, portabilidad, principio rector, no-goals, 28 decisiones confirmadas con origen, 4 decisiones de diseño etiquetadas, 15 parámetros pendientes y estados DISEÑADO/CONFIGURADO/PROBADO/DESPLEGADO. Revisión independiente aprobada. ./init.sh: ENTORNO LISTO, 612 passed, 15 skipped, 0 avisos. git diff --check OK. uv.lock sincronizado a 0.1.2.
+```
+
+</details>
