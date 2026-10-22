@@ -26,8 +26,9 @@ de decisión sobre el contenido.
 1. **Interlocución única.** Es el único canal con el propietario. Presenta las
    preguntas que prepara A1, agrupadas y sin repetir las ya respondidas.
 2. **Estado y versión.** Mantiene el estado verificable de cada artefacto:
-   `DISEÑADO`, `CONFIGURADO`, `PROBADO`, `DESPLEGADO`, además de los estados de
-   revisión de §11.
+   `DISEÑADO`, `CONFIGURADO`, `PROBADO`, `DESPLEGADO`
+   (`00-alcance-decisiones.md` §11), además de los estados de revisión que
+   define `FAB-011`.
 3. **Responsables.** Garantiza un dueño único por artefacto y registra quién
    entrega, quién revisa y quién aprueba.
 4. **Contexto mínimo.** Entrega a cada rol solo los datos, documentos y permisos
@@ -55,19 +56,31 @@ de decisión sobre el contenido.
 
 Toda transición tiene disparador, responsable, evidencia y estado de destino.
 
-| De | A | Disparador | Responsable | Evidencia |
+Toda entrega entre un rol y el siguiente pasa **por el coordinador**: ningún
+rol entrega directamente a otro rol ni directamente al propietario. La columna
+«Rol» indica quién produce la evidencia; el coordinador es siempre quien
+registra la transición y la pone en manos del destinatario.
+
+| De | A | Disparador | Rol | Evidencia sacada por el coordinador |
 |---|---|---|---|---|
 | Inicio | A1 | Idea del propietario | Coordinador | Idea registrada y versión 0.1 |
 | A1 | Revisión del propietario | Spec completo | A1 | Spec, supuestos y preguntas cerradas |
-| Revisión | A2 | Spec validado por el propietario | Coordinador | Aprobación humana registrada |
+| Revisión | A2 | Spec validado por el propietario | Propietario | Aprobación humana registrada |
 | A2 | A3 | Informe inicial de riesgos | A2 | Hallazgos, fuentes y vigencia |
 | A3 | GATE 1 | Arquitectura y plan listos | A3 | Matriz y plan verificable |
 | GATE 1 | A4 | Aprobación del propietario | Propietario | Aprobación con versión y alcance |
 | A4 | A5 | Artefacto congelado | A4 | Manifiesto, pruebas públicas y reversión |
-| A5 | GATE 2 | Veredicto conforme | A5 | Informe de evaluación y límites |
+| A5 | GATE 2 | Veredicto `CONFORME` | A5 | Informe de evaluación y límites |
+| A5 | A4 | Veredicto `NO CONFORME` o `EVALUACIÓN INCOMPLETA` | A5 | Diagnóstico saneado y ejes incompletos |
+| A4 | A5 | Corrección dentro de las rondas | A4 | Nueva versión y evidencia |
 | GATE 2 | Despliegue | Aprobación del propietario | Propietario | Destino, manifiesto y reversión |
 | Cualquiera | Bloqueo | Causa identificada | Rol que detecta | Registro de bloqueo |
 | Bloqueo | Cualquiera | Causa resuelta y evidencia | Coordinador | Verificación de la causa |
+
+Las transiciones `A5 → A4` de corrección están limitadas por el máximo de
+rondas de §7; al agotarlas no hay transición, la entrega se bloquea y se eleva.
+El detalle de los estados de revisión y de la recuperación pertenece a
+`FAB-011`.
 
 ## 5. Entrega obligatoria
 
@@ -108,16 +121,23 @@ El coordinador puede preparar la solicitud, pero nunca marcar la aprobación.
 
 ## 8. Encaje con A1–A5
 
-| Rol | El coordinador le entrega | El rol le devuelve |
-|---|---|---|
-| A1 | Idea, respuestas previas y límites | Spec, supuestos y preguntas |
-| A2 | Spec saneado, inventario y alcance | Hallazgos, fuentes y vigencia |
-| A3 | Spec validado y hallazgos | Arquitectura, matriz, plan y GATE 1 |
-| A4 | Alcance aprobado y entorno | Artefacto, manifiesto y pruebas |
-| A5 | Artefacto congelado y criterios | Veredicto, cobertura y límites |
+El «destinatario» de cada perfil de rol enumera **solo a quién va dirigido el
+contenido** de la entrega; la entrega material siempre la cursa el coordinador,
+que es el único que habla con el propietario y el único que abre la siguiente
+fase. El destinatario nunca es una vía para saltarse el flujo.
 
-El coordinador no duplica las funciones de ningún rol: solo transporta,
-registra y bloquea.
+| Rol | Destinatario de contenido en su perfil | Entrada que le pone el coordinador | Salida que el coordinador registra |
+|---|---|---|---|
+| A1 | Propietario (a través del coordinador) | Idea, respuestas previas y límites | Spec, supuestos y preguntas |
+| A2 | Coordinador y A3 | Spec saneado, inventario y alcance | Hallazgos, fuentes y vigencia |
+| A3 | Propietario (GATE 1) y A4 | Spec validado y hallazgos | Arquitectura, matriz, plan y GATE 1 |
+| A4 | A5 | Alcance aprobado y entorno | Artefacto, manifiesto y pruebas |
+| A5 | Propietario (GATE 2) y A3 | Artefacto congelado y criterios | Veredicto, cobertura y límites |
+
+Regla de reconciliación: allí donde un perfil nombra un destinatario distinto
+del coordinador, se lee siempre como **contenido dirigido a través del
+coordinador**. Ningún rol entrega en mano ni recibe en mano. El coordinador no
+duplica las funciones de ningún rol: solo transporta, registra y bloquea.
 
 ## 9. Bloqueos de coordinación
 
