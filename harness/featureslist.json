@@ -221,13 +221,15 @@
         "Hay tests deterministas de API y repos Git temporales y documentación de configuración, sync, start y finish",
         "./init.sh termina con ENTORNO LISTO y las suites pertinentes pasan"
       ],
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "REPAIR-001"
       ],
       "started": "2026-10-22",
       "review_rounds": 1,
-      "geas_ticket_id": "52ea8564-36d2-4a22-858c-7740f4ba1810"
+      "geas_ticket_id": "52ea8564-36d2-4a22-858c-7740f4ba1810",
+      "geas_commit_after": "5ab1a2568f7a0f9ed4ab3937155bd9e7fe4e4bb3",
+      "closed": "2026-10-22"
     }
   ]
 }

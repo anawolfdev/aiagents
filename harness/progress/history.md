@@ -217,3 +217,19 @@ Revisión independiente: uv run pytest -> 538 passed, 15 skipped (extras opciona
 ```
 
 </details>
+
+## GEAS-001 — Sincronización remota GEAS y Git obligatoria en init y arnés
+
+- **Cerrada:** 2026-10-22
+- **Verificación:** ./init.sh en verde · 612 passed, 15 skipped in 46.18s
+- **Cambios:** Cliente HTTP GEAS, sync Git ff-only seguro, claim con read-back, push contra destino fijado y verificado, cierre remoto, lock de estado y regresiones.
+- **Decisiones:** Configuración remota presente falla cerrada; repos sin .geas.yml conservan modo local. El push exige confirmación explícita. La revisión independiente de ronda 2 fue cancelada por el usuario para priorizar la publicación.
+- **Pendiente:** Commit posterior de los metadatos de cierre.
+
+<details><summary>Evidencia</summary>
+
+```
+Correcciones ronda 1 verificadas: add concurrente sin pérdida de escritura confirmada; reintento de claim conserva notas; árbol sucio no integra commits tardíos; cambio de destino Git durante la puerta bloquea publicación; status.sh válido con bash -n. Evidencia: agents/tests/test_geas_integration.py 74 passed; ./init.sh con actor real 612 passed, 15 skipped, ENTORNO LISTO 0 avisos; ruff check/format, prompts_sync, opencode_check y git diff --check OK. Push verificado: 5ab1a2568f7a0f9ed4ab3937155bd9e7fe4e4bb3 en origin/main.
+```
+
+</details>
