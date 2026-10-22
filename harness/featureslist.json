@@ -261,13 +261,15 @@
         "Toda decisión de mantener tiene prueba o argumento de proporcionalidad",
         "No hay filas sin coste y riesgo estimados o marcados como pendientes"
       ],
-      "status": "in_progress",
+      "status": "done",
       "depends_on": [
         "FAB-001"
       ],
       "geas_ticket_id": "9880bc7b-24c0-4d27-82b3-b49e480c4550",
       "started": "2026-10-22",
-      "review_rounds": 1
+      "review_rounds": 1,
+      "geas_commit_after": "673b72d36774a8db715ed8e514d1c90f1cc800f7",
+      "closed": "2026-10-22"
     }
   ]
 }

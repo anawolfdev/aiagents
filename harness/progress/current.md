@@ -1,26 +1,26 @@
 # Tarea actual
 
-**Feature:** FAB-002
-**Estado:** in_progress
-**Iniciada:** 2026-10-22
-**Responsable:** implementer
+> Estado vivo de la ejecución en curso. Es la memoria **fuera** de la ventana de
+> contexto: cualquier agente que arranque de cero lee este fichero y sabe dónde
+> está el trabajo sin releer el proyecto entero.
+
+**Feature:** _(ninguna)_
+**Estado:** idle
+**Iniciada:** —
+**Responsable:** —
 
 ## Objetivo
 
-Aplicar necesidad y proporcionalidad a cada capacidad antes de aprobarla. Entregable: docs/design/03-necesidad-proporcionalidad.md con plantilla y matriz rellenada. No implementar ni activar nada.
+_(sin trabajo en curso)_
 
 ## Criterios de aceptación
 
-- [ ] Cada fila de la matriz tiene origen y decisión
-- [ ] La vigilancia diaria de A2 queda justificada como requisito confirmado
-- [ ] Los extras no aprobados quedan excluidos o pospuestos
-- [ ] Toda decisión de mantener tiene prueba o argumento de proporcionalidad
-- [ ] No hay filas sin coste y riesgo estimados o marcados como pendientes
+_(copiar aquí los `acceptance_criteria` de la feature al empezar)_
 
 ## Bitácora
 
-_(pendiente)_
+_(una línea por paso: qué se hizo, qué fichero se tocó, qué verificó)_
 
 ## Bloqueos
 
-_(ninguno)_
+_(qué impide avanzar y qué se necesita para desbloquearlo — vacío si nada)_

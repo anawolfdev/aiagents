@@ -249,3 +249,19 @@ docs/design/00-alcance-decisiones.md (271 líneas) cubre alcance, propietario, e
 ```
 
 </details>
+
+## FAB-002 — Matriz de necesidad y proporcionalidad; política de extras y exclusiones
+
+- **Cerrada:** 2026-10-22
+- **Verificación:** ./init.sh en verde · 612 passed, 15 skipped in 45.81s
+- **Cambios:** docs/design/03-necesidad-proporcionalidad.md; política de extras y plantilla
+- **Decisiones:** 5 mantener, 1 simplificar, 6 proponer exclusión, 1 posponer; vigilancia diaria de A2 confirmada
+- **Pendiente:** Presupuesto, horario, Telegram, proveedor/modelo y corpus documental
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/03-necesidad-proporcionalidad.md (140 líneas): matriz de 13 filas obligatorias, 10 columnas, plantilla y política de extras. Revisión ronda 1 rechazada por fila 7 y corregida a Proponer exclusión; ronda 2 aprobada. ./init.sh: ENTORNO LISTO, 612 passed, 15 skipped, 0 avisos. git diff --check OK. uv.lock sincronizado a 0.1.3.
+```
+
+</details>
