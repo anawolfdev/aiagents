@@ -329,3 +329,19 @@ docs/design/roles/A4-constructor.md: alcance aprobado, aislamiento y datos verif
 ```
 
 </details>
+
+## FAB-007 — Instrucción de sistema A5 — evaluador independiente
+
+- **Cerrada:** 2026-10-22
+- **Verificación:** ./init.sh en verde · 612 passed, 15 skipped in 45.77s
+- **Cambios:** docs/design/roles/A5-evaluador.md
+- **Decisiones:** Conformidad técnica no autoriza despliegue; independencia obligatoria; pruebas reservadas con control real
+- **Pendiente:** Definir el conjunto reservado y su custodia
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/roles/A5-evaluador.md: siete ejes, independencia real, pruebas públicas y reservadas con controles, veredicto con cobertura y límites, y prohibición de autorizar despliegue. Revisión independiente aprobada (reviewer-FAB-007.md). ./init.sh: ENTORNO LISTO, 612 passed, 15 skipped, 0 avisos.
+```
+
+</details>

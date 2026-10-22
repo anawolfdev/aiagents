@@ -369,12 +369,14 @@
         "Define la salida y sus límites",
         "No confunde conformidad técnica con autorización de despliegue"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002"
       ],
-      "geas_ticket_id": "f0929f8e-e4d4-45ab-a131-ea43e59e14f3"
+      "geas_ticket_id": "f0929f8e-e4d4-45ab-a131-ea43e59e14f3",
+      "geas_commit_after": "823d37ac69827782d3127f0fb90936894aa56029",
+      "closed": "2026-10-22"
     }
   ]
 }
