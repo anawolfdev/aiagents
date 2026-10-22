@@ -1,26 +1,27 @@
 # Tarea actual
 
-> Estado vivo de la ejecución en curso. Es la memoria **fuera** de la ventana de
-> contexto: cualquier agente que arranque de cero lee este fichero y sabe dónde
-> está el trabajo sin releer el proyecto entero.
-
-**Feature:** _(ninguna)_
-**Estado:** idle
-**Iniciada:** —
-**Responsable:** —
+**Feature:** FAB-003
+**Estado:** in_progress
+**Iniciada:** 2026-10-22
+**Responsable:** implementer
 
 ## Objetivo
 
-_(sin trabajo en curso)_
+Perfil autosuficiente de A1: entrevista, spec funcional, requisitos, pruebas y validación humana. Entregable: docs/design/roles/A1-analista.md.
 
 ## Criterios de aceptación
 
-_(copiar aquí los `acceptance_criteria` de la feature al empezar)_
+- [ ] El perfil se entiende sin leer otro
+- [ ] Incluye los apartados exigidos
+- [ ] Incorpora las pruebas mínimas del documento
+- [ ] Separa requisitos y extras
+- [ ] No inventa decisiones
+- [ ] Exige validación humana del resultado
 
 ## Bitácora
 
-_(una línea por paso: qué se hizo, qué fichero se tocó, qué verificó)_
+_(pendiente)_
 
 ## Bloqueos
 
-_(qué impide avanzar y qué se necesita para desbloquearlo — vacío si nada)_
+_(ninguno)_

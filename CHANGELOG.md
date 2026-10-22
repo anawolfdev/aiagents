@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- docs(design): perfil A1 analista y entrevistador (FAB-003)
+
+## [Unreleased] — 2026-10-22
+
+### Añadido
+
 - docs(design): matriz de necesidad y proporcionalidad (FAB-002)
 
 ## [Unreleased] — 2026-10-22

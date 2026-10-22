@@ -270,6 +270,103 @@
       "review_rounds": 1,
       "geas_commit_after": "673b72d36774a8db715ed8e514d1c90f1cc800f7",
       "closed": "2026-10-22"
+    },
+    {
+      "id": "FAB-003",
+      "title": "Instrucción de sistema A1 — analista y entrevistador",
+      "description": "Perfil autosuficiente de A1: entrevista, spec funcional, requisitos, pruebas y validación humana. Entregable: docs/design/roles/A1-analista.md.",
+      "acceptance_criteria": [
+        "El perfil se entiende sin leer otro",
+        "Incluye los apartados exigidos",
+        "Incorpora las pruebas mínimas del documento",
+        "Separa requisitos y extras",
+        "No inventa decisiones",
+        "Exige validación humana del resultado"
+      ],
+      "status": "in_progress",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002"
+      ],
+      "geas_ticket_id": "6890d71a-f627-4a77-a169-37dc5c0b4cee",
+      "started": "2026-10-22",
+      "review_rounds": 0
+    },
+    {
+      "id": "FAB-004",
+      "title": "Instrucción de sistema A2 — revisión inicial y vigilancia",
+      "description": "Perfil autosuficiente de A2 en modo inicial y periódico, cobertura, vigencia de siete días y defensa ante prompt injection. Entregable: docs/design/roles/A2-riesgos-vigilancia.md.",
+      "acceptance_criteria": [
+        "Ambos modos están separados y completos",
+        "La cobertura no depende solo del spec",
+        "Existe la regla de siete días y el procedimiento de revalidación",
+        "Hay tratamiento de fuente inaccesible, caducada o contradictoria",
+        "Incluye defensa frente a prompt injection",
+        "La vigilancia diaria queda marcada como pendiente de activación"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002"
+      ],
+      "geas_ticket_id": "64d54df1-fcbe-4f0d-a4c8-a6673c23532a"
+    },
+    {
+      "id": "FAB-005",
+      "title": "Instrucción de sistema A3 — arquitecto y consolidador",
+      "description": "Perfil autosuficiente de A3: consolidación, arquitectura mínima, matriz, plan y GATE 1. Entregable: docs/design/roles/A3-arquitecto.md.",
+      "acceptance_criteria": [
+        "El perfil es autosuficiente",
+        "Cada hallazgo tiene tratamiento explícito",
+        "Hay comparación de alternativas",
+        "El GATE 1 está definido",
+        "Los cambios materiales se detectan y bloquean",
+        "No confunde consolidar con aprobar"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002"
+      ],
+      "geas_ticket_id": "b4fc99bd-b474-4005-b61e-a2472fa7f5eb"
+    },
+    {
+      "id": "FAB-006",
+      "title": "Instrucción de sistema A4 — constructor",
+      "description": "Perfil autosuficiente de A4: construcción del alcance aprobado, aislamiento, artefacto inmutable y reversión. Entregable: docs/design/roles/A4-constructor.md.",
+      "acceptance_criteria": [
+        "El perfil es autosuficiente",
+        "Separa construir de aprobar",
+        "Exige aislamiento comprobado",
+        "Prohíbe cambios de alcance",
+        "Define un artefacto inmutable durante la evaluación",
+        "Incluye procedimiento de reversión"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002"
+      ],
+      "geas_ticket_id": "a23982b5-b4f2-4137-b5d0-796653265b0f"
+    },
+    {
+      "id": "FAB-007",
+      "title": "Instrucción de sistema A5 — evaluador independiente",
+      "description": "Perfil autosuficiente de A5: evaluación independiente en siete ejes, pruebas públicas y reservadas, veredicto y límites. Entregable: docs/design/roles/A5-evaluador.md.",
+      "acceptance_criteria": [
+        "El perfil es autosuficiente",
+        "Cubre los siete ejes de evaluación",
+        "Exige independencia real",
+        "Separa el acceso a pruebas",
+        "Define la salida y sus límites",
+        "No confunde conformidad técnica con autorización de despliegue"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002"
+      ],
+      "geas_ticket_id": "f0929f8e-e4d4-45ab-a131-ea43e59e14f3"
     }
   ]
 }
