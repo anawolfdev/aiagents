@@ -1,133 +1,145 @@
-# Coordinador — contrato de coordinación ligera
+# 02 — Contrato del coordinador
 
-**Versión:** 1.0 · **Estado:** DISEÑADO  
-**Naturaleza:** **función del flujo**, no un sexto agente autónomo  
-**Ámbito:** Sección 2 del prompt
+| Campo | Valor |
+|---|---|
+| Documento | Paquete de diseño de la fábrica personal de agentes |
+| Entregable | Contrato de coordinación (§2) |
+| Ticket | `FAB-008` — `decb9d40-3f37-46d4-bc0b-27ce599c4084` |
+| Versión | 1.0 |
+| Fecha | 2026-10-22 |
+| Estado | **DISEÑADO** |
+| Autoridad | Propietario único del sistema |
 
----
+> La coordinación es una **función del flujo**, no un sexto agente autónomo
+> obligatorio. Este documento define qué hace, qué no hace y cómo se demuestra
+> cada transición.
 
-## 1. Qué es y qué no es
+## 1. Definición
 
-**Es** una función de secuencia: encamina, presenta, registra y bloquea.  
-**No es** un agente autónomo adicional. No tiene iniciativa propia, no decide contenido, no aprueba, no construye, no evalúa. Si se elimina, el flujo sigue siendo válido ejecutado a mano por el propietario.
+El coordinador es la función que mantiene el flujo entre el propietario y los
+roles A1–A5. Puede implementarse como una persona, un guion determinista o una
+instrucción de sistema; no tiene identidad de agente independiente ni capacidad
+de decisión sobre el contenido.
 
 ## 2. Responsabilidades
 
-| # | Responsabilidad |
-|---|---|
-| 1 | **Único interlocutor con el usuario** |
-| 2 | Presentar las preguntas **preparadas por A1** |
-| 3 | Gestionar estados, responsables, versiones y presupuestos |
-| 4 | Mantener aprobaciones y bloqueos **por causa** |
-| 5 | Entregar a cada rol **solo el contexto necesario** |
-| 6 | Garantizar que ningún rol inicia trabajo fuera de secuencia |
-| 7 | Persistir cada transición con evidencia antes de avanzar |
+1. **Interlocución única.** Es el único canal con el propietario. Presenta las
+   preguntas que prepara A1, agrupadas y sin repetir las ya respondidas.
+2. **Estado y versión.** Mantiene el estado verificable de cada artefacto:
+   `DISEÑADO`, `CONFIGURADO`, `PROBADO`, `DESPLEGADO`, además de los estados de
+   revisión de §11.
+3. **Responsables.** Garantiza un dueño único por artefacto y registra quién
+   entrega, quién revisa y quién aprueba.
+4. **Contexto mínimo.** Entrega a cada rol solo los datos, documentos y permisos
+   necesarios para su tarea.
+5. **Aprobaciones.** Solicita al propietario las aprobaciones de GATE 1, GATE 2,
+   gasto, publicación, permisos y excepciones. No las sustituye.
+6. **Bloqueos.** Registra cada bloqueo con agente, versión y causa, y lo eleva.
+7. **Límites de bucle.** Aplica el máximo de tres rondas y detiene el flujo
+   cuando no hay progreso.
+8. **Trazabilidad.** Conserva la evidencia de cada transición y la versión a la
+   que se refiere.
 
-## 3. Límites duros
+## 3. Lo que no hace
 
-- **No aprueba en nombre del usuario.** Ninguna aprobación se simula.
-- **No permite bucles libres** entre especialistas: todo ciclo tiene contador y condición de salida (§6).
-- **Ningún rol se salta al coordinador.**
-- **No duplica funciones de A1–A5:** no pregunta (A1), no recomienda (A2), no consolida (A3), no construye (A4), no evalúa (A5).
-- **No inventa valores** para parámetros pendientes.
+- No se define como agente autónomo adicional ni como sexto rol.
+- No aprueba en nombre del propietario.
+- No corrige artefactos ni reescribe el spec.
+- No construye, evalúa ni despliega.
+- No permite que un rol hable directamente con otro saltándose el flujo.
+- No abre bucles libres entre especialistas.
+- No inventa parámetros pendientes.
+- No convierte una entrega en aprobación.
 
-## 4. Cada entrega identifica
+## 4. Transiciones
 
-```
-Agente objetivo: <A1|A2|A3|A4|A5>
-Versión: <vN>
-Trabajo realizado: <una línea>
-Evidencia: <ficha/informe/manifiesto + hash>
-Incertidumbres: <lista o "ninguna">
-Bloqueos: <lista o "ninguno">
-Siguiente responsable: <rol>
-```
+Toda transición tiene disparador, responsable, evidencia y estado de destino.
 
-Sin estos siete campos, la entrega se devuelve sin tramitar.
+| De | A | Disparador | Responsable | Evidencia |
+|---|---|---|---|---|
+| Inicio | A1 | Idea del propietario | Coordinador | Idea registrada y versión 0.1 |
+| A1 | Revisión del propietario | Spec completo | A1 | Spec, supuestos y preguntas cerradas |
+| Revisión | A2 | Spec validado por el propietario | Coordinador | Aprobación humana registrada |
+| A2 | A3 | Informe inicial de riesgos | A2 | Hallazgos, fuentes y vigencia |
+| A3 | GATE 1 | Arquitectura y plan listos | A3 | Matriz y plan verificable |
+| GATE 1 | A4 | Aprobación del propietario | Propietario | Aprobación con versión y alcance |
+| A4 | A5 | Artefacto congelado | A4 | Manifiesto, pruebas públicas y reversión |
+| A5 | GATE 2 | Veredicto conforme | A5 | Informe de evaluación y límites |
+| GATE 2 | Despliegue | Aprobación del propietario | Propietario | Destino, manifiesto y reversión |
+| Cualquiera | Bloqueo | Causa identificada | Rol que detecta | Registro de bloqueo |
+| Bloqueo | Cualquiera | Causa resuelta y evidencia | Coordinador | Verificación de la causa |
 
-## 5. Responsable único por artefacto
+## 5. Entrega obligatoria
 
-| Artefacto | Dueño único |
-|---|---|
-| `SPEC-<id>` | A1 |
-| `REV-<id>` / `VIG-<fecha>` | A2 |
-| `EXP-<id>` | A3 |
-| `ART-<id>` | A4 |
-| `EVA-<id>` | A5 |
-| Registro de aprobaciones | Coordinador (transcribe; no decide) |
-| Registro de bloqueos | A2 recomienda; A3 consolida; coordinador registra |
+Cada entrega incluye:
 
-Un artefacto con dos dueños es un error de coordinación.
+- agente objetivo;
+- versión del artefacto;
+- trabajo realizado;
+- evidencia real;
+- incertidumbres;
+- bloqueos;
+- siguiente responsable.
 
-## 6. Flujo de estados
+Una entrega sin estos campos se devuelve al emisor. No se interpreta como
+aprobación.
 
-```
-BORRADOR ──A1──▶ REVISIÓN A2 ──A2──▶ CONSOLIDACIÓN A3 ──A3──▶ GATE 1
-                                                                  │
-                                            (aprobación humana)   │
-                                                                  ▼
-                                              CONSTRUCCIÓN A4 ──▶ EVALUACIÓN A5
-                                                                       │
-                                    ┌──────────────────────────────────┤
-                                    ▼                                  ▼
-                          no conforme → corrección (ronda)        conforme
-                                                                            │
-                                                                            ▼
-                                                                        GATE 2 (humano)
-                                                                            │
-                                                                            ▼
-                                                                    DESPLEGADO / RECHAZADO
-```
+## 6. Aprobaciones humanas
 
-### Transiciones
-
-| Transición | Disparador | Responsable | Evidencia |
+| Aprobación | Quién | Qué cubre | Caducidad |
 |---|---|---|---|
-| BORRADOR → REVISIÓN A2 | SPEC v0 completa (14 apartados) | A1 | Ficha `SPEC-<id>` |
-| REVISIÓN A2 → CONSOLIDACIÓN | Informe A2 emitido | A2 | `REV-<id>` |
-| CONSOLIDACIÓN → GATE 1 | Expediente completo | A3 | `EXP-<id>` + hash |
-| GATE 1 → CONSTRUCCIÓN | Aprobación humana explícita | Propietario | Registro de aprobaciones |
-| CONSTRUCCIÓN → EVALUACIÓN | Artefacto congelado con hashes | A4 | `ART-<id>` |
-| EVALUACIÓN → corrección | No conforme / incompleta | A5 | `EVA-<id>` |
-| EVALUACIÓN → GATE 2 | Conforme | A5 | `EVA-<id>` |
-| GATE 2 → DESPLEGADO | Aprobación humana explícita | Propietario | Registro de aprobaciones |
+| Spec | Propietario | Versión concreta de A1 | Cambio material |
+| GATE 1 | Propietario | Alcance, arquitectura, permisos y presupuesto | Cambio material |
+| GATE 2 | Propietario | Un artefacto en un destino concreto | Cambio material o de destino |
+| Gasto | Propietario | Estimación y límite | Fin del ciclo o cambio de alcance |
+| Publicación | Propietario | Versión concreta y destino | Cambio de versión |
+| Excepción | Propietario | Una versión y una causa | Vencimiento explícito |
 
-**Ninguna transición avanza sin evidencia persistida.**
+El coordinador puede preparar la solicitud, pero nunca marcar la aprobación.
 
-## 7. Bucles con límite explícito
+## 7. Bucles y rondas
 
-| Bucle | Máximo | Al agotarse |
+- El ciclo completo tiene una ronda inicial y como máximo dos correcciones.
+- El límite no se multiplica por plataforma ni se reinicia por cambios
+  triviales.
+- Si no hay progreso, se detiene antes de agotar las rondas.
+- Agotar las rondas no acepta el artefacto: se bloquea y se eleva.
+- Una ampliación de rondas requiere aprobación humana.
+
+## 8. Encaje con A1–A5
+
+| Rol | El coordinador le entrega | El rol le devuelve |
 |---|---|---|
-| A1 ↔ propietario (aclaraciones) | Hasta que el borrador sea revisable | Se cierra con supuestos marcados |
-| A3 ↔ A1/A2 (consolidación) | 2 vueltas | Escala a decisión humana |
-| A4 → A5 (construcción–evaluación) | **3 rondas** (1 inicial + 2 correcciones) para el ciclo completo | Detener; escalar a humano |
+| A1 | Idea, respuestas previas y límites | Spec, supuestos y preguntas |
+| A2 | Spec saneado, inventario y alcance | Hallazgos, fuentes y vigencia |
+| A3 | Spec validado y hallazgos | Arquitectura, matriz, plan y GATE 1 |
+| A4 | Alcance aprobado y entorno | Artefacto, manifiesto y pruebas |
+| A5 | Artefacto congelado y criterios | Veredicto, cobertura y límites |
 
-Detener antes si **no hay progreso** entre rondas. Agotar rondas **nunca** implica aceptación automática.
+El coordinador no duplica las funciones de ningún rol: solo transporta,
+registra y bloquea.
 
-## 8. Gestión de bloqueos
+## 9. Bloqueos de coordinación
 
-- Se registran por **agente, versión y causa**.
-- Cada causa es independiente: **resolver una no elimina las demás**.
-- Riesgo crítico → aviso + bloqueo de nuevos despliegues del agente afectado + **no** detener el agente en funcionamiento.
-- Revisión parcial/fallida o >24 h sin revisión completa → aviso + bloqueo de despliegues afectados.
-- Retirar un bloqueo requiere aprobación humana (o la excepción temporal de §9).
+| Código | Causa | Acción |
+|---|---|---|
+| `BLQ-CO-01` | Falta aprobación humana | Detener la transición |
+| `BLQ-CO-02` | Entrega incompleta | Devolver al emisor |
+| `BLQ-CO-03` | Dos responsables para un artefacto | Resolver antes de continuar |
+| `BLQ-CO-04` | Bucle sin progreso | Bloquear y elevar |
+| `BLQ-CO-05` | Rol intenta saltarse el flujo | Rechazar y registrar |
+| `BLQ-CO-06` | Versión no identificada | No aceptar la entrega |
 
-## 9. Excepciones
-Humanas, justificadas, temporales, limitadas a **una versión y una causa**, con **vencimiento explícito** y **sin renovación automática**. El coordinador solo transcribe y comprueba caducidad; no autoriza.
+## 10. Criterios de cierre
 
-## 10. Contexto mínimo
+- [x] No se define como agente autónomo adicional.
+- [x] Toda transición tiene disparador, responsable y evidencia.
+- [x] Ninguna aprobación humana se simula.
+- [x] Los bucles tienen límite explícito.
+- [x] Ningún rol se salta al coordinador.
+- [x] El contrato encaja con A1–A5 y no duplica sus funciones.
 
-A cada rol se le entrega **solo**:
-- El ID del agente objetivo.
-- Los criterios/preguntas que le corresponden.
-- Las rutas de los artefactos que necesita.
+## 11. Trazabilidad
 
-**Nunca** el repositorio entero, ni la conversación completa, ni contexto de otros roles que no le afecte.
-
-## 11. Criterios de aceptación del contrato
-- [ ] No se define como agente autónomo adicional.
-- [ ] Toda transición tiene disparador, responsable y evidencia.
-- [ ] Ninguna aprobación humana se simula.
-- [ ] Los bucles tienen límite explícito.
-- [ ] Ningún rol se salta al coordinador.
-- [ ] No duplica funciones de A1–A5.
+- `docs/design/00-alcance-decisiones.md`: C-05, C-06, C-07, C-22.
+- `docs/design/02-coordinador.md`: este contrato.

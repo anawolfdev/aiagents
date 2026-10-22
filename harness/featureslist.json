@@ -377,6 +377,295 @@
       "geas_ticket_id": "f0929f8e-e4d4-45ab-a131-ea43e59e14f3",
       "geas_commit_after": "823d37ac69827782d3127f0fb90936894aa56029",
       "closed": "2026-10-22"
+    },
+    {
+      "id": "FAB-008",
+      "title": "contrato del coordinador y límites de interlocución",
+      "description": "OBJETIVO: definir la coordinación ligera como función del flujo, no como un sexto agente autónomo obligatorio. Sección 2.\n\nENTREGABLE: docs/design/02-coordinador.md.\n\nCONTENIDO: el coordinador es el único interlocutor con el usuario; presenta las preguntas preparadas por A1; gestiona estados, responsables, versiones y presupuestos; mantiene aprobaciones y bloqueos por causa; entrega a cada rol solo el contexto necesario; no aprueba en nombre del usuario; no permite bucles libres entre especialistas. Cada artefacto tiene responsable único. Cada entrega identifica agente objetivo, versión, trabajo realizado, evidencia, incertidumbres, bloqueos y siguiente responsable.\n\nCRITERIOS: 1) no se define como agente autónomo adicional; 2) toda transición tiene disparador, responsable y evidencia; 3) ninguna aprobación humana se simula; 4) los bucles tienen límite explícito; 5) ningún rol se salta al coordinador; 6) el contrato encaja con A1-A5 y no duplica sus funciones.",
+      "acceptance_criteria": [
+        "no se define como agente autónomo adicional",
+        "toda transición tiene disparador, responsable y evidencia",
+        "ninguna aprobación humana se simula",
+        "los bucles tienen límite explícito",
+        "ningún rol se salta al coordinador",
+        "el contrato encaja con A1-A5 y no duplica sus funciones"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002",
+        "FAB-003",
+        "FAB-004",
+        "FAB-005",
+        "FAB-006",
+        "FAB-007"
+      ],
+      "geas_ticket_id": "decb9d40-3f37-46d4-bc0b-27ce599c4084"
+    },
+    {
+      "id": "FAB-009",
+      "title": "paquete de plantillas operativas y artefactos versionados",
+      "description": "OBJETIVO: entregar las plantillas únicas, versionadas y con dueño de los artefactos del flujo. Secciones 2, 3, 5, 9, 14 y 17.\n\nENTREGABLE: docs/design/09-plantillas/.\n\nPLANTILLAS: spec; necesidad y proporcionalidad; hallazgos; cambios; evaluación; cobertura; ejecución; aprobaciones; bloqueos. Cada plantilla incluye dueño único, versión, campos obligatorios, evidencia, estados, criterios de cierre y política de retención pendiente de aprobación.\n\nCRITERIOS: 1) están las nueve plantillas; 2) cada campo se traza a una sección del documento; 3) ninguna plantilla pide secretos; 4) hay un ejemplo mínimo por plantilla; 5) el dueño es único; 6) la retención queda marcada como pendiente y no se inventa.",
+      "acceptance_criteria": [
+        "están las nueve plantillas",
+        "cada campo se traza a una sección del documento",
+        "ninguna plantilla pide secretos",
+        "hay un ejemplo mínimo por plantilla",
+        "el dueño es único",
+        "la retención queda marcada como pendiente y no se inventa"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002",
+        "FAB-003",
+        "FAB-004",
+        "FAB-005",
+        "FAB-006",
+        "FAB-007"
+      ],
+      "geas_ticket_id": "5b940eb1-4568-4978-aea7-ad30a18f01cf"
+    },
+    {
+      "id": "FAB-010",
+      "title": "matriz de permisos, separación de datos y secretos",
+      "description": "OBJETIVO: definir quién puede hacer qué, sobre qué recurso y con qué datos. Secciones 12, 13 y 14.\n\nENTREGABLE: docs/design/10-permisos-datos.md.\n\nCONTENIDO: matriz rol por acción por recurso por clase de dato por aprobación; mínimo privilegio; secretos fuera de repositorios públicos y privados; specs no publicados e inventarios en repositorio privado separado; separar lectura, informe y publicación; inventario de solo lectura; proveedores autorizados; retención; chat privado de Telegram verificado; PR sin auto-merge; una rama pública también constituye publicación.\n\nCASOS OBLIGATORIOS: A2 no modifica agentes; A4 no aprueba; A5 no construye; ningún rol acumula publicar y aprobar; el coordinador no sustituye al usuario; los datos privados no van a buscadores.\n\nCRITERIOS: 1) cada permiso tiene justificación y control; 2) las clases de datos están definidas; 3) los secretos no aparecen en ningún repositorio; 4) el flujo de PR es seguro y no auto-fusiona; 5) la retención queda pendiente de aprobación; 6) se distingue procesar de publicar.",
+      "acceptance_criteria": [
+        "cada permiso tiene justificación y control",
+        "las clases de datos están definidas",
+        "los secretos no aparecen en ningún repositorio",
+        "el flujo de PR es seguro y no auto-fusiona",
+        "la retención queda pendiente de aprobación",
+        "se distingue procesar de publicar"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002",
+        "FAB-003",
+        "FAB-004",
+        "FAB-005",
+        "FAB-006",
+        "FAB-007"
+      ],
+      "geas_ticket_id": "93423ee9-32d9-44be-aac2-4eee6c450952"
+    },
+    {
+      "id": "FAB-011",
+      "title": "flujo de estados, cobertura, checkpoints y recuperación",
+      "description": "OBJETIVO: definir estados verificables, cobertura finita y recuperación ante interrupciones. Sección 9 y parte de la sección 11.\n\nENTREGABLE: docs/design/11-estados-cobertura-recuperacion.md.\n\nCONTENIDO: estados completa sin nuevos hallazgos, completa con hallazgos, parcial, fallida y ausente detectada externamente; completa significa dentro del alcance declarado, no ausencia universal de riesgos; manifiesto finito y versionado por revisión con componentes, riesgos, comprobaciones obligatorias, evidencia, fuentes, intervalos, criterios de finalización y lagunas admisibles y no admisibles; baseline histórica inicial; recuperar novedades desde la cobertura anterior; checkpoints por unidad con huecos, deduplicación y recuperación de interrupciones; avanzar solo con informe persistido mediante mecanismo atómico o recuperable; no repetir indefinidamente trabajo válido; revalidación máxima de siete días; una fuente opcional inaccesible no invalida la revisión si hay evidencia alternativa válida; no reclasificar una obligación como opcional durante la ejecución.\n\nCRITERIOS: 1) todos los estados y transiciones están definidos; 2) el manifiesto es finito y versionado; 3) hay recuperación tras interrupción; 4) no se avanza sin evidencia persistida; 5) parcial o fallida bloquea despliegues afectados; 6) se distinguen publicación, actualización, consulta y verificación sustantiva.",
+      "acceptance_criteria": [
+        "todos los estados y transiciones están definidos",
+        "el manifiesto es finito y versionado",
+        "hay recuperación tras interrupción",
+        "no se avanza sin evidencia persistida",
+        "parcial o fallida bloquea despliegues afectados",
+        "se distinguen publicación, actualización, consulta y verificación sustantiva"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002",
+        "FAB-003",
+        "FAB-004",
+        "FAB-005",
+        "FAB-006",
+        "FAB-007"
+      ],
+      "geas_ticket_id": "938728c4-1533-457d-a2f7-fb5022551ba9"
+    },
+    {
+      "id": "FAB-012",
+      "title": "registro de bloqueos, emergencias y excepciones temporales",
+      "description": "OBJETIVO: definir bloqueos por causa, avisos y excepciones humanas. Sección 10.\n\nENTREGABLE: docs/design/12-bloqueos-emergencias.md.\n\nCONTENIDO: registro por agente, versión y causa; riesgo potencialmente crítico: aviso por Telegram, bloqueo de nuevos despliegues del agente afectado, no detener el agente en funcionamiento y aprobación humana para retirar el bloqueo; revisión parcial o fallida: aviso y bloqueo inmediato de despliegues afectados, retirando solo esa causa; más de 24 horas desde la última revisión completa: aviso y bloqueo de despliegues afectados; sin revisión completa inicial no se autoriza despliegue operativo; detección independiente de ejecuciones ausentes; el gate de despliegue comprueba evidencia y vigencia directamente, sin depender de que llegue una notificación.\n\nEXCEPCIONES: humanas, justificadas, temporales, limitadas a una versión y causa, con vencimiento y sin renovación automática.\n\nREGLAS: resolver una causa no elimina bloqueos distintos; no bloquear la construcción o las pruebas aisladas necesarias para corregir; si esas pruebas requieren permisos nuevos, pedirlos.\n\nCRITERIOS: 1) cada disparador tiene una acción asociada; 2) dos bloqueos simultáneos se conservan; 3) la excepción caduca; 4) la detección no depende de Telegram; 5) el registro es auditable; 6) no se confunde bloqueo de despliegue con parada del agente.",
+      "acceptance_criteria": [
+        "cada disparador tiene una acción asociada",
+        "dos bloqueos simultáneos se conservan",
+        "la excepción caduca",
+        "la detección no depende de Telegram",
+        "el registro es auditable",
+        "no se confunde bloqueo de despliegue con parada del agente"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002",
+        "FAB-003",
+        "FAB-004",
+        "FAB-005",
+        "FAB-006",
+        "FAB-007"
+      ],
+      "geas_ticket_id": "c8e3896a-793b-4458-bc00-848f9a2cf439"
+    },
+    {
+      "id": "FAB-013",
+      "title": "presupuesto, rondas y gates de aprobación y despliegue",
+      "description": "OBJETIVO: definir límites de gasto, rondas y aprobaciones verificables. Secciones 11 y 14.\n\nENTREGABLE: docs/design/13-presupuesto-gates.md.\n\nCONTENIDO: no hay presupuesto monetario aprobado; entregar estimación y obtener aprobación antes de activar ejecuciones con coste; no autorizar gasto recurrente por defecto; separar presupuesto de creación, corrección y vigilancia; definir límites ejecutables, duración y reintentos; el agotamiento del presupuesto no equivale a ausencia de riesgos; máximo tres rondas de construcción-evaluación (una inicial y dos de corrección) para el ciclo completo, sin multiplicar por plataforma ni reiniciar por cambios triviales; detener antes si no hay progreso; las ampliaciones requieren aprobación; agotar rondas nunca supone aceptación automática.\n\nGATES: GATE 1, spec, permisos y presupuesto; GATE 2, despliegue de un artefacto concreto en un destino concreto; manifiesto con spec, prompt, configuración, código, dependencias, adaptadores, modelo y evidencia de evaluación; hashes cuando apliquen o declaración de la limitación y condición de reevaluación; los cambios materiales invalidan la aprobación afectada; reversión y monitorización proporcionales; no ampliar automáticamente el alcance de una aprobación.\n\nCRITERIOS: 1) ambos gates están definidos; 2) el manifiesto permite identificar el artefacto; 3) el límite de rondas es ejecutable; 4) todo gasto exige aprobación; 5) un cambio material invalida la aprobación; 6) una aprobación no se hereda a otro artefacto o destino.",
+      "acceptance_criteria": [
+        "ambos gates están definidos",
+        "el manifiesto permite identificar el artefacto",
+        "el límite de rondas es ejecutable",
+        "todo gasto exige aprobación",
+        "un cambio material invalida la aprobación",
+        "una aprobación no se hereda a otro artefacto o destino"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002",
+        "FAB-003",
+        "FAB-004",
+        "FAB-005",
+        "FAB-006",
+        "FAB-007"
+      ],
+      "geas_ticket_id": "a1a35697-33fa-4134-a7ca-20b6fb2ee3a8"
+    },
+    {
+      "id": "FAB-014",
+      "title": "publicación, proveedores de modelos y flujo de PR seguro",
+      "description": "OBJETIVO: separar publicación, datos y proveedores. Sección 12.\n\nENTREGABLE: docs/design/14-publicacion-proveedores.md.\n\nCONTENIDO: repositorio público para perfiles, código, plantillas y contenido autorizado; los specs reales solo se publican tras revisión y aprobación específica de su versión; repositorio privado separado para specs no publicados, inventarios e informes sensibles; secretos fuera de ambos; flujo para abrir PR y registrar hallazgos saneados sin aprobación individual, dentro del alcance previamente autorizado, nunca con fusión automática; una rama pública también constituye publicación; no incluir en el PR contenido privado aún no aprobado; no publicar detalles que faciliten explotar fallos sin corregir; el saneamiento no sustituye la aprobación de publicación exigida para un spec real; material privado solo con proveedores de modelos previamente autorizados, con datos mínimos y sin secretos; la autorización para procesar no autoriza publicar ni consultar en buscadores.\n\nCRITERIOS: 1) las clases de repositorio y de dato están separadas; 2) el PR tiene checklist de publicación; 3) no hay auto-merge; 4) los proveedores están sujetos a autorización previa; 5) los secretos quedan fuera; 6) se distingue procesamiento, publicación y búsqueda externa.",
+      "acceptance_criteria": [
+        "las clases de repositorio y de dato están separadas",
+        "el PR tiene checklist de publicación",
+        "no hay auto-merge",
+        "los proveedores están sujetos a autorización previa",
+        "los secretos quedan fuera",
+        "se distingue procesamiento, publicación y búsqueda externa"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002",
+        "FAB-003",
+        "FAB-004",
+        "FAB-005",
+        "FAB-006",
+        "FAB-007"
+      ],
+      "geas_ticket_id": "e77928d0-a8aa-4abc-93be-33e0aded0ca3"
+    },
+    {
+      "id": "FAB-015",
+      "title": "vigilancia programada, Telegram y detección independiente de ausencia",
+      "description": "OBJETIVO: diseñar la ejecución programada y el canal de avisos. Sección 13.\n\nENTREGABLE: docs/design/15-vigilancia-telegram.md.\n\nCONTENIDO: GitHub Actions desde el repositorio privado; identidades y permisos separados para lectura, informes y publicación; permisos mínimos; dependencias verificadas y fijadas cuando corresponda; gestión segura de credenciales; concurrencia controlada; límites de consumo y reintentos; recuperación de ejecuciones interrumpidas; detección externa de ausencia; chat privado de Telegram previamente verificado; no asumir que la integración existe ni solicitar secretos en texto público; no abrir acceso general al equipo del usuario para obtener inventarios; suministro mínimo y autorizado de instantáneas saneadas, con frescura marcada.\n\nFALLO DE TELEGRAM: mantener los bloqueos, registrar la entrega pendiente, conservar una cola privada con reintentos limitados y no desviar información sensible a un destino público; la entrega tardía de un aviso no elimina bloqueos.\n\nCRITERIOS: 1) el workflow tiene permisos mínimos; 2) existe detección independiente de ausencia; 3) el fallo de Telegram no borra bloqueos; 4) no se piden secretos por canal público; 5) el inventario no requiere acceso general; 6) el documento no afirma que la vigilancia ya está activa.",
+      "acceptance_criteria": [
+        "el workflow tiene permisos mínimos",
+        "existe detección independiente de ausencia",
+        "el fallo de Telegram no borra bloqueos",
+        "no se piden secretos por canal público",
+        "el inventario no requiere acceso general",
+        "el documento no afirma que la vigilancia ya está activa"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002",
+        "FAB-003",
+        "FAB-004",
+        "FAB-005",
+        "FAB-006",
+        "FAB-007"
+      ],
+      "geas_ticket_id": "dbc9e423-3ddc-437f-9656-66ffdf44cbc0"
+    },
+    {
+      "id": "FAB-016",
+      "title": "protocolo de pruebas y validación de la fábrica",
+      "description": "OBJETIVO: convertir la validación de la sección 16 en un protocolo ejecutable. Sección 16.\n\nENTREGABLE: docs/design/16-validacion.md.\n\nESCENARIOS OBLIGATORIOS, cada uno con precondición, acción, resultado esperado, evidencia y responsable: requisito ambiguo; permiso innecesario; funcionalidad extra no aprobada; fuente inaccesible; evidencia caducada o contradictoria; dependencia omitida en el spec; inventario faltante u obsoleto; corrida interrumpida; checkpoint sin informe persistido; cambio posterior a aprobación; fuga de prueba reservada; Telegram caído; ejecución diaria ausente; dos bloqueos simultáneos; presupuesto o rondas agotados; pruebas realizadas solo en una plataforma; intento de publicar un spec no autorizado.\n\nREGLAS: no declarar validada la fábrica solo por redactar los casos; requiere ejecutarlos y revisar los resultados; distinguir siempre DISEÑADO, PROBADO y DESPLEGADO.\n\nCRITERIOS: 1) están los diecisiete escenarios; 2) cada uno tiene evidencia esperada; 3) hay criterio de aprobado o rechazado; 4) se ejecutan antes de declarar la validación; 5) los resultados se registran de forma persistente; 6) no se simula un mecanismo automático que aún no existe.",
+      "acceptance_criteria": [
+        "están los diecisiete escenarios",
+        "cada uno tiene evidencia esperada",
+        "hay criterio de aprobado o rechazado",
+        "se ejecutan antes de declarar la validación",
+        "los resultados se registran de forma persistente",
+        "no se simula un mecanismo automático que aún no existe"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002",
+        "FAB-003",
+        "FAB-004",
+        "FAB-005",
+        "FAB-006",
+        "FAB-007"
+      ],
+      "geas_ticket_id": "cddd7600-5afe-48aa-8ed7-c08177dd71eb"
+    },
+    {
+      "id": "FAB-017",
+      "title": "plan de bootstrap sin circularidad y portabilidad OpenClaw/OpenCode",
+      "description": "OBJETIVO: definir cómo se construye y valida la fábrica sin circularidad y cómo se prueba la portabilidad. Secciones 15 y 1.\n\nENTREGABLE: docs/design/17-bootstrap-portabilidad.md.\n\nSECUENCIA: 1) diseño completo; 2) preparación autorizada de recursos mínimos; 3) construcción provisional de A1; 4) pruebas independientes y validación humana; 5) construcción progresiva de los demás roles; 6) ensayo integral; 7) activación autorizada.\n\nREGLAS: las funciones aún inexistentes se cubren explícitamente por el operador o por capacidades independientes disponibles; A1 no se crea ni se aprueba a sí mismo; no afirmar independencia si la misma ejecución construye y certifica sin revisión separada; antes de existir la vigilancia automatizada, cualquier despliegue operativo exige evidencia equivalente obtenida por el procedimiento provisional autorizado; las pruebas aisladas de bootstrap no son aprobación operativa; no simular que el mecanismo automático ya funciona.\n\nPORTABILIDAD: núcleo de especificación común; adaptadores separados cuando sean necesarios; pruebas de aceptación en OpenClaw y OpenCode antes de declarar compatibilidad con ambas; no prometer comportamiento idéntico ni configuraciones compatibles sin pruebas.\n\nCRITERIOS: 1) la secuencia no tiene circularidad; 2) cada fase tiene salida y responsable; 3) hay cobertura provisional antes de la vigilancia automática; 4) la portabilidad se prueba en ambas plataformas o se declara no compatible; 5) los parámetros desconocidos quedan pendientes; 6) no se simula ninguna activación.",
+      "acceptance_criteria": [
+        "la secuencia no tiene circularidad",
+        "cada fase tiene salida y responsable",
+        "hay cobertura provisional antes de la vigilancia automática",
+        "la portabilidad se prueba en ambas plataformas o se declara no compatible",
+        "los parámetros desconocidos quedan pendientes",
+        "no se simula ninguna activación"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002",
+        "FAB-003",
+        "FAB-004",
+        "FAB-005",
+        "FAB-006",
+        "FAB-007"
+      ],
+      "geas_ticket_id": "55749f88-4f04-488f-9508-9e11981cfb4b"
+    },
+    {
+      "id": "FAB-018",
+      "title": "checklist de activación y registro de parámetros pendientes",
+      "description": "OBJETIVO: dejar la activación condicionada a evidencia y aprobaciones explícitas. Sección 17.\n\nENTREGABLE: docs/design/18-activacion.md.\n\nCONTENIDO: checklist con repositorios concretos, proveedor y modelo autorizado, presupuesto, horario, zona horaria, conexión y destinatario de Telegram, inventario, aislamiento, permisos, retención, almacenamiento y mecanismo independiente de supervisión. Para cada punto: responsable, evidencia, condición bloqueante, aprobación requerida, reversión y estado (DISEÑADO, CONFIGURADO, PROBADO o DESPLEGADO).\n\nREGLAS: no inventar valores; no eliminar automáticamente evidencia de casos abiertos; la política de retención se aprueba antes de activar; no atribuir instalaciones, pruebas o despliegues inexistentes.\n\nCRITERIOS: 1) están todos los parámetros pendientes; 2) cada uno tiene dueño y evidencia; 3) ninguno se declara resuelto sin prueba; 4) la retención está aprobada antes de la activación; 5) no hay secretos en el documento; 6) el checklist puede bloquear la activación.",
+      "acceptance_criteria": [
+        "están todos los parámetros pendientes",
+        "cada uno tiene dueño y evidencia",
+        "ninguno se declara resuelto sin prueba",
+        "la retención está aprobada antes de la activación",
+        "no hay secretos en el documento",
+        "el checklist puede bloquear la activación"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002",
+        "FAB-003",
+        "FAB-004",
+        "FAB-005",
+        "FAB-006",
+        "FAB-007"
+      ],
+      "geas_ticket_id": "ecbfd13c-640e-4b1c-8d3c-f69a87a41626"
+    },
+    {
+      "id": "FAB-019",
+      "title": "verificación de completitud y entrega del paquete de diseño",
+      "description": "OBJETIVO: ensamblar y verificar el paquete completo en el orden de la sección 17.\n\nENTREGABLE: docs/design/README.md con índice, matriz de trazabilidad de las secciones 1-17 a cada artefacto y declaración de estado.\n\nORDEN DE ENTREGA: 1) resumen de decisiones confirmadas y decisiones de diseño; 2) cinco instrucciones de sistema completas y autosuficientes; 3) contrato del coordinador; 4) plantillas de spec, necesidad, hallazgos, cambios, evaluación, cobertura, ejecución, aprobaciones y bloqueos; 5) matriz de permisos y separación de datos; 6) flujo de estados, corrección, recuperación y despliegue; 7) protocolo de pruebas y validación; 8) plan de bootstrap y portabilidad; 9) checklist de activación.\n\nCRITERIOS: 1) están los nueve entregables; 2) la trazabilidad cubre todas las secciones; 3) no hay contradicciones con este documento, que sustituye versiones anteriores; 4) los pendientes están listados; 5) se declara explícitamente que la tarea termina en diseño; 6) la revisión independiente deja evidencia; 7) no se atribuye ninguna instalación, prueba o despliegue inexistente.",
+      "acceptance_criteria": [
+        "están los nueve entregables",
+        "la trazabilidad cubre todas las secciones",
+        "no hay contradicciones con este documento, que sustituye versiones anteriores",
+        "los pendientes están listados",
+        "se declara explícitamente que la tarea termina en diseño",
+        "la revisión independiente deja evidencia",
+        "no se atribuye ninguna instalación, prueba o despliegue inexistente"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-001",
+        "FAB-002",
+        "FAB-003",
+        "FAB-004",
+        "FAB-005",
+        "FAB-006",
+        "FAB-007"
+      ],
+      "geas_ticket_id": "9b3cf943-d1ea-44fd-8a50-c726138ceb04"
     }
   ]
 }
