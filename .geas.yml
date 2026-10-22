@@ -1,0 +1,10 @@
+# Geas — configuración del repositorio
+
+organization: MeshHarmes
+organization_id: b6dbdf80-f774-4cbd-ac9b-b9a11ff630a3
+department: 
+repository: aiagents
+repository_id: a2e97838-a521-40b7-913e-81ae79511a21
+provider: local
+url: 
+mcp_url: http://cacelas.tail8c8ee0.ts.net:8787

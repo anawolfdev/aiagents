@@ -1,0 +1,20 @@
+# geas.yml — Configuración de la instancia (MeshHarmes, despliegue en red)
+
+organization: "MeshHarmes"
+git_provider: "github"
+deployment_profile: "TEAM"
+database: "sqlite"
+
+web_ui: true
+mcp_enabled: true
+ai_agents: true
+departments: false
+authentication: "none"
+harness: ""
+
+server:
+  bind: "100.91.42.55"
+  port: 8787
+  url: "http://cacelas.tail8c8ee0.ts.net:8787"
+
+database_path: "/home/cancelas/.local/share/geas/geas.db"

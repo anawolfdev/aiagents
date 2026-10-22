@@ -1,0 +1,14 @@
+# GEAS: la BD es estado operativo, nunca se versiona
+geas.db
+geas.db-*
+geas.db.server
+.geas/worktrees/
+
+# Entorno y cachés
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.env
