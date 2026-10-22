@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- docs(design): perfil A4 constructor (FAB-006)
+
+## [Unreleased] — 2026-10-22
+
+### Añadido
+
 - docs(design): perfil A3 arquitecto y consolidador (FAB-005)
 
 ## [Unreleased] — 2026-10-22
