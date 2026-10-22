@@ -348,12 +348,14 @@
         "Define un artefacto inmutable durante la evaluación",
         "Incluye procedimiento de reversión"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002"
       ],
-      "geas_ticket_id": "a23982b5-b4f2-4137-b5d0-796653265b0f"
+      "geas_ticket_id": "a23982b5-b4f2-4137-b5d0-796653265b0f",
+      "geas_commit_after": "4430e084aba04853176876e7e33bde3031f0996c",
+      "closed": "2026-10-22"
     },
     {
       "id": "FAB-007",

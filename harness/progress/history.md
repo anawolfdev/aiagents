@@ -313,3 +313,19 @@ docs/design/roles/A3-arquitecto.md: consolidación con tratamiento por hallazgo,
 ```
 
 </details>
+
+## FAB-006 — Instrucción de sistema A4 — constructor
+
+- **Cerrada:** 2026-10-22
+- **Verificación:** ./init.sh en verde · 612 passed, 15 skipped in 47.10s
+- **Cambios:** docs/design/roles/A4-constructor.md
+- **Decisiones:** Entorno local no equivale a aislado; el artefacto se congela para A5; A4 no aprueba ni despliega
+- **Pendiente:** Herramientas y límites concretos del entorno de construcción
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/roles/A4-constructor.md: alcance aprobado, aislamiento y datos verificados, artefacto congelado con manifiesto, reversión documentada y separación construir/aprobar. Revisión independiente aprobada (reviewer-FAB-006.md). ./init.sh: ENTORNO LISTO, 612 passed, 15 skipped, 0 avisos.
+```
+
+</details>
