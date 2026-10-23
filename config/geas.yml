@@ -3,7 +3,7 @@
 organization: "MeshHarmes"
 git_provider: "github"
 deployment_profile: "TEAM"
-database: "sqlite"
+database: "mongodb"
 
 web_ui: true
 mcp_enabled: true
@@ -17,4 +17,4 @@ server:
   port: 8787
   url: "http://192.168.180.142:8787"
 
-database_path: "/home/cancelas/.local/share/geas/geas.db"
+database_uri: "mongodb+srv://cancelasalex3_db_user:eLXx8kZyfBpUu3P9@cluster0.hg1qnip.mongodb.net/geas"
