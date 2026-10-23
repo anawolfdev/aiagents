@@ -1,9 +1,15 @@
 # geas.yml — Configuración de la instancia (MeshHarmes, despliegue en red)
+#
+# NOTA: las credenciales de MongoDB NO van aquí (repo público).
+# Se leen de .env (gitignore). Para cambiar a MongoDB:
+#   1. Crear .env con MONGODB_URI=...
+#   2. Poner database: mongodb
+# De lo contrario, SQLite es el default.
 
 organization: "MeshHarmes"
 git_provider: "github"
 deployment_profile: "TEAM"
-database: "mongodb"
+database: "sqlite"  # cambiar a mongodb en .env + config
 
 web_ui: true
 mcp_enabled: true
@@ -16,5 +22,3 @@ server:
   bind: "192.168.180.142"
   port: 8787
   url: "http://192.168.180.142:8787"
-
-database_uri: "mongodb+srv://cancelasalex3_db_user:eLXx8kZyfBpUu3P9@cluster0.hg1qnip.mongodb.net/geas"
