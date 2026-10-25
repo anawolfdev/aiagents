@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- flujo de estados, cobertura y recuperación (FAB-011)
+
+## [Unreleased] — 2026-10-25
+
+### Añadido
+
 - matriz de permisos, datos y secretos coherente (FAB-010)
 
 ## [Unreleased] — 2026-10-25

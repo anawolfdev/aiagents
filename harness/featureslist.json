@@ -489,7 +489,7 @@
         "parcial o fallida bloquea despliegues afectados",
         "se distinguen publicación, actualización, consulta y verificación sustantiva"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002",
@@ -499,7 +499,10 @@
         "FAB-006",
         "FAB-007"
       ],
-      "geas_ticket_id": "938728c4-1533-457d-a2f7-fb5022551ba9"
+      "geas_ticket_id": "938728c4-1533-457d-a2f7-fb5022551ba9",
+      "started": "2026-10-25",
+      "review_rounds": 0,
+      "closed": "2026-10-25"
     },
     {
       "id": "FAB-012",

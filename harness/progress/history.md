@@ -489,3 +489,19 @@ docs/design/10-permisos-datos.md: matriz con justificación y control por permis
 ```
 
 </details>
+
+## FAB-011 — flujo de estados, cobertura, checkpoints y recuperación
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 631 passed, 1 skipped in 425.75s (0:07:05)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/11-estados-cobertura-recuperacion.md: estados y transiciones (L11-38); manifiesto finito y versionado (L46-60); recuperación desde checkpoint (L74); avance solo con evidencia persistida (L77-83); parcial/fallida bloquea (L41, L97-100); cuatro fechas distintas (L89-90). Revisor ronda 1: APROBADO 6/6. init.sh en verde.
+```
+
+</details>
