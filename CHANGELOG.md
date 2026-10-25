@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- publicación, proveedores y PR seguro (FAB-014)
+
+## [Unreleased] — 2026-10-25
+
+### Añadido
+
 - presupuesto, rondas y gates de aprobación (FAB-013)
 
 ## [Unreleased] — 2026-10-25

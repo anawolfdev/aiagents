@@ -537,3 +537,19 @@ docs/design/13-presupuesto-gates.md: GATE 1 y GATE 2 (L42-70); manifiesto identi
 ```
 
 </details>
+
+## FAB-014 — publicación, proveedores de modelos y flujo de PR seguro
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 631 passed, 1 skipped in 425.21s (0:07:05)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/14-publicacion-proveedores.md: clases de repositorio y dato (L11-15, L27); checklist de PR (L26-34); sin auto-merge (L24); proveedores con autorización previa (L48, L51); secretos fuera (L15, L28, L50); procesar≠publicar≠buscar (L38-44). Revisor ronda 1: APROBADO 6/6. init.sh en verde.
+```
+
+</details>
