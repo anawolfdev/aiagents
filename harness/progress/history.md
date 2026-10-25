@@ -585,3 +585,19 @@ docs/design/16-validacion.md: 17 escenarios (L30-147); evidencia esperada por es
 ```
 
 </details>
+
+## FAB-017 — plan de bootstrap sin circularidad y portabilidad OpenClaw/OpenCode
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 631 passed, 1 skipped in 432.92s (0:07:12)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/17-bootstrap-portabilidad.md: 7 fases sin circularidad (L11-21); salida y responsable (L11); cobertura provisional (L23-39); portabilidad probada o declarada no probada (L61-63, L76-82); pendientes (L84-102); no simula activación (L11, L29). Revisor ronda 1: APROBADO 6/6. init.sh en verde.
+```
+
+</details>

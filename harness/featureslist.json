@@ -651,7 +651,7 @@
         "los parámetros desconocidos quedan pendientes",
         "no se simula ninguna activación"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002",
@@ -661,7 +661,10 @@
         "FAB-006",
         "FAB-007"
       ],
-      "geas_ticket_id": "55749f88-4f04-488f-9508-9e11981cfb4b"
+      "geas_ticket_id": "55749f88-4f04-488f-9508-9e11981cfb4b",
+      "started": "2026-10-25",
+      "review_rounds": 0,
+      "closed": "2026-10-25"
     },
     {
       "id": "FAB-018",

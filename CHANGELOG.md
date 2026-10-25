@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- bootstrap sin circularidad y portabilidad (FAB-017)
+
+## [Unreleased] — 2026-10-25
+
+### Añadido
+
 - protocolo de validación con diecisiete escenarios (FAB-016)
 
 ## [Unreleased] — 2026-10-25
