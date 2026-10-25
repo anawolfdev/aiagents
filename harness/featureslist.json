@@ -543,7 +543,7 @@
         "un cambio material invalida la aprobación",
         "una aprobación no se hereda a otro artefacto o destino"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002",
@@ -553,7 +553,10 @@
         "FAB-006",
         "FAB-007"
       ],
-      "geas_ticket_id": "a1a35697-33fa-4134-a7ca-20b6fb2ee3a8"
+      "geas_ticket_id": "a1a35697-33fa-4134-a7ca-20b6fb2ee3a8",
+      "started": "2026-10-25",
+      "review_rounds": 0,
+      "closed": "2026-10-25"
     },
     {
       "id": "FAB-014",

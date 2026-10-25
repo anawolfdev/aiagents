@@ -521,3 +521,19 @@ docs/design/12-bloqueos-emergencias.md: disparador→acción (L27-33); dos bloqu
 ```
 
 </details>
+
+## FAB-013 — presupuesto, rondas y gates de aprobación y despliegue
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 631 passed, 1 skipped in 462.43s (0:07:42)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/13-presupuesto-gates.md: GATE 1 y GATE 2 (L42-70); manifiesto identificativo (L75-86); rondas ejecutables (L27-40); gasto con aprobación (L11-13, L50); cambio material invalida (L90-94); aprobación no heredada (L96). Revisor ronda 1: APROBADO 6/6. init.sh en verde.
+```
+
+</details>

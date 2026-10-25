@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- presupuesto, rondas y gates de aprobación (FAB-013)
+
+## [Unreleased] — 2026-10-25
+
+### Añadido
+
 - registro de bloqueos, emergencias y excepciones (FAB-012)
 
 ## [Unreleased] — 2026-10-25
