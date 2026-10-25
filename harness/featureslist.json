@@ -435,7 +435,7 @@
         "el dueño es único",
         "la retención queda marcada como pendiente y no se inventa"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002",
@@ -445,7 +445,10 @@
         "FAB-006",
         "FAB-007"
       ],
-      "geas_ticket_id": "5b940eb1-4568-4978-aea7-ad30a18f01cf"
+      "geas_ticket_id": "5b940eb1-4568-4978-aea7-ad30a18f01cf",
+      "started": "2026-10-25",
+      "review_rounds": 0,
+      "closed": "2026-10-25"
     },
     {
       "id": "FAB-010",

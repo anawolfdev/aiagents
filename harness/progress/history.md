@@ -457,3 +457,19 @@ reviewer-FAB-008 (ronda 2): los 6 criterios PASS con referencias a docs/design/0
 ```
 
 </details>
+
+## FAB-009 — paquete de plantillas operativas y artefactos versionados
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 631 passed, 1 skipped in 454.11s (0:07:34)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/09-plantillas/README.md: nueve plantillas (L10-18); traza sección→C-nn (§10.1) y campo→sección (§10.2); sin secretos; ejemplo mínimo por plantilla; dueño único; retención PENDIENTE. Revisor ronda 2: RESUELTO en los seis criterios con referencias de línea. init.sh en verde.
+```
+
+</details>

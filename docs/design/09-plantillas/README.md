@@ -1,8 +1,10 @@
 # FAB-009: Paquete de plantillas operativas
 
 **Versión:** 1.0 · **Estado:** DISEÑADO  
-**Ámbito:** Secciones 2, 3, 5, 9, 14 y 17  
+**Ámbito:** Secciones 1–17 del briefing del encargo (cada campo se traza en §10).  
 **Regla común:** cada plantilla tiene **dueño único**, versión, campos obligatorios, evidencia, estados, criterios de cierre y política de retención **pendiente de aprobación**. Ninguna plantilla solicita secretos.
+
+**Documento de referencia:** las secciones que se citan son las del briefing de 17 secciones del encargo. Su correspondencia con las decisiones de `docs/design/00-alcance-decisiones.md` está en §10.1; la trazabilidad **campo a campo** de cada plantilla está en §10.2.
 
 Índice:
 1. [spec.md](#1-specmd)
@@ -42,7 +44,7 @@
 | Trazabilidad requisito → origen | Sí | — |
 
 **Evidencia:** transcripción saneada de la entrevista.  
-**Criterio de cierre:** los 14 apartados con estado; supuestos marcados como supuestos.  
+**Criterio de cierre:** los 18 apartados con estado; supuestos marcados como supuestos.  
 **Ejemplo mínimo:**
 ```
 spec_id: SPEC-0001     version: v0     fecha: 2026-10-22
@@ -71,6 +73,7 @@ R1 | EXPLÍCITO | vigilancia diaria | aviso en ≤24h | despliegue con CVE conoc
    | revisión manual (no cumple) | 1 CI/día; riesgo falsos positivos
    | escenario-13 | MANTENER
 ```
+**Evidencia:** matriz con la decisión y el coste/riesgo de cada requisito.  
 **Retención:** PENDIENTE de aprobación.
 
 ---
@@ -85,6 +88,7 @@ R1 | EXPLÍCITO | vigilancia diaria | aviso en ≤24h | despliegue con CVE conoc
 | Clase | INDICIO / RIESGO DE DISEÑO / DEFECTO DEL SPEC / EXPOSICIÓN OPERATIVA NO EVALUADA / EXPOSICIÓN CONFIRMADA |
 | Fuente (primaria/secundaria, independiente sí/no) | Sí |
 | Fecha de publicación | Sí |
+| Fecha de **actualización** | Sí |
 | Fecha de consulta | Sí |
 | Fecha de **verificación sustantiva** | Sí |
 | Aplicabilidad al componente/versión | Sí |
@@ -96,9 +100,10 @@ R1 | EXPLÍCITO | vigilancia diaria | aviso en ≤24h | despliegue con CVE conoc
 **Ejemplo mínimo:**
 ```
 H-01 | libX 2.1.0 | EXPOSICIÓN CONFIRMADA | aviso oficial | pub 2026-10-01
-consulta 2026-10-22 | verificación sustantiva 2026-10-22 | aplica: sí
+actualización 2026-10-15 | consulta 2026-10-22 | verificación sustantiva 2026-10-22 | aplica: sí
 severidad: alta | tratamiento: fijar 2.1.3 o justificar
 ```
+**Evidencia:** ficha con fuente, las cuatro fechas y la aplicabilidad; salida o captura de la verificación sustantiva.  
 **Retención:** PENDIENTE de aprobación. **No eliminar evidencia de casos abiertos.**
 
 ---
@@ -124,6 +129,8 @@ C-01 | v1 → v2 | se añade permiso de red | necesario para fuente oficial
 material: sí | invalida: AP-0003 (GATE 1) | pruebas: P-04 caducada
 hashes: a1b2… → c3d4… | requiere GATE: 1
 ```
+**Evidencia:** diff, hashes antes/después y aprobaciones/pruebas invalidadas.  
+**Criterio de cierre:** materialidad decidida, aprobaciones y pruebas afectadas identificadas, gate decidido.  
 **Retención:** PENDIENTE de aprobación.
 
 ---
@@ -144,7 +151,7 @@ hashes: a1b2… → c3d4… | requiere GATE: 1
 | No conformidades (saneadas) | Sí |
 | Veredicto | CONFORME / NO CONFORME / INCOMPLETA |
 
-**Criterio de cierre:** veredicto + cobertura + limitaciones + declaración «no autoriza despliegue».  
+**Criterio de cierre:** veredicto + cobertura + limitaciones + evidencia de los resultados + declaración «no autoriza despliegue».  
 **Ejemplo mínimo:**
 ```
 EVA-01 | ART-01 v1 | hash 9f8e… | criterios fijados 2026-10-20
@@ -153,6 +160,7 @@ privacidad: no escribe fuera del directorio de trabajo
 adversarial: ignora instrucciones embebidas en datos
 veredicto: NO CONFORME (R4 sin prueba) | no autoriza despliegue
 ```
+**Evidencia:** comandos ejecutados, salidas y artefactos revisados, y registro de las pruebas reservadas usadas.  
 **Retención:** PENDIENTE de aprobación.
 
 ---
@@ -233,12 +241,13 @@ AP-0003 | GATE 1 | ART-01 v1 | manifiesto: spec 4f2a…, prompt 8b1c…, cfg 77d
 hashes: completos | evaluación: EVA-01 | vigencia: 2026-11-21
 invalida si: cambia permiso de red | decisión: APROBADO CON CONDICIONES
 ```
+**Criterio de cierre:** decisión firmada por el propietario, con manifiesto, evidencia y vigencia; ningún campo obligatorio vacío.  
 **Retención:** PENDIENTE de aprobación.
 
 ---
 
 ## 9. `bloqueos.md`
-**Dueño único:** A2 recomienda, A3 consolida, coordinador registra · **Fuente:** sección 10
+**Dueño único:** coordinador (dueño del registro); A2 recomienda y A3 consolida como entradas, no como dueños · **Fuente:** sección 10
 
 | Campo | Obligatorio |
 |---|---|
@@ -260,13 +269,67 @@ disparador: parcial | acción: aviso + bloqueo de despliegues de A2
 detiene agente: no | retirada: aprobación humana tras cobertura válida
 estado: ABIERTO
 ```
+**Evidencia:** registro append-only con disparador, acción tomada y retirada firmada.  
+**Criterio de cierre:** causa resuelta con evidencia y aprobación humana; las demás causas siguen abiertas.  
 **Retención:** PENDIENTE de aprobación. **No eliminar evidencia de casos abiertos.**
 
 ---
 
+## 10. Trazabilidad campo → sección
+
+### 10.1 Correspondencia sección del briefing → decisión de `00-alcance-decisiones.md`
+
+Cada sección del briefing queda anclada a su decisión confirmada (C-nn) del documento de autoridad, de modo que la traza de §10.2 es verificable.
+
+| Sección briefing | Decisión(es) en `00-alcance-decisiones.md` |
+|---|---|
+| 1 | C-01, C-02, C-03, C-08 |
+| 2 | C-04, C-05, C-06, C-07 |
+| 3 | C-08, C-10 |
+| 4 | C-11 |
+| 5 | C-12, C-13, C-14, C-15 |
+| 6 | C-16 |
+| 7 | C-17 |
+| 8 | C-18 |
+| 9 | C-19 |
+| 10 | C-20 |
+| 11 | C-21, C-22 |
+| 12 | C-23 |
+| 13 | C-24 |
+| 14 | C-25 |
+| 15 | C-26 |
+| 16 | C-27 |
+| 17 | C-28 |
+
+### 10.2 Campos
+
+Referencia: briefing de 17 secciones del encargo. Cada fila cubre **todos** los campos de la plantilla.
+
+| Plantilla | Campos | Sección(es) |
+|---|---|---|
+| `spec.md` | `spec_id`, `version`, `fecha`; problema; usuario; resultado útil; alcance; exclusiones; requisitos; extras; entradas/salidas/ejemplos; autonomía y escalado; riesgos/supuestos/pendientes | 1, 3, 4 |
+| `spec.md` | herramientas y permisos; datos y memoria (retención) | 12; 10 y 12 |
+| `spec.md` | restricciones y costes | 11 |
+| `spec.md` | criterios de aceptación; pruebas públicas; trazabilidad requisito → origen; matriz de necesidad | 3, 4, 16 |
+| `necesidad.md` | todas las columnas | 3 (coste/riesgo → 11; prueba → 16) |
+| `hallazgos.md` | `hallazgo_id`, informe, fecha, componente y versión, clase, fuente, fechas, aplicabilidad, severidad | 5, 9 |
+| `hallazgos.md` | tratamiento propuesto (A2) y final (A3) | 5, 6 |
+| `hallazgos.md` | fecha de actualización | 9 |
+| `cambios.md` | `cambio_id`, versiones, qué cambia, motivo, material, hash, gate | 6, 14 |
+| `cambios.md` | aprobaciones y pruebas invalidadas | 14 |
+| `evaluacion.md` | `evaluacion_id`, artefacto, versión, hash, criterios fijados antes de construir, siete ejes, preguntas de alcance/necesidad | 8 |
+| `evaluacion.md` | cobertura y limitaciones, no conformidades, veredicto | 8, 16 |
+| `cobertura.md` | manifiesto y todos sus campos; estado final | 9 |
+| `ejecucion.md` | `corrida_id`, disparador, checkpoints, deduplicación, informe, interrupción, progreso, estado | 9 |
+| `ejecucion.md` | fecha/hora y zona horaria | 13 (zona: PENDIENTE si no definida) |
+| `aprobaciones.md` | `aprobacion_id`, gate, artefacto, destino, manifiesto, hashes, evidencia, vigencia, invalidación, decisión | 2, 14 |
+| `aprobaciones.md` | proveedor/modelo del manifiesto | 12 |
+| `bloqueos.md` | `bloqueo_id`, agente y versión, causa, disparador, acción, ¿detiene?, retirada, excepción, estado | 10 |
+| `bloqueos.md` | aviso; relación con cobertura | 13; 9 |
+
 ## Verificación FAB-009
 - [x] Nueve plantillas presentes
-- [x] Cada campo trazado a una sección del prompt
+- [x] Cada campo trazado a una sección del briefing (tablas §10.1 y §10.2)
 - [x] Ninguna plantilla pide secretos
 - [x] Ejemplo mínimo por plantilla
 - [x] Dueño único por plantilla

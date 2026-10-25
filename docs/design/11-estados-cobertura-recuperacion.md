@@ -10,11 +10,13 @@
 
 | Estado | Definición |
 |---|---|
+| `EN CURSO` | Revisión iniciada y aún sin estado final; los checkpoints se van persistiendo |
+| `INTERRUMPIDA RECUPERABLE` | Ejecución cortada con checkpoints persistidos; se reanuda desde el primero no completado |
 | `COMPLETA SIN NUEVOS HALLAZGOS` | Todas las comprobaciones obligatorias cubiertas; nada nuevo |
 | `COMPLETA CON HALLAZGOS` | Cobertura obligatoria completa; hay ≥1 hallazgo |
 | `PARCIAL` | Faltan comprobaciones obligatorias por causa justificada |
 | `FALLIDA` | La revisión no pudo ejecutarse o terminó sin resultados utilizables |
-| `AUSENTE (DETECTADA EXTERNamente)` | La revisión debía existir y no existe; detectada por control independiente |
+| `AUSENTE` | La revisión debía existir y no existe; detectada por control independiente |
 
 **«Completa» significa dentro del alcance declarado**, no ausencia universal de riesgos.
 
@@ -25,14 +27,21 @@
 EN CURSO ──todas las obligatorias cubiertas──▶ COMPLETA (con/sin hallazgos)
 EN CURSO ──obligatoria no cubierta + evidencia alternativa válida──▶ PARCIAL
 EN CURSO ──error/interrupción sin recuperación──▶ FALLIDA
+EN CURSO ──interrupción con checkpoints persistidos──▶ INTERRUMPIDA RECUPERABLE
+INTERRUMPIDA RECUPERABLE ──reanudar desde el primer checkpoint no completado──▶ EN CURSO
 (sin ejecución en el intervalo) ──control independiente──▶ AUSENTE
+AUSENTE ──se ejecuta la revisión que faltaba──▶ EN CURSO
 PARCIAL/FALLIDA ──nueva corrida que cubre lo que faltaba──▶ COMPLETA
+PARCIAL ──nueva corrida que sigue incompleta──▶ PARCIAL
+PARCIAL ──nueva corrida sin resultados utilizables──▶ FALLIDA
+FALLIDA ──nueva corrida con cobertura incompleta justificada──▶ PARCIAL
 ```
 
 Reglas:
 - `PARCIAL` y `FALLIDA` **bloquean** nuevos despliegues del agente afectado.
+- `EN CURSO` e `INTERRUMPIDA RECUPERABLE` **no** acreditan cobertura: no retiran bloqueos ni autorizan despliegues.
 - Una fuente **opcional** inaccesible **no** convierte toda la revisión en incompleta si la obligación se satisface con **evidencia alternativa válida**.
-- **No reclasificar** una obligación como opcional durante la ejecución para conseguir un resultado completo.
+- **No reclasificar** una obligación como opcional durante la ejecución para conseguir un resultado completo. Tampoco se **añaden** obligaciones a mitad de corrida: un cambio de alcance exige una nueva versión del manifiesto **antes** de la siguiente revisión.
 
 ## 3. Manifiesto de cobertura (antes de cada revisión)
 
@@ -60,6 +69,7 @@ lagunas no admisibles: [...]
 
 - Un checkpoint por **unidad de cobertura** (una comprobación obligatoria).
 - Cada checkpoint registra: `id`, estado (`pendiente`/`hecho`/`hueco`), evidencia, deduplicación aplicada.
+- Clave de deduplicación: `(fuente_id, hallazgo_id o URL normalizada, hash del contenido)`. Dos registros con la misma clave son el mismo hallazgo; se conserva el primero con evidencia y no se cuenta dos veces.
 - **Huecos** se registran explícitamente; no se cuentan como cubiertos.
 - Tras interrupción: reanudar desde el primer checkpoint no completado, **sin repetir** trabajo válido.
 
@@ -92,7 +102,7 @@ avance = checkpoint.hecho AND informe.persistido
 El **gate de despliegue** comprueba evidencia y vigencia **directamente**, sin depender de que llegue una notificación.
 
 ## 8. Verificación FAB-011
-- [x] Todos los estados y transiciones definidos
+- [x] Todos los estados y transiciones definidos, incluidos `EN CURSO`, `INTERRUMPIDA RECUPERABLE` y las salidas de `AUSENTE`
 - [x] Manifiesto finito y versionado
 - [x] Recuperación tras interrupción
 - [x] No se avanza sin evidencia persistida

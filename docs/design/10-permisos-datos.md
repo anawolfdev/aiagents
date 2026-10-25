@@ -26,7 +26,7 @@
 | Recurso | Acceso | Identidad | Notas |
 |---|---|---|---|
 | Repositorio público | Lectura A1–A5; escritura solo vía PR | Identidad de publicación | — |
-| Repositorio privado | Lectura A1, A2, A3, A5; escritura A2/A3/A4 | Identidad de informes | Separada de la de publicación |
+| Repositorio privado | Lectura A1–A5; escritura A1, A2, A3, A4 y A5, cada rol solo su propio entregable | Identidad de informes | Separada de la de publicación |
 | Inventario saneado | **Solo lectura** | Identidad de lectura | Sin secretos; con marca de frescura |
 | Pruebas públicas | Libre | — | — |
 | Pruebas reservadas | Control real de acceso | Identidad de evaluación | No por instrucción |
@@ -36,54 +36,60 @@
 
 ## 4. Matriz rol × acción × recurso × dato × aprobación
 
-| Rol | Acción | Recurso | Clase de dato | Aprobación requerida |
-|---|---|---|---|---|
-| A1 | Preguntar al propietario | Conversación | PRIVADO | — |
-| A1 | Escribir spec | Repo privado | PRIVADO | — |
-| A2 | Leer inventario | Snapshot saneado | SENSIBLE | Autorización de lectura (GATE 1) |
-| A2 | Buscar en web | Fuentes públicas | Términos saneados | — |
-| A2 | Escribir informe | Repo privado | SENSIBLE | — |
-| A2 | Enviar aviso | Telegram privado | SENSIBLE | Verificación de destinatario |
-| A2 | Modificar agentes | — | — | **PROHIBIDO** |
-| A2 | Pruebas ofensivas en producción | — | — | **PROHIBIDO** |
-| A3 | Leer specs/informes | Repo privado | PRIVADO/SENSIBLE | — |
-| A3 | Escribir expediente | Repo privado | PRIVADO | — |
-| A3 | Preparar GATE 1 | — | — | Presenta; **no** aprueba |
-| A4 | Construir | Entorno delimitado | Sintético/autorizado | GATE 1 |
-| A4 | Ejecutar pruebas públicas | Entorno delimitado | Sintético | GATE 1 |
-| A4 | Acceder a pruebas reservadas | — | — | **PROHIBIDO** |
-| A4 | Ampliar permisos | — | — | **PROHIBIDO** (solicitar) |
-| A5 | Evaluar | Artefacto congelado | Sintético + reservado | — |
-| A5 | Escribir evaluación | Repo privado | SENSIBLE | — |
-| A5 | Construir/corregir | — | — | **PROHIBIDO** |
-| Coordinador | Presentar preguntas | Conversación | PRIVADO | — |
-| Coordinador | Transcribir aprobaciones | Registro | PRIVADO | La decide el propietario |
-| Coordinador | Aprobar | — | — | **PROHIBIDO** |
+| Rol | Acción | Recurso | Clase de dato | Aprobación requerida | Justificación | Control |
+|---|---|---|---|---|---|---|
+| A1 | Preguntar al propietario | Conversación | PRIVADO | — | Necesita el requisito de primera mano | Conversación privada; contexto mínimo |
+| A1 | Escribir spec | Repo privado | PRIVADO | — | Es su entregable | Identidad de informes; versión y GATE 1 posterior |
+| A2 | Leer inventario | Snapshot saneado | SENSIBLE | Autorización de lectura (GATE 1) | La vigilancia exige el inventario | Solo lectura; snapshot saneado con frescura |
+| A2 | Buscar en web | Fuentes públicas | Términos saneados | — | Necesita fuentes públicas | Nunca datos privados; términos saneados |
+| A2 | Escribir informe | Repo privado | SENSIBLE | — | Entregable de vigilancia | Identidad de informes; repo privado |
+| A2 | Enviar aviso | Telegram privado | SENSIBLE | Verificación de destinatario | El aviso es obligatorio | Chat privado verificado; sin secretos |
+| A2 | Modificar agentes | — | — | **PROHIBIDO** | Separar vigilancia de construcción | Sin permiso de escritura en agentes |
+| A2 | Pruebas ofensivas en producción | — | — | **PROHIBIDO** | Producción queda fuera del alcance | Sin acceso a producción |
+| A3 | Leer specs/informes | Repo privado | PRIVADO/SENSIBLE | — | Consolidar exige ver los hallazgos | Solo el mínimo necesario |
+| A3 | Escribir expediente | Repo privado | PRIVADO | — | Entregable de arquitectura | Identidad de informes; repo privado |
+| A3 | Preparar GATE 1 | — | — | Presenta; **no** aprueba | Separar consolidar de aprobar | Firma del propietario |
+| A4 | Construir | Entorno delimitado | Sintético/autorizado | GATE 1 | Ejecuta el alcance aprobado | Entorno aislado; alcance congelado |
+| A4 | Escribir entregable y manifiesto | Repo privado | PRIVADO/SENSIBLE | GATE 1 | Deja evidencia del artefacto | Identidad de informes; sin fusionar |
+| A4 | Ejecutar pruebas públicas | Entorno delimitado | Sintético | GATE 1 | Verificar sin datos reales | Entorno aislado |
+| A4 | Acceder a pruebas reservadas | — | — | **PROHIBIDO** | Independencia de A5 | Sin credenciales de evaluación |
+| A4 | Ampliar permisos | — | — | **PROHIBIDO** (solicitar) | Mínimo privilegio | Solicitud explícita al propietario |
+| A4 | Aprobar | — | — | **PROHIBIDO** | Separar construir de aprobar | Sin acción de aprobación |
+| A5 | Evaluar | Artefacto congelado | Sintético + reservado | — | Veredicto independiente | Acceso real controlado a pruebas reservadas |
+| A5 | Escribir evaluación | Repo privado | SENSIBLE | — | Entregable de evaluación | Identidad de informes; repo privado |
+| A5 | Construir/corregir | — | — | **PROHIBIDO** | Independencia del evaluador | Sin escritura en el artefacto |
+| Coordinador | Presentar preguntas | Conversación | PRIVADO | — | Interlocutor único con el propietario | Solo preguntas preparadas por A1 |
+| Coordinador | Transcribir aprobaciones | Registro | PRIVADO | La decide el propietario | Registro fiel de la decisión | Transcripción literal; no interpreta |
+| Coordinador | Aprobar | — | — | **PROHIBIDO** | No sustituye al usuario | Sin acción de aprobación |
+| Publicación | Abrir PR | Repo público | PÚBLICO | Checklist + revisor humano | Única vía de escritura pública | Identidad de publicación; no fusiona ni lee el repo privado |
 
 ### Casos obligatorios verificados
 | Caso | Cumple |
 |---|---|
 | A2 no modifica agentes | Sí (§4, PROHIBIDO) |
-| A4 no aprueba | Sí (no tiene acción de aprobación) |
-| A5 no construye | Sí (PROHIBIDO) |
-| Ningún rol acumula publicar y aprobar | Sí: identidad de publicación ≠ propietario |
-| El coordinador no sustituye al usuario | Sí (solo transcribe) |
-| Los datos privados no van a buscadores | Sí (clase PRIVADO/SENSIBLE bloqueada) |
+| A4 no aprueba | Sí (§4, fila «A4 / Aprobar / PROHIBIDO») |
+| A5 no construye | Sí (§4, PROHIBIDO) |
+| Ningún rol acumula publicar y aprobar | Sí: identidad de publicación ≠ propietario; §5 |
+| El coordinador no sustituye al usuario | Sí (§4, solo transcribe) |
+| Los datos privados no van a buscadores | Sí (§2 y §6.2: `PRIVADO`/`SENSIBLE` no salen a un PR público sin aprobación de versión y reclasificación) |
 
 ## 5. Separación de identidades
 
-Tres identidades **distintas**, con permisos no intercambiables:
+Seis identidades **distintas**, con permisos no intercambiables (son las seis que aparecen en §3):
 
 | Identidad | Puede | No puede |
 |---|---|---|
-| **Lectura** | Leer inventario y repositorio privado | Escribir, publicar |
-| **Informes** | Escribir informes en repositorio privado | Publicar, leer secretos |
+| **Lectura** | Leer inventario saneado y repositorio privado | Escribir, publicar |
+| **Informes** | Escribir spec, expediente, informes y evaluación en repositorio privado | Publicar, leer secretos |
 | **Publicación** | Abrir PR en repositorio público | Leer repositorio privado, fusionar |
+| **Evaluación** | Acceso real controlado a pruebas reservadas | Construir o corregir el artefacto |
+| **Avisos** | Escribir avisos en el chat Telegram privado verificado | Publicar, leer repositorio privado |
+| **CI** | Leer secretos solo en tiempo de ejecución | Exponer secretos al modelo, publicar |
 
 ## 6. Flujo de PR seguro
 
 1. Rama en el repositorio público (una **rama pública también constituye publicación**).
-2. Solo contenido `PÚBLICO` o `PRIVADO` con aprobación específica de esa versión.
+2. Solo contenido `PÚBLICO`. Un contenido `PRIVADO`/`SENSIBLE` permanece en el repositorio privado; solo puede entrar en un PR público si esa **versión concreta** tiene aprobación de publicación y se **reclasifica explícitamente a `PÚBLICO`** para esa versión. Sin ambas cosas, no se abre el PR.
 3. PR con **checklist de publicación** (ver §7).
 4. **Nunca auto-merge**; la fusión es decisión humana.
 5. No incluir contenido privado aún no aprobado.
@@ -92,6 +98,7 @@ Tres identidades **distintas**, con permisos no intercambiables:
 ## 7. Checklist de publicación (obligatorio en cada PR)
 
 - [ ] Clase de dato de cada fichero declarada.
+- [ ] Si hay `PRIVADO`/`SENSIBLE`: no entra hasta aprobación de esa versión y reclasificación explícita a `PÚBLICO`.
 - [ ] Ningún `SECRETO`.
 - [ ] Specs reales: solo si esa **versión** tiene aprobación de publicación específica.
 - [ ] Saneamiento aplicado (el saneamiento **no sustituye** la aprobación).

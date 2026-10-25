@@ -97,6 +97,9 @@ Sin el paso 2, la declaración es **«no probado»**, nunca «compatible».
 | Retención | **PENDIENTE — se aprueba antes de activar** | Propietario |
 | Almacenamiento | PENDIENTE | Propietario |
 | Mecanismo independiente de supervisión | PENDIENTE | Propietario |
+| Versiones de OpenClaw y OpenCode | PENDIENTE | A3 / A4 |
+| Destino y propietario del despliegue | PENDIENTE | Propietario |
+| Umbral de riesgo crítico | PENDIENTE | Propietario |
 
 ## 5. Verificación FAB-017
 - [x] La secuencia no tiene circularidad

@@ -1,6 +1,6 @@
 # Paquete de diseño — Fábrica de agentes de IA (uso personal)
 
-**Estado global:** **DISEÑADO** — nada CONFIGURADO, PROBADO ni DESPLEGADO  
+**Estado global:** **DISEÑADO** — la fábrica no está configurada, probada ni desplegada. El único elemento `CONFIGURADO` es el seguimiento de la entrega en GEAS; nada más.
 **Versión del paquete:** 1.0 · **Fecha:** 2026-10-22  
 **Alcance:** paquete de diseño completo. La tarea **termina aquí**: no se ejecuta la fábrica, no se instalan agentes, no se activan workflows, no se publican contenidos, no se despliega.
 
@@ -28,9 +28,9 @@ Documentos de apoyo: [`03-necesidad-proporcionalidad.md`](03-necesidad-proporcio
 
 ## Resumen de decisiones (entregable 1)
 
-**Decisiones confirmadas** (origen: prompt): propietario único; solo equipo del propietario + entorno aislado de pruebas; ningún otro destino sin autorización; portabilidad OpenClaw/OpenCode con núcleo común y adaptadores; pruebas en ambas plataformas antes de declarar compatibilidad; sin prometer comportamiento idéntico; cinco roles cuyos productos no tienen que ser multiagente; coordinación ligera, no un sexto agente autónomo obligatorio; coordinador como único interlocutor; solución más sencilla que satisfaga requisitos y controles; no ejecutar/instalar/activar/publicar/desplegar en esta tarea; las recomendaciones de diseño no sustituyen aprobaciones de gasto, proveedores, permisos, publicación o despliegue.
+**Decisiones confirmadas** (origen: prompt; tabla completa en [`00-alcance-decisiones.md`](00-alcance-decisiones.md#7-decisiones-confirmadas) C-01…C-28): propietario único; solo equipo del propietario + entorno aislado de pruebas; ningún otro destino sin autorización; portabilidad OpenClaw/OpenCode con núcleo común y adaptadores; pruebas en ambas plataformas antes de declarar compatibilidad; sin prometer comportamiento idéntico; cinco roles cuyos productos no tienen que ser multiagente; coordinación ligera, no un sexto agente autónomo obligatorio; coordinador como único interlocutor; repositorios público y privado separados con secretos fuera y saneamiento que no sustituye la aprobación de publicación; GATE 1 y GATE 2 con manifiesto de componentes, y cambios materiales que invalidan la aprobación afectada; solución más sencilla que satisfaga requisitos y controles; no ejecutar/instalar/activar/publicar/desplegar en esta tarea; las recomendaciones de diseño no sustituyen aprobaciones de gasto, proveedores, permisos, publicación o despliegue.
 
-**DECISIONES DE DISEÑO** (etiquetadas, no sustituyen aprobaciones): excepciones humanas temporales con vencimiento y sin renovación automática; límite de 3 rondas para el ciclo completo; separación público/privado; el saneamiento no sustituye la aprobación de publicación; material privado solo con proveedores autorizados; Telegram solo como aviso; GitHub Actions con permisos mínimos; GATE 1 y GATE 2 con manifiesto y hashes; cambios materiales invalidan la aprobación afectada.
+**Decisiones de diseño** (etiquetadas, se revisan en Gate 1; tabla completa en [`00-alcance-decisiones.md`](00-alcance-decisiones.md#8-decisiones-de-diseño) D-01…D-04): D-01 excepciones humanas temporales con vencimiento y sin renovación automática; D-02 límite de 3 rondas para el ciclo completo; D-03 vigilancia desde el repositorio privado con identidades y permisos separados; D-04 seguimiento de la entrega en tickets `FAB` de GEAS. Ninguna sustituye aprobaciones.
 
 ---
 
@@ -51,10 +51,10 @@ Documentos de apoyo: [`03-necesidad-proporcionalidad.md`](03-necesidad-proporcio
 | 11 | Presupuesto y rondas | `13-presupuesto-gates.md` |
 | 12 | Publicación, datos y proveedores | `14-publicacion-proveedores.md`, `10-permisos-datos.md` |
 | 13 | Telegram y ejecución programada | `15-vigilancia-telegram.md` |
-| 14 | Aprobaciones y despliegue | `13-presupuesto-gates.md`, `10-permisos-datos.md`, `09-plantillas/` |
+| 14 | Aprobaciones y despliegue | `13-presupuesto-gates.md`, `14-publicacion-proveedores.md`, `10-permisos-datos.md`, `09-plantillas/` |
 | 15 | Arranque sin circularidad | `17-bootstrap-portabilidad.md` |
 | 16 | Validación de la fábrica | `16-validacion.md` |
-| 17 | Entregables | Este documento |
+| 17 | Entregables | Este documento, `18-activacion.md` |
 
 Sin huecos: las 17 secciones están cubiertas.
 
@@ -64,6 +64,7 @@ Sin huecos: las 17 secciones están cubiertas.
 
 | Concepto | Estado real |
 |---|---|
+| Seguimiento de la entrega en GEAS | **CONFIGURADO** (solo el seguimiento; no la fábrica) |
 | Perfiles A1–A5 | **DISEÑADO** |
 | Contrato del coordinador | **DISEÑADO** |
 | Plantillas | **DISEÑADO** |
@@ -84,7 +85,7 @@ Sin huecos: las 17 secciones están cubiertas.
 
 ## Pendientes antes de activar
 
-Repositorios concretos · proveedor y modelo autorizado · presupuesto · horario · zona horaria · conexión y destinatario Telegram · inventario · aislamiento · permisos · **retención (bloqueante)** · almacenamiento · mecanismo independiente de supervisión.
+Repositorios concretos · proveedor y modelo autorizado · presupuesto · horario · zona horaria · conexión y destinatario Telegram · inventario · aislamiento · permisos · **retención (bloqueante)** · almacenamiento · mecanismo independiente de supervisión · versiones de OpenClaw y OpenCode · destino y propietario del despliegue · umbral de riesgo crítico.
 
 Detalle y evidencia exigida: [`18-activacion.md`](18-activacion.md).
 
@@ -103,5 +104,7 @@ Detalle y evidencia exigida: [`18-activacion.md`](18-activacion.md).
 - [x] Sin contradicciones con `00-alcance-decisiones.md`
 - [x] Pendientes listados
 - [x] Se declara que la tarea termina en diseño
-- [x] La revisión independiente deja evidencia (pendiente en ejecución)
+- [x] La revisión independiente se registra en `harness/progress/reviewer-FAB-019.md` antes de cerrar la puerta
 - [x] No se atribuye instalación, prueba o despliegue inexistente
+
+> Las casillas son cobertura del documento; no son evidencia de ejecución de la fábrica.

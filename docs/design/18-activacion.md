@@ -29,6 +29,9 @@ La **política de retención se aprueba antes de activar**. **No** se elimina au
 | 11 | Retención | Propietario | Política escrita y aprobada | **Bloquea toda activación** | Aprobación explícita | Ajustar política | DISEÑADO |
 | 12 | Almacenamiento | Propietario | Ubicación + backup | Sin almacén no hay informes | GATE 1 | Migrar | DISEÑADO |
 | 13 | Mecanismo independiente de supervisión | Propietario | Job de frescura probado | Sin él no hay detección de ausencia | GATE 1 + prueba | Desactivar | DISEÑADO |
+| 14 | Versiones de OpenClaw y OpenCode | A3 / A4 | Versiones fijadas + pruebas de aceptación | Sin versión fijada no hay compatibilidad declarable | GATE 1 | Volver a «no probado» | DISEÑADO |
+| 15 | Destino y propietario del despliegue | Propietario | Destino autorizado + responsable | Sin destino y responsable no hay GATE 2 | GATE 2 | Revertir despliegue | DISEÑADO |
+| 16 | Umbral de riesgo crítico | Propietario | Definición operativa + ejemplos | Sin umbral no se dispara el bloqueo crítico | GATE 1 | Ajustar umbral | DISEÑADO |
 
 ## 3. Checklist de activación por fase (bootstrap FAB-017)
 
@@ -39,7 +42,7 @@ La **política de retención se aprueba antes de activar**. **No** se elimina au
 | 4 · Pruebas y validación humana | Fase 3 + revisor distinto | NO CUMPLIDO |
 | 5 · Construcción A2–A5 | Fase 4 aprobada | NO CUMPLIDO |
 | 6 · Ensayo integral | Fase 5 | NO CUMPLIDO |
-| 7 · Activación | #3–#9, #11, #13 + GATE 2 por destino | NO CUMPLIDO |
+| 7 · Activación | #3–#9, #11, #13–#16 + GATE 2 por destino | NO CUMPLIDO |
 
 ## 4. Lo que este documento NO afirma
 
