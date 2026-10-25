@@ -59,8 +59,11 @@
         "El workflow de CI ejecuta los mismos comandos que make check",
         "./init.sh termina con ENTORNO LISTO"
       ],
-      "status": "pending",
-      "depends_on": []
+      "status": "done",
+      "depends_on": [],
+      "started": "2026-10-25",
+      "review_rounds": 0,
+      "closed": "2026-10-25"
     },
     {
       "id": "BOOT-001",

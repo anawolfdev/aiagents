@@ -15,6 +15,9 @@
 MODULE = app
 PYTHON = python
 
+# El repositorio es UTF-8; Windows no lo es por defecto.
+export PYTHONUTF8 := 1
+
 # ─────────────────────────────────────────────────────────────────────────────
 #  help  →  target por defecto
 # ─────────────────────────────────────────────────────────────────────────────

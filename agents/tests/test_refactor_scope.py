@@ -33,7 +33,7 @@ def test_no_entra_en_venv_aunque_se_le_pida_la_raiz(agent):
     _plant(agent.ctx.root, "mi_paquete/propio.py")
 
     files = agent._py_files(".")
-    nombres = {str(p.relative_to(agent.ctx.root)) for p in files}
+    nombres = {p.relative_to(agent.ctx.root).as_posix() for p in files}
 
     assert "mi_paquete/propio.py" in nombres
     assert not any(".venv" in n for n in nombres)

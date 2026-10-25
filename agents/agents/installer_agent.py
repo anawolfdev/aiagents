@@ -20,13 +20,26 @@ sin implementar, nunca un éxito falso. Quién detecta que falta un agente es
 
 from __future__ import annotations
 
+import os
 import shutil
+import stat
+from pathlib import Path
 
 from agents.core.base_agent import AgentResult, BaseAgent
 from agents.core.registry import agent_registry, register_agent
 from agents.exceptions import MissingDependencyError, ToolExecutionError
 from agents.tools.agent_installer_tool import AgentInstallerTool
 from agents.tools.agent_scaffold_tool import AgentScaffoldTool, AgentSpec, split_multi
+
+
+def _rmtree(path: Path) -> None:
+    """Borra un árbol aunque tenga ficheros de solo lectura (objetos de .git en Windows)."""
+
+    def _retry(func, target, _exc):
+        os.chmod(target, stat.S_IWRITE)
+        func(target)
+
+    shutil.rmtree(path, onexc=_retry)
 
 #: Lo que hay que decir del resultado de `scaffold` siempre, en dry-run y en
 #: real: un esqueleto no es un agente que funcione.
@@ -108,11 +121,16 @@ class InstallerAgent(BaseAgent):
     def install_from_git(self, *, repo_url: str, subpath: str | None = None, force: bool = False) -> AgentResult:
         resolved_url = AgentInstallerTool.normalize_github_shorthand(repo_url)
         workdir = self.ctx.agent_workspace("installer")
-        repo_dir_name = resolved_url.rstrip("/").rsplit("/", 1)[-1].removesuffix(".git")
+        # La URL puede ser remota (barras) o una ruta local de Windows (barras
+        # invertidas). Partir solo por "/" tomaba la ruta entera como nombre y
+        # el "clone" acababa apuntando al repositorio de origen.
+        repo_dir_name = (
+            resolved_url.rstrip("/").replace("\\", "/").rsplit("/", 1)[-1].removesuffix(".git")
+        )
         clone_dir = workdir / repo_dir_name
 
         if clone_dir.exists():
-            shutil.rmtree(clone_dir)
+            _rmtree(clone_dir)
         try:
             AgentInstallerTool.clone_git_repo(resolved_url, clone_dir)
         except MissingDependencyError as exc:

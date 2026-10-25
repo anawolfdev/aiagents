@@ -20,6 +20,10 @@ set -uo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT" || exit 1
 
+# El repositorio es UTF-8. Windows usa cp1252 por defecto si no se le dice lo
+# contrario, y eso rompe cualquier fichero con acentos o guiones largos.
+export PYTHONUTF8=1
+
 QUICK=0
 JSON=0
 for arg in "$@"; do
@@ -67,10 +71,34 @@ section() { [ "$JSON" -eq 1 ] || printf '\n\033[1m%s\033[0m\n' "$1"; }
 
 [ "$JSON" -eq 1 ] || printf '\n\033[1m━━ init.sh · arnés de MeshHarmes ━━\033[0m\n'
 
+# El intérprete del .venv manda sobre el del PATH: es el que ejecuta los tests
+# y el que ve `uv run`. Windows pone el venv en Scripts/, no en bin/.
+DECLARED_PY="$(sed -n 's/^python_version:[[:space:]]*//p' project.yml 2>/dev/null | head -1 | cut -d'#' -f1 | tr -d '"'"'"' \r' | tr -d ' ')"
+
+# No basta con que el intérprete exista: tiene que poder importar el arnés.
+# En Windows es fácil acabar en el python3 del sistema (o en un alias de la
+# Store) que no ve el proyecto y falla con un error que parece del código.
+PY=""
+FALLBACK_PY=""
+for candidate in "${PYTHON:-}" "./.venv/Scripts/python.exe" "./.venv/bin/python" "python${DECLARED_PY}" python python3; do
+  if [ -x "$candidate" ] || command -v "$candidate" >/dev/null 2>&1; then
+    [ -n "$FALLBACK_PY" ] || FALLBACK_PY="$candidate"
+    if "$candidate" -c 'import agents.geas_sync' >/dev/null 2>&1; then PY="$candidate"; break; fi
+  fi
+done
+[ -n "$PY" ] || PY="$FALLBACK_PY"
+
 # Primero sync, incluso --quick: hoja Python stdlib, no gate→init→gate.
 section "Sincronización Git + GEAS"
-PY="python3"
-[ ! -x .venv/bin/python ] || PY="./.venv/bin/python"
+if [ -z "$PY" ]; then
+  fail "sync" "no se encontró ningún intérprete de Python"
+  if [ "$JSON" -eq 1 ]; then
+    render_report
+  else
+    printf '\nENTORNO BLOQUEADO — sincronización fallida; no se permite trabajar.\n'
+  fi
+  exit 1
+fi
 if SYNC_OUT="$("$PY" -m agents.geas_sync 2>&1)"; then
   ok "sync" "$SYNC_OUT"
 else
@@ -88,16 +116,8 @@ fi
 # ─────────────────────────────────────────────────────────────────────────────
 section "Entorno"
 
-# El intérprete del .venv manda sobre el del PATH: es el que ejecuta los tests
-# y el que ve `uv run`. Comparar la versión del sistema con la que declara
-# project.yml daba un ✔ engañoso cuando el .venv tenía otra distinta.
-DECLARED_PY="$(sed -n 's/^python_version:[[:space:]]*//p' project.yml 2>/dev/null | head -1 | cut -d'#' -f1 | tr -d '"'"'"' \r' | tr -d ' ')"
-
-PY=""
-for candidate in "./.venv/bin/python" "python${DECLARED_PY}" python3 python; do
-  if [ -x "$candidate" ] || command -v "$candidate" >/dev/null 2>&1; then PY="$candidate"; break; fi
-done
-
+# Comparar la versión del sistema con la que declara project.yml daba un ✔
+# engañoso cuando el .venv tenía otra distinta: por eso manda el .venv.
 if [ -z "$PY" ]; then
   fail "python" "no se encontró ningún intérprete de Python"
 else

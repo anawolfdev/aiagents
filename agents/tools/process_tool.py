@@ -63,6 +63,10 @@ def run_command(
             cwd=str(cwd) if cwd else None,
             capture_output=True,
             text=True,
+            # El repositorio es UTF-8; la locale de Windows (cp1252) rompe
+            # cualquier salida con acentos y el JSON de la puerta.
+            encoding="utf-8",
+            errors="replace",
             timeout=timeout,
             shell=False,
         )

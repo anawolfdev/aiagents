@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from hypothesis import assume, given
+from hypothesis import HealthCheck, assume, given, settings
 from hypothesis import strategies as st
 
 from agents.config import ProjectConfig
@@ -132,6 +132,7 @@ class _ActionAgent(BaseAgent):
         return self._acts
 
 
+@settings(suppress_health_check=[HealthCheck.large_base_example])
 @given(
     action_names=st.lists(
         st.from_regex(r"[a-z]+(_[a-z]+)*", fullmatch=True).filter(lambda s: len(s) > 0),

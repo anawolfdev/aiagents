@@ -345,3 +345,19 @@ docs/design/roles/A5-evaluador.md: siete ejes, independencia real, pruebas públ
 ```
 
 </details>
+
+## QA-001 — Batería de calidad en verde
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 612 passed, 15 skipped in 416.21s (0:06:56)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+Sobre origin/main (50c5c25): make lint -> 'ruff check app/ tests/ agents/' 'All checks passed!' + 'ruff format --check app/ tests/' '7 files already formatted'. make typecheck -> 'mypy app/ tests/' 'Success: no issues found in 7 source files'. make test -> '612 passed, 15 skipped in 413.92s (0:06:53)'. CI: .github/workflows/ci.yml ejecuta 'make check' (lint + typecheck + test + harness-check) con uv 0.13.5 y PYTHONUTF8=1. Puerta ./init.sh --json en verde con pytest verde.
+```
+
+</details>

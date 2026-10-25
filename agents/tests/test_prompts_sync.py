@@ -81,7 +81,7 @@ def test_check_no_escribe_nada(context):
 
     sync(write=False, context=context)
 
-    assert (prompts / "git_agent.md").read_text() == "# Prompt — GitAgent\n\nprosa\n"
+    assert (prompts / "git_agent.md").read_text(encoding="utf-8") == "# Prompt — GitAgent\n\nprosa\n"
 
 
 def test_write_si_escribe_el_bloque(context):
@@ -91,7 +91,7 @@ def test_write_si_escribe_el_bloque(context):
 
     sync(write=True, context=context)
 
-    texto = (prompts / "git_agent.md").read_text()
+    texto = (prompts / "git_agent.md").read_text(encoding="utf-8")
     assert "prosa" in texto
     assert BEGIN in texto and "run git " in texto
 
@@ -121,7 +121,7 @@ def test_espeja_los_subagentes_a_claude(context):
     pendientes = sync_assistants(write=True, context=context)
     assert "lider" in pendientes
 
-    generado = (context.root / ".claude" / "agents" / "lider.md").read_text()
+    generado = (context.root / ".claude" / "agents" / "lider.md").read_text(encoding="utf-8")
     assert generado.startswith("---")
     assert "name: lider" in generado
     assert "description: Diriges el ciclo de trabajo del proyecto" in generado
@@ -131,7 +131,7 @@ def test_espeja_los_subagentes_a_claude(context):
 def test_el_explorer_se_espeja_con_herramientas_de_solo_lectura(context):
     _sembrar_opencode(context, "explorer")
     sync_assistants(write=True, context=context)
-    generado = (context.root / ".claude" / "agents" / "explorer.md").read_text()
+    generado = (context.root / ".claude" / "agents" / "explorer.md").read_text(encoding="utf-8")
     assert "tools:" in generado
     assert "Write" not in generado.split("---")[1], "el explorer no debe poder escribir"
 
@@ -151,7 +151,7 @@ def test_detecta_que_el_espejo_se_quedo_viejo(context):
 
     assert sync_assistants(write=False, context=context) == ["lider"]
     sync_assistants(write=True, context=context)
-    assert "Regla nueva" in (context.root / ".claude" / "agents" / "lider.md").read_text()
+    assert "Regla nueva" in (context.root / ".claude" / "agents" / "lider.md").read_text(encoding="utf-8")
 
 
 def test_check_no_escribe_el_espejo(context):

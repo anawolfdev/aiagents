@@ -7,9 +7,12 @@ from agents.agents.git_agent import GitAgent
 
 
 def _write_versioned_files(root):
-    (root / "pyproject.toml").write_text('[project]\nname = "x"\nversion = "1.0.0"\n')
+    (root / "pyproject.toml").write_text(
+        '[project]\nname = "x"\nversion = "1.0.0"\n', encoding="utf-8"
+    )
     (root / "README.md").write_text(
-        "![Version](https://img.shields.io/badge/Version-1.0.0-green)\n\n**Versión:** 1.0.0\n"
+        "![Version](https://img.shields.io/badge/Version-1.0.0-green)\n\n**Versión:** 1.0.0\n",
+        encoding="utf-8",
     )
 
 
@@ -19,15 +22,19 @@ def test_bump_version_updates_pyproject_and_readme(context):
     result = agent.bump_version(new_version="2.0.0")
 
     assert result.success
-    assert 'version = "2.0.0"' in (context.root / "pyproject.toml").read_text()
-    readme = (context.root / "README.md").read_text()
+    assert 'version = "2.0.0"' in (context.root / "pyproject.toml").read_text(encoding="utf-8")
+    readme = (context.root / "README.md").read_text(encoding="utf-8")
     assert "Version-2.0.0-green" in readme
     assert "**Versión:** 2.0.0" in readme
 
 
 def test_bump_version_warns_when_pattern_missing(context):
-    (context.root / "pyproject.toml").write_text('[project]\nname = "x"\n')  # sin "version = ..."
-    (context.root / "README.md").write_text("# Proyecto sin badge de versión\n")
+    (context.root / "pyproject.toml").write_text(
+        '[project]\nname = "x"\n', encoding="utf-8"
+    )  # sin "version = ..."
+    (context.root / "README.md").write_text(
+        "# Proyecto sin badge de versión\n", encoding="utf-8"
+    )
     agent = DocumentationAgent(context=context)
     result = agent.bump_version(new_version="2.0.0")
 
@@ -44,7 +51,7 @@ def test_tag_release_full_flow(context):
     result = agent.tag_release(version="1.1.0")
 
     assert result.success
-    assert 'version = "1.1.0"' in (context.root / "pyproject.toml").read_text()
+    assert 'version = "1.1.0"' in (context.root / "pyproject.toml").read_text(encoding="utf-8")
     tags = subprocess.run(["git", "tag"], cwd=context.root, capture_output=True, text=True, check=True).stdout
     assert "1.1.0" in tags.splitlines()
 
@@ -66,7 +73,9 @@ def test_tag_release_refuses_to_overwrite_existing_tag(context):
 
 
 def test_tag_release_generates_cicd_when_missing(context):
-    (context.root / "Makefile").write_text("test:\n\t@echo test\nlint:\n\t@echo lint\n")
+    (context.root / "Makefile").write_text(
+        "test:\n\t@echo test\nlint:\n\t@echo lint\n", encoding="utf-8"
+    )
     _write_versioned_files(context.root)
     subprocess.run(["git", "add", "-A"], cwd=context.root, check=True)
     subprocess.run(["git", "commit", "-q", "-m", "chore: setup"], cwd=context.root, check=True)

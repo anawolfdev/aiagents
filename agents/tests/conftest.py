@@ -28,7 +28,7 @@ def project_root(tmp_path: Path) -> Path:
     subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
     subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=tmp_path, check=True)
     subprocess.run(["git", "config", "user.name", "Test"], cwd=tmp_path, check=True)
-    (tmp_path / "README.md").write_text("# Proyecto de prueba\n")
+    (tmp_path / "README.md").write_text("# Proyecto de prueba\n", encoding="utf-8")
     subprocess.run(["git", "add", "."], cwd=tmp_path, check=True)
     subprocess.run(["git", "commit", "-q", "-m", "chore: commit inicial"], cwd=tmp_path, check=True)
 

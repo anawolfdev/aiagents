@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from contextlib import suppress
 from typing import Any
 
 from agents.context import get_context
@@ -128,6 +129,12 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    # La consola de Windows usa cp1252 y no puede representar ✔/✘/⚠. La salida
+    # de esta CLI es UTF-8 siempre, también cuando se redirige a un fichero.
+    for stream in (sys.stdout, sys.stderr):
+        with suppress(AttributeError, OSError):
+            stream.reconfigure(encoding="utf-8")
+
     parser = build_parser()
     args = parser.parse_args(argv)
     json_mode = args.json

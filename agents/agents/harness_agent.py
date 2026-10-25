@@ -14,13 +14,17 @@ forma de saltársela pidiéndoselo amablemente al modelo.
 
 from __future__ import annotations
 
-import fcntl
 import json
+import os
+import shutil
 from contextlib import contextmanager
 from datetime import date
 from functools import wraps
 from pathlib import Path
 from typing import Any
+
+if os.name != "nt":
+    import fcntl
 
 from agents.core.base_agent import AgentResult, BaseAgent
 from agents.core.registry import register_agent
@@ -43,6 +47,37 @@ _RECHAZOS = ("rechazado", "rechaza", "rejected", "fail", "ko")
 
 def _es_rechazo(verdict: str) -> bool:
     return verdict.strip().lower() in _RECHAZOS
+
+
+def _bash_executable() -> str:
+    """
+    Devuelve el bash del arnés.
+
+    En Windows `PATH` suele resolver `bash` al `bash.exe` de System32, que es
+    WSL: ejecuta el script en otro sistema de ficheros y no reenvía el entorno
+    a los procesos nativos (el `VAR=valor python ...` de init.sh llega vacío).
+    Por eso se busca primero el bash de Git for Windows.
+    """
+    override = os.environ.get("HARNESS_BASH")
+    if override:
+        return override
+    if os.name != "nt":
+        return "bash"
+
+    candidates: list[Path] = []
+    git = shutil.which("git")
+    if git:
+        # <raíz de Git>/cmd/git.exe, <raíz>/mingw64/bin/git.exe…
+        root = Path(git).resolve().parent.parent
+        candidates += [root / "bin" / "bash.exe", root / "usr" / "bin" / "bash.exe"]
+    for base in (os.environ.get("PROGRAMFILES"), os.environ.get("PROGRAMFILES(X86)")):
+        if base:
+            candidates += [Path(base) / "Git" / "bin" / "bash.exe",
+                           Path(base) / "Git" / "usr" / "bin" / "bash.exe"]
+    for candidate in candidates:
+        if candidate.is_file():
+            return str(candidate)
+    return "bash"
 
 
 def synchronized(method):
@@ -195,19 +230,39 @@ class HarnessAgent(BaseAgent):
         except (MissingDependencyError, ToolExecutionError, OSError):
             directory = self._harness_dir
             directory.mkdir(parents=True, exist_ok=True)
-        with (directory / "geas-state.lock").open("a") as lock:
-            try:
-                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except BlockingIOError as exc:
-                raise ValueError(
-                    "Otra operación del arnés está modificando este clon; repite cuando termine."
-                ) from exc
+        with (directory / "geas-state.lock").open("a+") as lock:
+            if os.name == "nt":
+                import msvcrt
+
+                try:
+                    lock.seek(0)
+                    msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
+                except OSError as exc:
+                    raise ValueError(
+                        "Otra operación del arnés está modificando este clon; repite cuando termine."
+                    ) from exc
+            else:
+                try:
+                    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                except BlockingIOError as exc:
+                    raise ValueError(
+                        "Otra operación del arnés está modificando este clon; repite cuando termine."
+                    ) from exc
             self._state_depth = 1
             try:
                 yield
             finally:
                 self._state_depth = 0
-                fcntl.flock(lock, fcntl.LOCK_UN)
+                if os.name == "nt":
+                    import msvcrt
+
+                    try:
+                        lock.seek(0)
+                        msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
+                    except OSError:
+                        pass
+                else:
+                    fcntl.flock(lock, fcntl.LOCK_UN)
 
     # -- backlog -------------------------------------------------------------
     def _load(self) -> tuple[dict | None, str]:
@@ -504,7 +559,9 @@ class HarnessAgent(BaseAgent):
         if not script.exists():
             return self._fail("gate", "No existe init.sh: el arnés no tiene puerta.")
 
-        args = ["bash", str(script), "--json"]
+        # Git Bash lanzado desde Python no abre rutas absolutas de Windows:
+        # se le pasa el nombre relativo y se ejecuta con cwd en la raíz.
+        args = [_bash_executable(), script.name, "--json"]
         if quick:
             args.append("--quick")
         try:

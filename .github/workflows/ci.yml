@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.13.5"
+      - run: uv python install 3.12
+      - run: uv sync --extra dev
+      # El runner no alcanza la instancia GEAS de la LAN: la puerta corre en
+      # modo local, que es el modo previsto cuando no hay configuración remota.
+      - run: rm -f .geas.yml
+      # Los mismos comandos que `make check`: lint + typecheck + test + arnés.
+      - run: make check

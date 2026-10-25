@@ -1,0 +1,24 @@
+# Normaliza finales de línea por tipo de fichero.
+#
+# Sin esto, `core.autocrlf=true` (el valor por defecto de Git for Windows)
+# convierte los `.sh` a CRLF al hacer checkout y bash los rechaza:
+#   init.sh: line 18: set: pipefail
+#   : invalid option name
+# El arnés es bash puro, así que sus scripts tienen que quedarse en LF.
+
+* text=auto
+
+*.sh            text eol=lf
+*.bash          text eol=lf
+*.py            text eol=lf
+*.yml           text eol=lf
+*.yaml          text eol=lf
+*.json          text eol=lf
+*.toml          text eol=lf
+*.md            text eol=lf
+Makefile        text eol=lf
+
+*.png           binary
+*.jpg           binary
+*.pdf           binary
+*.ico           binary

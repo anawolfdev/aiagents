@@ -256,7 +256,7 @@ def test_record_escribe_el_informe_del_subagente(harness):
     assert result.success
     path = harness.ctx.root / "harness" / "progress" / "explorer-A-001.md"
     assert path.exists()
-    text = path.read_text()
+    text = path.read_text(encoding="utf-8")
     assert "explorer · A-001" in text
     assert "x.py" in text
 

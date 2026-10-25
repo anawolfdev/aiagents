@@ -32,6 +32,22 @@ ACTOR = "00000000-0000-4000-8000-000000000003"
 OTHER = "00000000-0000-4000-8000-000000000004"
 TICKET = "00000000-0000-4000-8000-000000000005"
 ROOT = Path(__file__).resolve().parents[2]
+# En Windows, `bash` a secas puede resolver al bash de WSL cuando se le pasa
+# un env propio, y WSL no ve ni el PATH nativo ni las rutas del proyecto.
+BASH = shutil.which("bash") or "bash"
+
+
+def _posix_path(value: str) -> str:
+    """Convierte un PATH nativo de Windows (`;`) al formato POSIX (`:`)."""
+    if os.name != "nt":
+        return value
+    partes = []
+    for parte in value.split(os.pathsep):
+        if len(parte) > 1 and parte[1] == ":":
+            partes.append("/" + parte[0].lower() + parte[2:].replace("\\", "/"))
+        else:
+            partes.append(parte.replace("\\", "/"))
+    return ":".join(partes)
 
 
 def git(root, *args, check=True):
@@ -673,31 +689,41 @@ def scaffold_init(local, tmp_path):
     binaries = tmp_path / "bin"
     binaries.mkdir()
     uv = binaries / "uv"
-    uv.write_text(f'#!/bin/sh\nif [ "$1" = "--version" ]; then printf "uv test\\n"; exit 0; fi\nshift\nexec "{sys.executable}" -m "$@"\n')
+    uv.write_text(
+        f'#!/bin/sh\nif [ "$1" = "--version" ]; then printf "uv test\\n"; exit 0; fi\n'
+        f'shift\nexec "{Path(sys.executable).as_posix()}" -m "$@"\n'
+    )
     uv.chmod(0o755)
-    return {**os.environ, "PYTHONPATH": str(ROOT), "PATH": f"{binaries}:{os.environ['PATH']}"}
+    # PYTHON evita depender de cómo se traduce el PATH a Git Bash: en Windows
+    # las rutas nativas y las POSIX no se pueden mezclar en una sola variable.
+    return {
+        **os.environ,
+        "PYTHON": Path(sys.executable).as_posix(),
+        "PYTHONPATH": Path(ROOT).as_posix(),
+        "PATH": _posix_path(str(binaries)) + ":" + _posix_path(os.environ["PATH"]),
+    }
 
 
 def test_init_json_quick_sync_and_full_agents_regressions(remote, api, tmp_path):
     _, local, _, _ = remote
     env = scaffold_init(local, tmp_path)
-    quick = subprocess.run(["bash", "init.sh", "--quick", "--json"], cwd=local, env=env, capture_output=True, text=True, timeout=30)
+    quick = subprocess.run([BASH, "init.sh", "--quick", "--json"], cwd=local, env=env, capture_output=True, text=True, timeout=30)
     assert quick.returncode == 0, quick.stdout + quick.stderr
     assert json.loads(quick.stdout)["checks"][0]["check"] == "sync"
     assert api["calls"].count("health") == 2  # leaf sync, no recursion
-    full = subprocess.run(["bash", "init.sh", "--json"], cwd=local, env=env, capture_output=True, text=True, timeout=30)
+    full = subprocess.run([BASH, "init.sh", "--json"], cwd=local, env=env, capture_output=True, text=True, timeout=30)
     assert full.returncode == 1, full.stdout + full.stderr
     assert any(c["check"] == "pytest" and c["status"] == "fail" for c in json.loads(full.stdout)["checks"])
     env.pop("GEAS_ACTOR_ID", None)
     env.pop("GEAS_ACTOR", None)
-    blocked = subprocess.run(["bash", "init.sh", "--quick", "--json"], cwd=local, env=env, capture_output=True, text=True, timeout=30)
+    blocked = subprocess.run([BASH, "init.sh", "--quick", "--json"], cwd=local, env=env, capture_output=True, text=True, timeout=30)
     report = json.loads(blocked.stdout)
     assert blocked.returncode == 1
     assert report["ready"] is False
     assert len(report["checks"]) == 1
     assert "ACTOR_REQUIRED" in report["checks"][0]["detail"]
     (local / ".geas.yml").unlink()
-    offline = subprocess.run(["bash", "init.sh", "--quick", "--json"], cwd=local, env=env, capture_output=True, text=True, timeout=30)
+    offline = subprocess.run([BASH, "init.sh", "--quick", "--json"], cwd=local, env=env, capture_output=True, text=True, timeout=30)
     assert offline.returncode == 0, offline.stdout + offline.stderr
 
 
@@ -789,5 +815,7 @@ def test_gate_cannot_redirect_push_to_new_destination(remote, api, monkeypatch, 
 
 def test_shell_wrappers_are_syntactically_valid():
     for name in ("init.sh", "sync.sh", "start.sh", "finish.sh", "status.sh"):
-        result = subprocess.run(["bash", "-n", str(ROOT / name)], capture_output=True, text=True)
+        result = subprocess.run(
+            ["bash", "-n", name], cwd=ROOT, capture_output=True, text=True
+        )
         assert result.returncode == 0, (name, result.stderr)
