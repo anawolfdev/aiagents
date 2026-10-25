@@ -73,7 +73,18 @@ def test_relevance_is_fraction_of_keywords_present():
     assert ResearchTool.relevance(paper, []) == 0.0
 
 
-def test_dedupe_keeps_most_cited():
+def test_dedupe_merges_same_title_with_different_dois():
+    papers = [
+        {"title": "Shadows in the Code", "doi": "10.1609/aaai.1", "citations": 3},
+        {"title": "Shadows in the code.", "doi": "10.48550/arxiv.1", "citations": 9},
+        {"title": "Shadows in the Code", "doi": None, "citations": 0},
+    ]
+    deduped = ResearchTool.dedupe(papers)
+    assert len(deduped) == 1
+    assert deduped[0]["doi"] == "10.48550/arxiv.1"  # el de más citas
+
+
+def test_dedupe_merges_papers_with_identical_titles():
     papers = [
         {"title": "Same Paper", "doi": "10.1/x", "citations": 5},
         {"title": "Same Paper", "doi": "10.1/x", "citations": 50},

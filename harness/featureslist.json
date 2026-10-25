@@ -167,10 +167,13 @@
         "uv run python -m agents.prompts_sync sale en verde (todo agente registrado tiene prompt y contrato)",
         "./init.sh termina con ENTORNO LISTO"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "ONBOARD-001"
-      ]
+      ],
+      "started": "2026-10-25",
+      "review_rounds": 0,
+      "closed": "2026-10-25"
     },
     {
       "id": "BOOT-004",

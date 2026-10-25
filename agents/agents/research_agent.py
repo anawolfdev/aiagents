@@ -130,24 +130,46 @@ class ResearchAgent(BaseAgent):
         )
 
     def find_papers(self, *, backend: str = "openalex", max_results: int = 10,
-                    top_keywords: int = 8) -> AgentResult:
+                    top_keywords: int = 8, query: str = "") -> AgentResult:
         """
         Busca papers relacionados con el PROYECTO: deriva sus keywords y consulta
         el backend con ellas. Es la acción principal del agente.
+
+        `query` permite enfocar la búsqueda en un aspecto concreto; sin él se
+        usan las keywords del proyecto. OpenAlex trata la consulta como una
+        conjunción: ocho términos en dos idiomas no devuelven nada, así que se
+        prueban subconjuntos hasta que haya al menos tres resultados.
         """
         kw_result = self.project_keywords(top=top_keywords)
         if not kw_result.success:
             return kw_result
         keywords = kw_result.data["keywords"]
-        query = " ".join(keywords)
 
-        search_result = self.search(query=query, backend=backend, max_results=max_results)
-        if not search_result.success:
-            return search_result
+        if query.strip():
+            search_result = self.search(query=query.strip(), backend=backend, max_results=max_results)
+            if not search_result.success:
+                return search_result
+            papers = search_result.data["papers"]
+            usada = query.strip()
+        else:
+            # OpenAlex trata la consulta como conjunción: con ocho términos no
+            # devuelve nada. Se prueban subconjuntos hasta tener al menos tres
+            # resultados, de más específico a menos.
+            papers, usada = [], ""
+            for n in range(len(keywords), 1, -1):
+                usada = " ".join(keywords[:n])
+                search_result = self.search(query=usada, backend=backend, max_results=max_results)
+                if not search_result.success:
+                    return search_result
+                papers = search_result.data["papers"]
+                if len(papers) >= 3:
+                    break
 
-        papers = ResearchTool.rank(search_result.data["papers"], keywords)
+        # `search` ya deduplica, pero el mismo trabajo aparece con variantes de
+        # título y no queremos repetirlo en el informe.
+        papers = ResearchTool.dedupe(ResearchTool.rank(papers, keywords))
         return AgentResult(
             True, self.name, "find_papers",
             f"{len(papers)} paper(s) relacionados con el proyecto (backend {backend}).",
-            data={"backend": backend, "keywords": keywords, "papers": papers},
+            data={"backend": backend, "keywords": keywords, "query": usada, "papers": papers},
         )

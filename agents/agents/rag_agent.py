@@ -66,12 +66,16 @@ class RagAgent(BaseAgent):
             data=result,
         )
 
-    def index_urls(self, *, urls: list[str]) -> AgentResult:
+    def index_urls(self, *, urls: list[str] | str) -> AgentResult:
         if not RagTool.available():
             return AgentResult(
                 False, self.name, "index_urls",
                 "chromadb no está instalado. Ejecuta: uv sync --extra rag",
             )
+        # La CLI pasa los argumentos como texto (`--urls "a,b"`), así que se
+        # acepta una lista o una cadena separada por comas o saltos de línea.
+        if isinstance(urls, str):
+            urls = [u.strip() for u in urls.replace("\n", ",").split(",") if u.strip()]
         if not urls:
             return AgentResult(False, self.name, "index_urls", "Proporciona al menos una URL.")
 
@@ -94,7 +98,7 @@ class RagAgent(BaseAgent):
         return AgentResult(
             not errors or bool(indexed), self.name, "index_urls", msg,
             data={"indexed": indexed, "errors": errors},
-            warnings=[f"{e['url']}: {e['error']}" for e in errors] if errors else None,
+            warnings=[f"{e['url']}: {e['error']}" for e in errors],
         )
 
     def search(self, *, query: str, top_k: int = 10, hybrid: bool = True,

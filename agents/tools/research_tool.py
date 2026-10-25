@@ -172,9 +172,14 @@ class ResearchTool:
 
     @staticmethod
     def _dedupe_key(paper: dict[str, Any]) -> str:
+        # El título manda: el mismo trabajo llega de OpenAlex con DOIs distintos
+        # (editorial, arXiv, AAAI) y por DOI se colaría tres veces en el informe.
+        title = re.sub(r"[^a-z0-9]+", "", paper.get("title", "").lower())
+        if title:
+            return f"title:{title}"
         if paper.get("doi"):
             return f"doi:{paper['doi']}"
-        return "title:" + re.sub(r"[^a-z0-9]+", "", paper.get("title", "").lower())
+        return f"anon:{id(paper)}"
 
     @staticmethod
     def dedupe(papers: list[dict[str, Any]]) -> list[dict[str, Any]]:

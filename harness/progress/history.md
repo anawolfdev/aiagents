@@ -425,3 +425,19 @@ Criterio 1: 'uv run python -m agents run bootstrap describe --description "..." 
 ```
 
 </details>
+
+## ONBOARD-002 — Qué se sabe ya y qué agentes hacen falta
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 631 passed, 1 skipped in 444.93s (0:07:24)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+research find_papers: success=true, 7 papers únicos. rag index_urls: 3 URL(s) indexadas (22 chunks), rag search las devuelve con trust=externo. estado-del-arte.md con 7 fuentes (se toma/se descarta). suggest_agents: 21 términos léxicos sin cobertura, 0 huecos aceptados tras revisión semántica. prompts_sync: verde. init.sh: ENTORNO LISTO (se adjunta salida de la puerta).
+```
+
+</details>

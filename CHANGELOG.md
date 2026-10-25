@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- Qué se sabe ya y qué agentes hacen falta (ONBOARD-002)
+
+## [Unreleased] — 2026-10-25
+
+### Añadido
+
 - Entender el proyecto (ONBOARD-001)
 
 ## [Unreleased] — 2026-10-25

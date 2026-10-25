@@ -37,7 +37,7 @@ de forma controlada. Resultados cacheados en `graphify-out/cache/`.
 | Acción | Argumentos |
 |--------|------------|
 | `run research project_keywords` | `--top` |
-| `run research find_papers` | `--backend`, `--max_results`, `--top_keywords` |
+| `run research find_papers` | `--backend`, `--max_results`, `--top_keywords`, `--query` |
 | `run research search` | `--query` (obligatorio) · `--backend`, `--max_results`, `--no_cache` |
 
 ## Límites
