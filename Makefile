@@ -12,7 +12,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 #  Variables
 # ─────────────────────────────────────────────────────────────────────────────
-MODULE = app
+MODULE = meshharmes
 PYTHON = python
 
 # El repositorio es UTF-8; Windows no lo es por defecto.

@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from app import paths
+from meshharmes import paths
 
 
 def test_root_contiene_el_paquete() -> None:
-    assert (paths.ROOT_DIR / "app" / "__init__.py").is_file()
+    assert (paths.ROOT_DIR / "meshharmes" / "__init__.py").is_file()
 
 
 def test_rutas_derivadas_cuelgan_de_la_raiz() -> None:

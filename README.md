@@ -1,7 +1,7 @@
 # MeshHarmes
 
 ![Python](https://img.shields.io/badge/Python-3.12+-blue?logo=python&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.1.11-green)
+![Version](https://img.shields.io/badge/Version-0.1.12-green)
 ![Author](https://img.shields.io/badge/Author-cacelass-blueviolet)
 
 > Diseño y arnés de una fábrica personal de agentes: un solo propietario
@@ -19,8 +19,8 @@ El alcance de esta tarea es el **paquete de diseño** de esa fábrica
 no instala agentes, no activa workflows y no despliega nada. El objetivo y sus
 límites están en [`vault/01_PROYECTO/objetivo.md`](vault/01_PROYECTO/objetivo.md).
 
-El paquete `app/` es la pieza ejecutable del arnés: el código que acompaña al
-diseño, no la fábrica en marcha.
+El paquete `meshharmes/` es la pieza ejecutable del arnés: el código que
+acompaña al diseño, no la fábrica en marcha.
 
 ---
 
@@ -54,7 +54,7 @@ Y para arrancar el ciclo de trabajo en tu asistente:
 ## Estructura del proyecto
 
 ```
-├── app/                    ← TU código (renómbralo, ver más abajo)
+├── meshharmes/             ← la CLI del arnés (paquete del proyecto)
 ├── tests/                  ← tus tests
 ├── agents/                 ← el sistema de agentes (24 agentes Python)
 │   ├── agents/             cada agente, una responsabilidad
@@ -255,10 +255,11 @@ uv run python -m agents run knowledge sync_agent_cards --dry_run false --yes
 ## Empezar un proyecto con esto
 
 1. Clona o copia el repo y borra su historial git si quieres empezar limpio.
-2. **Renombra el paquete**: `git mv app <tu_paquete>` y actualiza
-   `project_slug` en `project.yml`, `packages` en `pyproject.toml`,
-   `[tool.coverage.run] source` y `MODULE` en el `Makefile`. `./init.sh` te
-   avisa si te dejas alguno.
+2. **Renombra el paquete**: `git mv meshharmes <tu_paquete>` y actualiza
+   `project_slug` en `project.yml`, `name`/`packages`/`[project.scripts]` en
+   `pyproject.toml`, `[tool.coverage.run] source`, `MODULE` en el `Makefile`
+   y la primera fila de `FUENTES` en `agents/tools/rag_tool.py`. `./init.sh`
+   te avisa si te dejas alguno.
 3. Vacía `harness/featureslist.json` y escribe tu propio backlog — o pídeselo
    al agente: `uv run python -m agents run harness add --id X-001 --title "..." --criteria "a;b"`.
 4. `make setup && make init`.

@@ -1,10 +1,10 @@
 """
-app.paths — rutas del proyecto, resueltas una sola vez.
+meshharmes.paths — rutas del proyecto, resueltas una sola vez.
 
 Existe por un motivo concreto: en cuanto dos módulos calculan por su cuenta
 "dónde está la raíz", uno de los dos se equivoca el día que cambia la
 estructura. Aquí la raíz se deriva de la posición de este fichero, así que
-funciona igual desde un test, desde un script y desde `python -m app`.
+funciona igual desde un test, desde un script y desde `python -m meshharmes`.
 
 `agents/context.py` hace el mismo cálculo para el arnés y a propósito no
 importa este módulo: los agentes tienen que poder trabajar aunque el paquete
@@ -15,10 +15,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-#: app/paths.py -> parents[1] es la raíz del repositorio.
+#: meshharmes/paths.py -> parents[1] es la raíz del repositorio.
 ROOT_DIR: Path = Path(__file__).resolve().parents[1]
 
-PACKAGE_DIR: Path = ROOT_DIR / "app"
+PACKAGE_DIR: Path = ROOT_DIR / "meshharmes"
 TESTS_DIR: Path = ROOT_DIR / "tests"
 DOCS_DIR: Path = ROOT_DIR / "docs"
 HARNESS_DIR: Path = ROOT_DIR / "harness"

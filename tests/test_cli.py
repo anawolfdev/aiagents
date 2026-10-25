@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from app.cli import build_parser, hello, main
+from meshharmes.cli import build_parser, hello, main
 
 
 def test_hello_devuelve_el_saludo() -> None:

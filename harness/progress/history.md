@@ -377,3 +377,19 @@ Criterio 1: grep '^## ' vault/01_PROYECTO/objetivo.md -> '## Problema', '## Usua
 ```
 
 </details>
+
+## DESIGN-001 — Decidir cómo se va a resolver
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 612 passed, 15 skipped in 436.12s (0:07:16)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+Criterio 1: vault/01_PROYECTO/arquitectura.md (111 lineas) con secciones 'Piezas y flujo', 'Estructura del repositorio' y diagrama propietario -> docs/design -> harness -> agentes -> init.sh -> meshharmes/tests/CI. Criterio 2: 'Alternativas consideradas y descartadas' tiene 3, cada una con motivo (sexto agente coordinador; orquestador de terceros con estado en BD; layout src/). Criterio 3: tabla 'Riesgos conocidos' con 7 filas y mitigacion + seccion 'Decisiones aplazadas' con 6. Criterio 4: rename coherencia -> project.yml 'project_slug: meshharmes'; pyproject 'name = "meshharmes"', 'meshharmes = "meshharmes.cli:main"', 'packages = ["meshharmes"]', 'source = ["meshharmes"]'; Makefile 'MODULE = meshharmes'; uv run meshharmes --version -> 'meshharmes 0.1.11'; uv run pytest tests/ -> '7 passed'. Criterio 5: puerta ./init.sh --json en verde.
+```
+
+</details>

@@ -598,7 +598,7 @@ class RagTool:
     #: significaba copiar el sexto. Ahora es una fila mas en la tabla.
     #: (subdirectorio, patron, recursivo, sufijos admitidos o None, troceador)
     FUENTES = (
-        ("app", "*.py", True, None, "py"),
+        ("meshharmes", "*.py", True, None, "py"),
         # El codigo que se despliega tambien es documentacion: sin estas cuatro
         # filas, preguntar por la API o por el drift solo devolvia los prompts
         # que los describen, nunca la implementacion que los hace. Los

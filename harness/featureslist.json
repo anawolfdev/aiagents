@@ -31,10 +31,13 @@
         "El paquete app/ está renombrado al nombre real del proyecto (project.yml, pyproject.toml, Makefile y coverage coherentes)",
         "./init.sh termina con ENTORNO LISTO"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "SCOPE-001"
-      ]
+      ],
+      "started": "2026-10-25",
+      "review_rounds": 0,
+      "closed": "2026-10-25"
     },
     {
       "id": "CORE-001",
