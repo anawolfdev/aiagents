@@ -441,3 +441,19 @@ research find_papers: success=true, 7 papers únicos. rag index_urls: 3 URL(s) i
 ```
 
 </details>
+
+## FAB-008 — contrato del coordinador y límites de interlocución
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 631 passed, 1 skipped in 427.10s (0:07:07)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+reviewer-FAB-008 (ronda 2): los 6 criterios PASS con referencias a docs/design/02-coordinador.md; gate de la ronda: ENTORNO LISTO, 612 passed, 15 skipped. Verificado de nuevo en este cierre por la puerta de harness finish.
+```
+
+</details>

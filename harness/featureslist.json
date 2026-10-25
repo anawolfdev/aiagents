@@ -408,7 +408,7 @@
         "ningún rol se salta al coordinador",
         "el contrato encaja con A1-A5 y no duplica sus funciones"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002",
@@ -418,7 +418,10 @@
         "FAB-006",
         "FAB-007"
       ],
-      "geas_ticket_id": "decb9d40-3f37-46d4-bc0b-27ce599c4084"
+      "geas_ticket_id": "decb9d40-3f37-46d4-bc0b-27ce599c4084",
+      "started": "2026-10-25",
+      "review_rounds": 0,
+      "closed": "2026-10-25"
     },
     {
       "id": "FAB-009",
