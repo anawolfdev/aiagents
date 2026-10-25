@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- vigilancia programada, Telegram y detección de ausencia (FAB-015)
+
+## [Unreleased] — 2026-10-25
+
+### Añadido
+
 - publicación, proveedores y PR seguro (FAB-014)
 
 ## [Unreleased] — 2026-10-25

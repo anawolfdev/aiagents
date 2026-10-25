@@ -597,7 +597,7 @@
         "el inventario no requiere acceso general",
         "el documento no afirma que la vigilancia ya está activa"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002",
@@ -607,7 +607,10 @@
         "FAB-006",
         "FAB-007"
       ],
-      "geas_ticket_id": "dbc9e423-3ddc-437f-9656-66ffdf44cbc0"
+      "geas_ticket_id": "dbc9e423-3ddc-437f-9656-66ffdf44cbc0",
+      "started": "2026-10-25",
+      "review_rounds": 0,
+      "closed": "2026-10-25"
     },
     {
       "id": "FAB-016",

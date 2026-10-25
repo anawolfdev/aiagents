@@ -553,3 +553,19 @@ docs/design/14-publicacion-proveedores.md: clases de repositorio y dato (L11-15,
 ```
 
 </details>
+
+## FAB-015 — vigilancia programada, Telegram y detección independiente de ausencia
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 631 passed, 1 skipped in 431.30s (0:07:11)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/15-vigilancia-telegram.md: permisos mínimos (L23-24); detección independiente de ausencia (L29, L66-75); Telegram no borra bloqueos (L58, L62); sin secretos en canal público (L52, L61); inventario sin acceso general (L43-45); no afirma vigilancia activa (L3, L11). Revisor ronda 1: APROBADO 6/6. init.sh en verde.
+```
+
+</details>
