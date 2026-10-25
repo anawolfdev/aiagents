@@ -1,10 +1,12 @@
 # MeshHarmes
 
 ![Python](https://img.shields.io/badge/Python-3.12+-blue?logo=python&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.1.10-green)
+![Version](https://img.shields.io/badge/Version-0.1.11-green)
 ![Author](https://img.shields.io/badge/Author-cacelass-blueviolet)
 
-> Arnés de agentes e infraestructura de proyecto para trabajo general en Python.
+> Diseño y arnés de una fábrica personal de agentes: un solo propietario
+> especifica, construye y evalúa agentes sobre su propio equipo, con las reglas
+> del juego escritas en código y evidencia real para cerrar cada paso.
 
 Un repositorio para empezar proyectos donde el trabajo lo hace —en parte— un
 agente de IA, con las reglas del juego escritas **en código** y no en un
@@ -12,8 +14,13 @@ prompt: una puerta de entrada que decide si se puede trabajar, un backlog con
 criterios de aceptación, memoria fuera de la ventana de contexto y una puerta
 de permisos para las acciones que no se deshacen.
 
-No incluye nada de un dominio concreto. El paquete `app/` está vacío a
-propósito: ahí va tu código.
+El alcance de esta tarea es el **paquete de diseño** de esa fábrica
+(`docs/design/`) y el arnés que lo mantiene honesto. El diseño no se ejecuta:
+no instala agentes, no activa workflows y no despliega nada. El objetivo y sus
+límites están en [`vault/01_PROYECTO/objetivo.md`](vault/01_PROYECTO/objetivo.md).
+
+El paquete `app/` es la pieza ejecutable del arnés: el código que acompaña al
+diseño, no la fábrica en marcha.
 
 ---
 

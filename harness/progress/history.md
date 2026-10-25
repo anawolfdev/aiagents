@@ -361,3 +361,19 @@ Sobre origin/main (50c5c25): make lint -> 'ruff check app/ tests/ agents/' 'All 
 ```
 
 </details>
+
+## SCOPE-001 — Definir qué se quiere resolver
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 612 passed, 15 skipped in 433.98s (0:07:13)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+Criterio 1: grep '^## ' vault/01_PROYECTO/objetivo.md -> '## Problema', '## Usuario / consumidor', '## Criterio de hecho', '## Fuera de alcance'. Criterio 2: el criterio de hecho son comandos ejecutables (./init.sh, harness status, docs/design/README.md + git ls-files), no 'que funcione bien'. Criterio 3: el apartado Fuera de alcance tiene 5 entradas (ejecutar la fabrica, publicar/desplegar, multiusuario, entrenar modelos o memoria/RAG por defecto, sustituir la aprobacion humana). Criterio 4: README -> '> Diseno y arnes de una fabrica personal de agentes: un solo propietario especifica, construye y evalua agentes sobre su propio equipo...'. Criterio 5: puerta ./init.sh --json -> ready=true, errors=0.
+```
+
+</details>

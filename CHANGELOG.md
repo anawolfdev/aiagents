@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- Definir qué se quiere resolver (SCOPE-001)
+
+## [Unreleased] — 2026-10-25
+
+### Añadido
+
 - Batería de calidad en verde (QA-001)
 
 ## [Unreleased] — 2026-10-22
