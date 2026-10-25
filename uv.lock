@@ -1241,7 +1241,7 @@ wheels = [
 
 [[package]]
 name = "meshharmes"
-version = "0.1.21"
+version = "0.1.22"
 source = { editable = "." }
 
 [package.optional-dependencies]
