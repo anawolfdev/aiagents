@@ -624,7 +624,7 @@
         "los resultados se registran de forma persistente",
         "no se simula un mecanismo automático que aún no existe"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002",
@@ -634,7 +634,10 @@
         "FAB-006",
         "FAB-007"
       ],
-      "geas_ticket_id": "cddd7600-5afe-48aa-8ed7-c08177dd71eb"
+      "geas_ticket_id": "cddd7600-5afe-48aa-8ed7-c08177dd71eb",
+      "started": "2026-10-25",
+      "review_rounds": 0,
+      "closed": "2026-10-25"
     },
     {
       "id": "FAB-017",

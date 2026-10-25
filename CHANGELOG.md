@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- protocolo de validación con diecisiete escenarios (FAB-016)
+
+## [Unreleased] — 2026-10-25
+
+### Añadido
+
 - vigilancia programada, Telegram y detección de ausencia (FAB-015)
 
 ## [Unreleased] — 2026-10-25

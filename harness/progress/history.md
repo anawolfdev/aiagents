@@ -569,3 +569,19 @@ docs/design/15-vigilancia-telegram.md: permisos mínimos (L23-24); detección in
 ```
 
 </details>
+
+## FAB-016 — protocolo de pruebas y validación de la fábrica
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 631 passed, 1 skipped in 430.51s (0:07:10)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/16-validacion.md: 17 escenarios (L30-147); evidencia esperada por escenario (L34 etc.); regla APROBADO/RECHAZADO (L24, L153); ejecución antes de declarar validación (L11, L177); registro persistente (L13, L155-175); sin simular automatización (L183). Revisor ronda 1: APROBADO 6/6. init.sh en verde.
+```
+
+</details>
