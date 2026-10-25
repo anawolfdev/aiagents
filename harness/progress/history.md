@@ -409,3 +409,19 @@ Criterio 1: 'uv run meshharmes status' sobre el backlog real -> '32 features · 
 ```
 
 </details>
+
+## ONBOARD-001 — Entender el proyecto
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 616 passed, 15 skipped in 373.66s (0:06:13)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+Criterio 1: 'uv run python -m agents run bootstrap describe --description "..." --yes' -> success=true, message 'Descripcion escrita en project.yml'. Criterio 2: project.yml -> 'project_description: Disenar una fabrica personal de agentes que permita a un unico propietario ... queda fuera de alcance.' (propia, no la de plantilla) y bootstrap status -> description_pending=false. Criterio 3: vault/01_PROYECTO/objetivo.md con '## Problema', '## Usuario / consumidor', '## Criterio de hecho', '## Fuera de alcance'. Criterio 4: README, primera linea de objetivo -> '> Diseno y arnes de una fabrica personal de agentes: un solo propietario especifica, construye y evalua agentes sobre su propio equipo...'. Criterio 5: puerta ./init.sh en verde.
+```
+
+</details>

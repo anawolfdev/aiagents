@@ -9,7 +9,7 @@
 project_name: MeshHarmes
 project_slug: meshharmes
 project_author_name: cacelass
-project_description: Diseño y arnés de una fábrica personal de agentes de IA.
+project_description: Disenar una fabrica personal de agentes que permita a un unico propietario especificar, construir, evaluar y desplegar agentes de IA sobre su propio equipo y un entorno aislado de pruebas. El entregable de esta tarea es el paquete de diseno; ejecutar la fabrica, instalar agentes, activar workflows, publicar y desplegar queda fuera de alcance.
 project_version: 0.1.11
 # La versión del .venv. uv la resuelve desde requires-python en pyproject.toml.
 python_version: 3.12
