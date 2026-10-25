@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- matriz de permisos, datos y secretos coherente (FAB-010)
+
+## [Unreleased] — 2026-10-25
+
+### Añadido
+
 - plantillas operativas y trazabilidad campo a campo (FAB-009)
 
 ## [Unreleased] — 2026-10-25

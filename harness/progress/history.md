@@ -473,3 +473,19 @@ docs/design/09-plantillas/README.md: nueve plantillas (L10-18); traza sección�
 ```
 
 </details>
+
+## FAB-010 — matriz de permisos, separación de datos y secretos
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 631 passed, 1 skipped in 425.65s (0:07:05)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/10-permisos-datos.md: matriz con justificación y control por permiso (L39-64); clases de dato (L13-22); secretos fuera de todo repositorio (L20-22); PR con checklist y sin auto-merge (L88-104); retención PENDIENTE bloqueante (L120); procesar≠publicar (L110). Revisor ronda 2: RESUELTO en los seis criterios. init.sh en verde.
+```
+
+</details>

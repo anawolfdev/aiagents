@@ -462,7 +462,7 @@
         "la retención queda pendiente de aprobación",
         "se distingue procesar de publicar"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002",
@@ -472,7 +472,10 @@
         "FAB-006",
         "FAB-007"
       ],
-      "geas_ticket_id": "93423ee9-32d9-44be-aac2-4eee6c450952"
+      "geas_ticket_id": "93423ee9-32d9-44be-aac2-4eee6c450952",
+      "started": "2026-10-25",
+      "review_rounds": 0,
+      "closed": "2026-10-25"
     },
     {
       "id": "FAB-011",
