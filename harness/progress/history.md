@@ -505,3 +505,19 @@ docs/design/11-estados-cobertura-recuperacion.md: estados y transiciones (L11-38
 ```
 
 </details>
+
+## FAB-012 — registro de bloqueos, emergencias y excepciones temporales
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 631 passed, 1 skipped in 411.61s (0:06:51)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/12-bloqueos-emergencias.md: disparador→acción (L27-33); dos bloqueos simultáneos (L11, L35); excepción caduca (L50-59); detección independiente de Telegram (L39-42); registro auditable (L69-71); bloqueo≠parada (L20, L29, L63-65). Revisor ronda 1: APROBADO 6/6. init.sh en verde.
+```
+
+</details>

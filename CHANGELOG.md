@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- registro de bloqueos, emergencias y excepciones (FAB-012)
+
+## [Unreleased] — 2026-10-25
+
+### Añadido
+
 - flujo de estados, cobertura y recuperación (FAB-011)
 
 ## [Unreleased] — 2026-10-25

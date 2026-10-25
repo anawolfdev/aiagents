@@ -516,7 +516,7 @@
         "el registro es auditable",
         "no se confunde bloqueo de despliegue con parada del agente"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002",
@@ -526,7 +526,10 @@
         "FAB-006",
         "FAB-007"
       ],
-      "geas_ticket_id": "c8e3896a-793b-4458-bc00-848f9a2cf439"
+      "geas_ticket_id": "c8e3896a-793b-4458-bc00-848f9a2cf439",
+      "started": "2026-10-25",
+      "review_rounds": 0,
+      "closed": "2026-10-25"
     },
     {
       "id": "FAB-013",
