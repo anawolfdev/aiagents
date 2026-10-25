@@ -393,3 +393,19 @@ Criterio 1: vault/01_PROYECTO/arquitectura.md (111 lineas) con secciones 'Piezas
 ```
 
 </details>
+
+## CORE-001 — Primera pieza funcional de punta a punta
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 616 passed, 15 skipped in 344.08s (0:05:44)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+Criterio 1: 'uv run meshharmes status' sobre el backlog real -> '32 features · 15 pending · 0 in_progress · 17 done · 0 blocked' / 'Siguiente: CORE-001' (exit 0); caso real de error: 'uv run meshharmes status --backlog /tmp/no-existe.json' -> 'meshharmes: No existe el backlog: ...' exit=1. Criterio 2: uv run pytest tests/test_cli.py -q -> '7 passed' que cubren camino feliz (backlog real, backlog temporal con dependencias, sin pendientes) y errores (fichero inexistente, JSON invalido, falta 'features', uso de argparse). Criterio 3: make check -> 'check pasado: lint + typecheck + test + arnes OK' (lint 'All checks passed!', typecheck 'Success: no issues found in 8 source files', pytest 616 passed). Criterio 4: README seccion '## Uso' con el comando, su salida esperada y el codigo de salida 1 en error. Criterio 5: puerta ./init.sh en verde.
+```
+
+</details>

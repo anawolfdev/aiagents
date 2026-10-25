@@ -106,11 +106,11 @@ info:
 #  Ejecución
 # ─────────────────────────────────────────────────────────────────────────────
 run:
-	uv run $(PYTHON) -m $(MODULE) hello
+	uv run $(PYTHON) -m $(MODULE) status
 
 profile:
 	@echo "▶  Profiling → profile.prof"
-	uv run $(PYTHON) -m cProfile -o profile.prof -m $(MODULE) hello
+	uv run $(PYTHON) -m cProfile -o profile.prof -m $(MODULE) status
 	@echo "   Visualiza con: uv run snakeviz profile.prof"
 
 # ─────────────────────────────────────────────────────────────────────────────

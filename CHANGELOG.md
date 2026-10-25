@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- Primera pieza funcional de punta a punta (CORE-001)
+
+## [Unreleased] — 2026-10-25
+
+### Añadido
+
 - Decidir cómo se va a resolver (DESIGN-001)
 
 ## [Unreleased] — 2026-10-25

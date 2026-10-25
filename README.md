@@ -1,7 +1,7 @@
 # MeshHarmes
 
 ![Python](https://img.shields.io/badge/Python-3.12+-blue?logo=python&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.1.12-green)
+![Version](https://img.shields.io/badge/Version-0.1.13-green)
 ![Author](https://img.shields.io/badge/Author-cacelass-blueviolet)
 
 > Diseño y arnés de una fábrica personal de agentes: un solo propietario
@@ -40,9 +40,30 @@ acompaña al diseño, no la fábrica en marcha.
 ```bash
 make setup     # uv sync --extra dev + hooks de pre-commit
 make init      # la puerta: ¿el proyecto está sano?
-make run       # ejecuta el paquete de ejemplo
+make run       # estado del backlog (meshharmes status)
 make check     # lint + typecheck + test + arnés
 ```
+
+## Uso
+
+`meshharmes status` lee `harness/featureslist.json`, cuenta estados y dice qué
+toca a continuación: la primera pendiente cuyas dependencias ya están hechas.
+
+```bash
+uv run meshharmes status
+# o, sin instalar nada:
+uv run python -m meshharmes status
+```
+
+Salida esperada (las cifras son las del backlog en ese momento):
+
+```
+<N> features · <pending> pending · <in_progress> in_progress · <done> done · <blocked> blocked
+Siguiente: <ID de la primera pendiente con dependencias cerradas, o —>
+```
+
+Si el backlog no existe o no es JSON válido, sale con código 1 y explica el
+motivo por stderr; no escribe nada (eso es del agente `harness`).
 
 Y para arrancar el ciclo de trabajo en tu asistente:
 
