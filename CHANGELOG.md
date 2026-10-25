@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- verificación y entrega del paquete de diseño (FAB-019)
+
+## [Unreleased] — 2026-10-25
+
+### Añadido
+
 - checklist de activación y parámetros pendientes (FAB-018)
 
 ## [Unreleased] — 2026-10-25

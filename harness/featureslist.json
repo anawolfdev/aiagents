@@ -706,7 +706,7 @@
         "la revisión independiente deja evidencia",
         "no se atribuye ninguna instalación, prueba o despliegue inexistente"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002",
@@ -716,7 +716,10 @@
         "FAB-006",
         "FAB-007"
       ],
-      "geas_ticket_id": "9b3cf943-d1ea-44fd-8a50-c726138ceb04"
+      "geas_ticket_id": "9b3cf943-d1ea-44fd-8a50-c726138ceb04",
+      "started": "2026-10-25",
+      "review_rounds": 0,
+      "closed": "2026-10-25"
     }
   ]
 }
