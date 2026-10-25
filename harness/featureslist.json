@@ -678,7 +678,7 @@
         "no hay secretos en el documento",
         "el checklist puede bloquear la activación"
       ],
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         "FAB-001",
         "FAB-002",
@@ -688,7 +688,10 @@
         "FAB-006",
         "FAB-007"
       ],
-      "geas_ticket_id": "ecbfd13c-640e-4b1c-8d3c-f69a87a41626"
+      "geas_ticket_id": "ecbfd13c-640e-4b1c-8d3c-f69a87a41626",
+      "started": "2026-10-25",
+      "review_rounds": 0,
+      "closed": "2026-10-25"
     },
     {
       "id": "FAB-019",

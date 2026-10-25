@@ -12,6 +12,12 @@ añade aquí una entrada por cada feature cerrada del arnés.
 
 ### Añadido
 
+- checklist de activación y parámetros pendientes (FAB-018)
+
+## [Unreleased] — 2026-10-25
+
+### Añadido
+
 - bootstrap sin circularidad y portabilidad (FAB-017)
 
 ## [Unreleased] — 2026-10-25

@@ -601,3 +601,19 @@ docs/design/17-bootstrap-portabilidad.md: 7 fases sin circularidad (L11-21); sal
 ```
 
 </details>
+
+## FAB-018 — checklist de activación y registro de parámetros pendientes
+
+- **Cerrada:** 2026-10-25
+- **Verificación:** ./init.sh en verde · 631 passed, 1 skipped in 428.45s (0:07:08)
+- **Cambios:** _(no indicados)_
+- **Decisiones:** _(ninguna reseñable)_
+- **Pendiente:** _(nada)_
+
+<details><summary>Evidencia</summary>
+
+```
+docs/design/18-activacion.md: 15 parámetros con dueño y evidencia (L17-34); nada resuelto sin prueba (L11, L19-34, L47-57); retención bloqueante (L13, L29); sin secretos (L61); checklist bloqueante (L17, L38-45). Revisor ronda 1: APROBADO 6/6. init.sh en verde.
+```
+
+</details>
