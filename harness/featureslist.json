@@ -720,6 +720,99 @@
       "started": "2026-10-25",
       "review_rounds": 0,
       "closed": "2026-10-25"
+    },
+    {
+      "id": "VAL-001",
+      "title": "Piloto E01: requisito ambiguo con flujo actual vs simplificado",
+      "description": "OBJETIVO: validar empíricamente si la orquestación actual del arnés se comporta como A1 ante un requisito ambiguo y comparar resultado, fallos y consumo con un flujo simplificado, ambos con el mismo modelo (Big Pickle).\nENTRADA EXACTA: «Quiero una herramienta para gestionar las inscripciones de un evento y avisar a la gente».\nFLUJOS: (a) actual: el arnés lider→explorer→implementer→reviewer con harness start/record/finish; (b) simplificado: un único agente con la instrucción de A1 y sin cadena de subagentes. Si el propietario quiere validar la fábrica A1–A5 en vez del arnés, el ticket debe decirlo antes de ejecutar y asumir el cambio de alcance.\nEVIDENCIA: transcripción completa de cada flujo, veredicto por criterio, informe persistido en el repo y medición de tokens/coste con su fuente.\nALCANCE: piloto n=1. No declara la fábrica PROBADA, no generaliza y no autoriza recortar agentes. Solo se actualiza la fila E01 del registro de validación; el resto sigue NO EJECUTADO. No se ejecutan A2–A5 ni se activa nada.",
+      "acceptance_criteria": [
+        "se ejecutan los dos flujos con la entrada exacta y el mismo modelo Big Pickle, con transcripción completa",
+        "el flujo evaluado pregunta antes de decidir: qué avisos, por qué canal, a quién y cuándo",
+        "no inventa el spec ni rellena huecos",
+        "lo desconocido queda como pendiente o supuesto explícito",
+        "deja el caso como pendiente de aclarar, no como listo ni aprobado",
+        "el informe queda persistido en el repo en una ruta decidida y enlazado desde el progreso del arnés",
+        "se registra el consumo real de tokens y coste por flujo con la fuente de medición",
+        "si no se puede medir, se declara la limitación en vez de estimar",
+        "la comparación declara n=1 y no concluye superioridad general ni autoriza eliminar agentes",
+        "solo se actualiza la fila E01 del registro de validación con resultado y revisor",
+        "el resto sigue NO EJECUTADO",
+        "el propietario confirma antes de ejecutar el cambio de alcance (de diseño a piloto) y la ruta de evidencia"
+      ],
+      "status": "blocked",
+      "depends_on": [
+        "FAB-016",
+        "FAB-018"
+      ],
+      "geas_ticket_id": "592836f9-e131-4d33-9973-ab76d72a34c2",
+      "started": "2026-10-26",
+      "review_rounds": 1,
+      "blocked_reason": "Primera ejecución inválida: el flujo actual no se ejecutó con subagentes y los criterios 1/2 son prescriptivos, no observacionales. El propietario autoriza repetir como VAL-002 con criterios observacionales, repo temporal y flujo real."
+    },
+    {
+      "id": "FLOW-001",
+      "title": "Orquestación adaptativa por fallo verificado y presupuesto, no por perfil de modelo",
+      "description": "OBJETIVO: diseñar, no implementar todavía, una orquestación que empiece en el flujo más barato y escale solo cuando falle una comprobación verificable (ambigüedad sin resolver, puerta roja, rechazo del reviewer, evidencia ausente), con topes de rondas (D-02) y de tokens (FAB-013). La identidad del modelo solo puede fijar un presupuesto por defecto; no decide el flujo ni permite saltarse la puerta de permisos, la evidencia obligatoria o la regla de un dueño por recurso. No se mantiene una tabla de calidad por nombre de modelo.\nENTRADA: resultados, fallos y tokens de VAL-001.\nENTREGABLE: decisión de diseño en docs/design o vault/01_PROYECTO/arquitectura.md, con matriz flujo→señal de escalado→coste y criterios medibles; actualizar el rumbo si cambia alcance o principios.\nFUERA DE ALCANCE: implementar el flujo adaptativo, cambiar el número de agentes del arnés actual o tocar la puerta de permisos.",
+      "acceptance_criteria": [
+        "define señales de escalado medibles y verificables, no una tabla de calidad por nombre de modelo",
+        "el flujo más barato es el inicial y solo escala tras un fallo comprobado, con topes de rondas y de tokens",
+        "la puerta de permisos, la evidencia obligatoria y la regla de un dueño por recurso se mantienen idénticas en todos los niveles",
+        "cada nivel de flujo declara qué comprobación añade y qué riesgo cubre que el nivel anterior no cubría",
+        "se apoya en los datos de VAL-001 (resultado, fallos y tokens) y declara qué falta por medir",
+        "incluye una alternativa descartada y el criterio para revertir a flujo fijo si no hay ganancia medible",
+        "actualiza el rumbo (objetivo/arquitectura) si la decisión cambia el alcance o los principios, con aprobación del propietario"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "VAL-001"
+      ],
+      "geas_ticket_id": "4845fc50-5d87-4bd9-9328-ccdfca7c5e04"
+    },
+    {
+      "id": "PROC-001",
+      "title": "Un commit por ticket: cierre bloqueado sin commit único y staging acotado",
+      "description": "El arnés debe exigir que cada feature tenga exactamente un commit propio, identificado por su ID, antes de cerrarse. harness finish debe rechazar cero commits o más de uno del ticket y cualquier HEAD que no sea el commit del ticket. git commit_feature no debe hacer git add -A: debe aceptar rutas explícitas y rechazar cambios ajenos no declarados. El objetivo es que un ticket no se cierre con trabajo repartido en commits sin trazabilidad ni mezclado con configuración local.",
+      "acceptance_criteria": [
+        "harness finish rechaza cero commits cuyo asunto contenga el ID del ticket en commit_before..HEAD",
+        "harness finish rechaza más de un commit con el ID en ese rango",
+        "harness finish exige que el commit del ticket sea HEAD o que los commits posteriores solo toquen metadatos de cierre",
+        "git commit_feature acepta rutas explícitas y no hace git add -A indiscriminado",
+        "los tests cubren cero, uno y dos commits, mensaje sin ID, rutas ajenas y árbol limpio",
+        "AGENTS.md documenta la regla y el arnés avisa de tickets in_progress sin commit",
+        "el flujo local sin GEAS sigue funcionando"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "VAL-001"
+      ]
+    },
+    {
+      "id": "VAL-002",
+      "title": "VAL-002: Piloto E01 (repetición observacional con flujo real)",
+      "description": "OBJETIVO: repetir el piloto E01 de VAL-001 con evidencia válida: comparar el flujo actual del arnés (lider→explorer→implementer→reviewer) con un flujo simplificado de un solo agente ante un requisito ambiguo, mismo modelo Big Pickle, n=1.\nMOTIVO: VAL-001 quedó bloqueada porque el flujo actual no se ejecutó con subagentes y sus criterios 1/2 eran prescriptivos. El propietario autorizó esta repetición observacional.\nENTRADA EXACTA: «Quiero una herramienta para gestionar las inscripciones de un evento y avisar a la gente».\nFLUJOS: (a) actual: arnés con harness start/record/finish y subagentes reales; (b) simplificado: un único agente con la instrucción de A1 y sin cadena de subagentes.\nPRE-REGISTRO OBLIGATORIO: antes de ejecutar, registrar entrada exacta, orden de los flujos, modelo, tope de tokens y criterio de parada. La ejecución va en un repo temporal aislado.\nEVIDENCIA: transcripción completa, sesiones hijas, veredicto por criterio, informe persistido en el repo y medición de tokens/coste con fuente.\nALCANCE: piloto n=1. No declara la fábrica PROBADA, no generaliza y no autoriza recortar agentes. Solo se actualiza la fila E01 del registro de validación con resultado y firma del propietario; el resto sigue NO EJECUTADO. No se ejecutan A2–A5 ni se activa nada.\n\nCRITERIOS DE ACEPTACIÓN:\n\n1) se ejecutan los dos flujos con la entrada exacta y el mismo modelo Big Pickle, con transcripción completa y sesiones hijas cuando el flujo las cree\n2) se comprueba y registra si el flujo evaluado pregunta antes de decidir por avisos, canal, destinatarios y momento, y se acepta que el resultado sea que no pregunte\n3) no inventa el spec ni rellena huecos\n4) lo desconocido queda como pendiente o supuesto explícito\n5) deja el caso como pendiente de aclarar, no como listo ni aprobado\n6) el informe queda persistido en el repo en una ruta decidida y enlazado desde el progreso del arnés\n7) se registra el consumo real de tokens y coste por flujo con la fuente de medición\n8) si no se puede medir, se declara la limitación en vez de estimar\n9) la comparación declara n=1 y no concluye superioridad general ni autoriza eliminar agentes\n10) solo se actualiza la fila E01 del registro de validación con resultado y revisor, y la firma del propietario\n11) el resto sigue NO EJECUTADO\n12) el propietario confirma antes de ejecutar el cambio de alcance y la ruta de evidencia\n13) antes de ejecutar se registran entrada exacta, orden de flujos, modelo, tope de tokens y criterio de parada\n14) la ejecución se hace en un repositorio temporal aislado y no contamina el repo principal\n15) el flujo actual se ejecuta de verdad con lider, explorer, implementer y reviewer, y se conservan los harness record",
+      "acceptance_criteria": [
+        "se ejecutan los dos flujos con la entrada exacta y el mismo modelo Big Pickle, con transcripción completa y sesiones hijas cuando el flujo las cree",
+        "se comprueba y registra si el flujo evaluado pregunta antes de decidir por avisos, canal, destinatarios y momento, y se acepta que el resultado sea que no pregunte",
+        "no inventa el spec ni rellena huecos",
+        "lo desconocido queda como pendiente o supuesto explícito",
+        "deja el caso como pendiente de aclarar, no como listo ni aprobado",
+        "el informe queda persistido en el repo en una ruta decidida y enlazado desde el progreso del arnés",
+        "se registra el consumo real de tokens y coste por flujo con la fuente de medición",
+        "si no se puede medir, se declara la limitación en vez de estimar",
+        "la comparación declara n=1 y no concluye superioridad general ni autoriza eliminar agentes",
+        "solo se actualiza la fila E01 del registro de validación con resultado y revisor, y la firma del propietario",
+        "el resto sigue NO EJECUTADO",
+        "el propietario confirma antes de ejecutar el cambio de alcance y la ruta de evidencia",
+        "antes de ejecutar se registran entrada exacta, orden de flujos, modelo, tope de tokens y criterio de parada",
+        "la ejecución se hace en un repositorio temporal aislado y no contamina el repo principal",
+        "el flujo actual se ejecuta de verdad con lider, explorer, implementer y reviewer, y se conservan los harness record"
+      ],
+      "status": "pending",
+      "depends_on": [
+        "FAB-016",
+        "FAB-018"
+      ],
+      "geas_ticket_id": "7b146976-abf6-4ef6-8b3f-1404e0b2c796"
     }
   ]
 }

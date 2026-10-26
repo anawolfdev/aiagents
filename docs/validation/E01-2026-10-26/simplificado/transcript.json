@@ -1,0 +1,151 @@
+{
+  "info": {
+    "id": "ses_e880a9490ffe0k1zg04CdwuLP1",
+    "slug": "misty-cabin",
+    "projectID": "global",
+    "directory": "/tmp/opencode/val001/simplificado",
+    "path": "tmp/opencode/val001/simplificado",
+    "title": "VAL-001/E01 simplificado",
+    "agent": "a1",
+    "model": {
+      "id": "big-pickle",
+      "providerID": "opencode",
+      "variant": "default"
+    },
+    "version": "1.18.32",
+    "summary": {
+      "additions": 0,
+      "deletions": 0,
+      "files": 0
+    },
+    "cost": 0,
+    "tokens": {
+      "input": 2804,
+      "output": 94,
+      "reasoning": 803,
+      "cache": {
+        "read": 70,
+        "write": 0
+      }
+    },
+    "permission": [
+      {
+        "permission": "question",
+        "pattern": "*",
+        "action": "deny"
+      },
+      {
+        "permission": "plan_enter",
+        "pattern": "*",
+        "action": "deny"
+      },
+      {
+        "permission": "plan_exit",
+        "pattern": "*",
+        "action": "deny"
+      }
+    ],
+    "time": {
+      "created": 1793013934959,
+      "updated": 1793013961643
+    }
+  },
+  "messages": [
+    {
+      "info": {
+        "role": "user",
+        "time": {
+          "created": 1793013935124
+        },
+        "agent": "a1",
+        "model": {
+          "providerID": "opencode",
+          "modelID": "big-pickle"
+        },
+        "summary": {
+          "diffs": []
+        },
+        "id": "msg_177f56c14001E256t6THKjEga2",
+        "sessionID": "ses_e880a9490ffe0k1zg04CdwuLP1"
+      },
+      "parts": [
+        {
+          "type": "text",
+          "text": "\"Quiero una herramienta para gestionar las inscripciones de un evento y avisar a la gente\"",
+          "id": "prt_177f56c230012hyQZs6tCLj1p4",
+          "sessionID": "ses_e880a9490ffe0k1zg04CdwuLP1",
+          "messageID": "msg_177f56c14001E256t6THKjEga2"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_177f56c14001E256t6THKjEga2",
+        "role": "assistant",
+        "mode": "a1",
+        "agent": "a1",
+        "path": {
+          "cwd": "/tmp/opencode/val001/simplificado",
+          "root": "/"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 3771,
+          "input": 2804,
+          "output": 94,
+          "reasoning": 803,
+          "cache": {
+            "write": 0,
+            "read": 70
+          }
+        },
+        "modelID": "big-pickle",
+        "providerID": "opencode",
+        "time": {
+          "created": 1793013936851,
+          "completed": 1793013961581
+        },
+        "finish": "stop",
+        "id": "msg_177f572d3001X0o1fT7Hv5JJUD",
+        "sessionID": "ses_e880a9490ffe0k1zg04CdwuLP1"
+      },
+      "parts": [
+        {
+          "type": "step-start",
+          "id": "prt_177f5cd22001MqyPQ2p9e2fs0g",
+          "sessionID": "ses_e880a9490ffe0k1zg04CdwuLP1",
+          "messageID": "msg_177f572d3001X0o1fT7Hv5JJUD"
+        },
+        {
+          "type": "text",
+          "text": "# A1 \u2014 Entrevista\n\nHe recibido: *\"Quiero una herramienta para gestionar las inscripciones de un evento y avisar a la gente\".*\n\nNo asumo nada. Para decidir el alcance correcto, solo una pregunta por turno.\n\n**Pregunta 1:**\n\n\u00bfEs para **un \u00fanico evento concreto** que ya tienes en mente, o quieres que sirva para **varios eventos distintos** en el futuro?",
+          "time": {
+            "start": 1793013959977,
+            "end": 1793013961538
+          },
+          "id": "prt_177f5cd29001BHHhEug2slajl0",
+          "sessionID": "ses_e880a9490ffe0k1zg04CdwuLP1",
+          "messageID": "msg_177f572d3001X0o1fT7Hv5JJUD"
+        },
+        {
+          "reason": "stop",
+          "type": "step-finish",
+          "tokens": {
+            "total": 3771,
+            "input": 2804,
+            "output": 94,
+            "reasoning": 803,
+            "cache": {
+              "write": 0,
+              "read": 70
+            }
+          },
+          "cost": 0,
+          "id": "prt_177f5d358001OpFMTfOSy8D5uq",
+          "sessionID": "ses_e880a9490ffe0k1zg04CdwuLP1",
+          "messageID": "msg_177f572d3001X0o1fT7Hv5JJUD"
+        }
+      ]
+    }
+  ]
+}

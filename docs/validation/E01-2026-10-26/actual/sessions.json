@@ -1,0 +1,17 @@
+[
+  {
+    "id": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+    "parent_id": null,
+    "agent": "lider",
+    "title": "VAL-001/E01 actual",
+    "model": {"id": "big-pickle", "providerID": "opencode"},
+    "directory": "/tmp/opencode/val001/actual",
+    "tokens": {
+      "input": 26526,
+      "output": 472,
+      "reasoning": 1267,
+      "cache": {"read": 75114, "write": 0}
+    },
+    "cost": 0.0
+  }
+]

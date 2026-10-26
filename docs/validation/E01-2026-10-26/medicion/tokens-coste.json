@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-26",
+  "cost_source": "opencode export + session table (primary); opencode stats/models --verbose for contrast",
+  "invoice_verified": false,
+  "actual": {
+    "root_session": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+    "sessions": [
+      {
+        "id": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+        "parent_id": null,
+        "agent": "lider",
+        "directory": "/tmp/opencode/val001/actual",
+        "tokens_input": 26526,
+        "tokens_output": 472,
+        "tokens_reasoning": 1267,
+        "tokens_cache_read": 75114,
+        "tokens_cache_write": 0,
+        "cost_reported": 0.0,
+        "reasoning_separate": true
+      }
+    ],
+    "totals": {
+      "tokens_input": 26526,
+      "tokens_output": 472,
+      "tokens_reasoning": 1267,
+      "tokens_cache_read": 75114,
+      "tokens_cache_write": 0,
+      "cost_reported": 0.0
+    },
+    "query": "WITH RECURSIVE tree(id) AS (SELECT 'ses_e88131ebcffeDh3GbCj7ZTom2o' UNION ALL SELECT s.id FROM session s JOIN tree t ON s.parent_id = t.id) SELECT ... FROM session WHERE id IN (SELECT id FROM tree)"
+  },
+  "simplificado": {
+    "root_session": "ses_e880a9490ffe0k1zg04CdwuLP1",
+    "sessions": [
+      {
+        "id": "ses_e880a9490ffe0k1zg04CdwuLP1",
+        "parent_id": null,
+        "agent": "a1",
+        "directory": "/tmp/opencode/val001/simplificado",
+        "tokens_input": 2804,
+        "tokens_output": 94,
+        "tokens_reasoning": 803,
+        "tokens_cache_read": 70,
+        "tokens_cache_write": 0,
+        "cost_reported": 0.0,
+        "reasoning_separate": true
+      }
+    ],
+    "totals": {
+      "tokens_input": 2804,
+      "tokens_output": 94,
+      "tokens_reasoning": 803,
+      "tokens_cache_read": 70,
+      "tokens_cache_write": 0,
+      "cost_reported": 0.0
+    }
+  },
+  "measured_at": "2026-10-26T10:20:00Z"
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "id": "ses_e880a9490ffe0k1zg04CdwuLP1",
+    "parent_id": null,
+    "agent": "a1",
+    "title": "VAL-001/E01 simplificado",
+    "model": {"id": "big-pickle", "providerID": "opencode"},
+    "directory": "/tmp/opencode/val001/simplificado",
+    "tokens": {
+      "input": 2804,
+      "output": 94,
+      "reasoning": 803,
+      "cache": {"read": 70, "write": 0}
+    },
+    "cost": 0.0
+  }
+]

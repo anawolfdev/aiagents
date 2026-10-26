@@ -1,0 +1,35 @@
+{
+  "id": "E01",
+  "pilot": "VAL-001",
+  "date": "2026-10-26",
+  "sha_base": "0d38c72",
+  "opencode_version": "1.18.32",
+  "model": "opencode/big-pickle",
+  "provider": "opencode",
+  "input_exact": "Quiero una herramienta para gestionar las inscripciones de un evento y avisar a la gente",
+  "input_hash": null,
+  "order": null,
+  "session_ids": {
+    "actual": {
+      "root": null,
+      "children": []
+    },
+    "simplificado": {
+      "root": null,
+      "children": []
+    }
+  },
+  "commands": [],
+  "sandbox": {
+    "actual": "/tmp/opencode/val001/actual",
+    "simplificado": "/tmp/opencode/val001/simplificado"
+  },
+  "decisions": {
+    "verdict_target": "actual",
+    "comparator_only": true,
+    "stop_on_first_clarification": true,
+    "no_simulate_owner": true,
+    "no_modify_16_validacion": true,
+    "invoice_verified": false
+  }
+}

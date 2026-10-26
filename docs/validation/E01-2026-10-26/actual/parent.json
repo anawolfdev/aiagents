@@ -1,0 +1,807 @@
+{
+  "info": {
+    "id": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+    "slug": "eager-lagoon",
+    "projectID": "6522f1a81b43fbaf81ac0d36e9d519593a42878e",
+    "directory": "/tmp/opencode/val001/actual",
+    "path": "",
+    "title": "VAL-001/E01 actual",
+    "agent": "lider",
+    "model": {
+      "id": "big-pickle",
+      "providerID": "opencode",
+      "variant": "default"
+    },
+    "version": "1.18.32",
+    "summary": {
+      "additions": 0,
+      "deletions": 0,
+      "files": 0
+    },
+    "cost": 0,
+    "tokens": {
+      "input": 26526,
+      "output": 472,
+      "reasoning": 1267,
+      "cache": {
+        "read": 75114,
+        "write": 0
+      }
+    },
+    "permission": [
+      {
+        "permission": "question",
+        "pattern": "*",
+        "action": "deny"
+      },
+      {
+        "permission": "plan_enter",
+        "pattern": "*",
+        "action": "deny"
+      },
+      {
+        "permission": "plan_exit",
+        "pattern": "*",
+        "action": "deny"
+      }
+    ],
+    "time": {
+      "created": 1793013375300,
+      "updated": 1793013474554
+    }
+  },
+  "messages": [
+    {
+      "info": {
+        "role": "user",
+        "time": {
+          "created": 1793013375590
+        },
+        "agent": "lider",
+        "model": {
+          "providerID": "opencode",
+          "modelID": "big-pickle"
+        },
+        "summary": {
+          "diffs": [
+            {
+              "file": "harness/featureslist.json",
+              "patch": "Index: harness/featureslist.json\n===================================================================\n--- harness/featureslist.json\t\n+++ harness/featureslist.json\t\n@@ -1,740 +1,742 @@\n {\n   \"$comment\": \"Backlog del arn\u00e9s. Fuente de verdad de QU\u00c9 hay que hacer. El orden no es decorativo: las dos primeras features fijan el rumbo (qu\u00e9 se quiere resolver \u2192 c\u00f3mo se va a resolver) antes de que nadie escriba c\u00f3digo. Los agentes leen la primera feature pendiente, la marcan in_progress y no la marcan done hasta que ./init.sh pasa en verde. Tras cerrar (harness finish), el l\u00edder propone el commit del cierre con git commit_feature --dry-run y espera confirmaci\u00f3n del usuario. Estados v\u00e1lidos: pending | in_progress | done | blocked. Este backlog es el de arranque de un proyecto nuevo: sustit\u00fayelo por el tuyo con 'harness add'.\",\n   \"version\": 1,\n   \"project\": \"MeshHarmes\",\n   \"features\": [\n     {\n       \"id\": \"SCOPE-001\",\n       \"title\": \"Definir qu\u00e9 se quiere resolver\",\n       \"description\": \"Antes de escribir c\u00f3digo: qu\u00e9 problema resuelve este proyecto, para qui\u00e9n, cu\u00e1ndo se considera hecho y qu\u00e9 queda expl\u00edcitamente fuera. Es la feature que da rumbo a todas las dem\u00e1s \u2014 sin un criterio de 'hecho' verificable, ninguna decisi\u00f3n posterior se toma sobre otra cosa que no sea intuici\u00f3n.\",\n       \"acceptance_criteria\": [\n         \"Existe vault/01_PROYECTO/objetivo.md con cuatro apartados: problema, usuario/consumidor, criterio de hecho y fuera de alcance\",\n         \"El criterio de hecho es verificable por un comando o una observaci\u00f3n concreta, no 'que funcione bien'\",\n         \"El apartado de fuera de alcance nombra al menos dos cosas que este proyecto NO va a hacer\",\n         \"El README describe el objetivo en una frase propia, no con el texto de la plantilla\",\n         \"./init.sh termina con ENTORNO LISTO\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [],\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"DESIGN-001\",\n       \"title\": \"Decidir c\u00f3mo se va a resolver\",\n       \"description\": \"Escribir la arquitectura antes de implementarla: qu\u00e9 piezas hay, c\u00f3mo se hablan, qu\u00e9 alternativas se consideraron y por qu\u00e9 se descartaron. No es un documento ceremonial \u2014 es lo que evita que cada feature reinvente una estructura distinta.\",\n       \"acceptance_criteria\": [\n         \"vault/01_PROYECTO/arquitectura.md describe las piezas del sistema y el flujo entre ellas\",\n         \"Hay al menos una alternativa considerada y descartada, con el motivo escrito\",\n         \"Est\u00e1n nombrados los riesgos conocidos y qu\u00e9 decisiones se dejan para m\u00e1s adelante\",\n         \"El paquete app/ est\u00e1 renombrado al nombre real del proyecto (project.yml, pyproject.toml, Makefile y coverage coherentes)\",\n         \"./init.sh termina con ENTORNO LISTO\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"SCOPE-001\"\n       ],\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"CORE-001\",\n       \"title\": \"Primera pieza funcional de punta a punta\",\n       \"description\": \"Implementar el camino m\u00e1s fino que atraviesa el sistema entero y hace algo \u00fatil: entrada real, procesamiento real, salida real. Un vertical slice antes que capas completas \u2014 as\u00ed se descubre pronto lo que la arquitectura no hab\u00eda previsto.\",\n       \"acceptance_criteria\": [\n         \"El comando o entrada principal se ejecuta sin errores sobre un caso real\",\n         \"Existen tests que cubren el camino feliz y al menos un caso de error\",\n         \"make check pasa (lint + typecheck + test + arn\u00e9s)\",\n         \"El README documenta c\u00f3mo ejecutarlo, con la salida esperada\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"DESIGN-001\"\n       ],\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"QA-001\",\n       \"title\": \"Bater\u00eda de calidad en verde\",\n       \"description\": \"Dejar make check (lint + typecheck + test + arn\u00e9s) pasando de punta a punta, y el CI ejecutando lo mismo que se ejecuta en local. Es la condici\u00f3n que ./init.sh verifica antes de dejar trabajar a cualquier agente.\",\n       \"acceptance_criteria\": [\n         \"make lint pasa sin errores\",\n         \"make typecheck pasa sin errores\",\n         \"make test pasa y la salida real queda como evidencia\",\n         \"El workflow de CI ejecuta los mismos comandos que make check\",\n         \"./init.sh termina con ENTORNO LISTO\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [],\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"BOOT-001\",\n       \"title\": \"Arranque en frio operativo: contratos inline + agente bootstrap\",\n       \"description\": \"Completar el codigo ya escrito y nunca ejecutado: el soporte de contratos inline en agents/contracts.py y el agente bootstrap. Incluye arreglar la colision de nombre entre la accion 'describe' del agente y BaseAgent.describe(), que hoy rompe 'python -m agents list'.\",\n       \"acceptance_criteria\": [\n         \"python -m agents list lista los 24 agentes sin excepcion, bootstrap incluido\",\n         \"python -m agents describe bootstrap devuelve el contrato inline\",\n         \"existe agents/prompts/bootstrap_agent.md con prosa a mano y bloque AUTOGEN\",\n         \"uv run python -m agents.prompts_sync sale en verde\",\n         \"hay tests de contratos inline (inline_contracts, all_contracts, contract_for, validate_contracts) y de las cuatro acciones de bootstrap\",\n         \"make check pasa\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [],\n       \"started\": \"2026-08-04\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-08-04\"\n     },\n     {\n       \"id\": \"BOOT-002\",\n       \"title\": \"installer scaffold: creador de agentes autocontenidos\",\n       \"description\": \"Accion nueva del agente installer que genera un agente completo a partir de una spec: modulo en agents/external/ con @register_agent y contrato inline, acciones stub que devuelven success=False con needs (no mienten), su prompt en agents/prompts/<name>_agent.md y su test. dry_run por defecto.\",\n       \"acceptance_criteria\": [\n         \"run installer scaffold --name X --description ... --dry_run true ense\u00f1a lo que generaria sin escribir ningun fichero\",\n         \"con dry_run false genera modulo en agents/external/, prompt en agents/prompts/ y test, y el agente queda registrado\",\n         \"el agente generado tiene contrato inline y validate_contracts() no reporta problemas con el\",\n         \"las acciones stub devuelven AgentResult(success=False) con needs, nunca un exito falso\",\n         \"scaffold rechaza nombres que colisionan con metodos de BaseAgent o con un agente ya registrado\",\n         \"scaffold esta en destructive del contrato de installer y la puerta lo bloquea sin --yes\",\n         \"uv run python -m agents.prompts_sync sale en verde tras generar un agente\",\n         \"hay tests de todo lo anterior\",\n         \"make check pasa\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"BOOT-001\"\n       ],\n       \"started\": \"2026-08-04\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-08-04\"\n     },\n     {\n       \"id\": \"BOOT-003\",\n       \"title\": \"Protocolo de arranque en frio en el lider + documentacion\",\n       \"description\": \"Paso 0 del protocolo del lider: en la primera ejecucion, run bootstrap status antes que nada; si first_run es true, ciclo de onboarding (seed, describe, suggest_agents, scaffold) antes de abrir features normales. Mas la documentacion del agente nuevo y de scaffold.\",\n       \"acceptance_criteria\": [\n         \".opencode/agents/lider.md tiene el paso 0 con el ciclo de onboarding y las condiciones de salida\",\n         \".claude/agents/lider.md queda regenerado con make assistants-sync, no editado a mano\",\n         \"los tickets ONBOARD-001 y ONBOARD-002 estan sembrados en el backlog via run bootstrap seed\",\n         \"agents/README.md dice 24 agentes, incluye bootstrap en la tabla y documenta installer scaffold\",\n         \"AGENTS.md documenta el arranque en frio\",\n         \"vault/05_AGENTES/ tiene la ficha del agente bootstrap\",\n         \"uv run python -m agents.prompts_sync sale en verde\",\n         \"make check pasa y ./init.sh termina con ENTORNO LISTO\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"BOOT-002\"\n       ],\n       \"started\": \"2026-08-04\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-08-04\"\n     },\n     {\n       \"id\": \"ONBOARD-001\",\n       \"title\": \"Entender el proyecto\",\n       \"description\": \"Nadie puede implementar contra un objetivo que no est\u00e1 escrito. Esta feature convierte lo que el usuario tiene en la cabeza en algo que un agente pueda leer: qu\u00e9 problema se resuelve, para qui\u00e9n, cu\u00e1ndo est\u00e1 hecho y qu\u00e9 queda fuera. El agente `bootstrap` hace las preguntas; el usuario las responde; la respuesta acaba en project.yml y en el vault.\",\n       \"acceptance_criteria\": [\n         \"uv run python -m agents run bootstrap describe --description \\\"<respuesta del usuario>\\\" --yes devuelve success=true\",\n         \"project.yml tiene una descripci\u00f3n propia del proyecto, no la de la plantilla\",\n         \"vault/01_PROYECTO/objetivo.md recoge problema, usuario, criterio de hecho y fuera de alcance\",\n         \"El README describe el objetivo en una frase propia\",\n         \"./init.sh termina con ENTORNO LISTO\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [],\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"ONBOARD-002\",\n       \"title\": \"Qu\u00e9 se sabe ya y qu\u00e9 agentes hacen falta\",\n       \"description\": \"Con el objetivo escrito, dos preguntas antes de construir nada: qu\u00e9 ha publicado ya alguien sobre este problema (papers y fuentes que aporten al repo, indexadas para poder consultarlas despu\u00e9s) y qu\u00e9 trabajo de este proyecto no cubre ning\u00fan agente actual. Lo segundo se resuelve creando los agentes que falten con `installer scaffold`, no improvisando scripts sueltos.\",\n       \"acceptance_criteria\": [\n         \"uv run python -m agents run research find_papers devuelve success=true con al menos 3 referencias relevantes\",\n         \"Las URLs \u00fatiles quedan indexadas (run rag index_urls --urls ...) y run rag search las encuentra\",\n         \"vault/01_PROYECTO/estado-del-arte.md resume cada fuente en 2-3 l\u00edneas: qu\u00e9 se toma y qu\u00e9 se descarta\",\n         \"uv run python -m agents run bootstrap suggest_agents devuelve la lista de huecos de capacidad\",\n         \"Cada hueco aceptado tiene su agente creado con installer scaffold, con contrato, prompt y test\",\n         \"uv run python -m agents.prompts_sync sale en verde (todo agente registrado tiene prompt y contrato)\",\n         \"./init.sh termina con ENTORNO LISTO\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"ONBOARD-001\"\n       ],\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"BOOT-004\",\n       \"title\": \"knowledge sync_agent_cards: las fichas del vault desde los contratos\",\n       \"description\": \"El contrato de knowledge dice que puebla vault/05_AGENTES/ con una ficha por agente desde contracts.py, y eso no esta implementado: ninguna accion escribe ese directorio. Las 23 fichas actuales vienen de la plantilla y ya estan desfasadas (falta bootstrap). Esta feature implementa la accion que el contrato ya prometia.\",\n       \"acceptance_criteria\": [\n         \"run knowledge sync_agent_cards genera una ficha por agente registrado en vault/05_AGENTES/, incluidos los de contrato inline como bootstrap\",\n         \"la ficha trae rol, can, cannot, needs, owns, collaborates y destructive desde all_contracts(), no texto a mano\",\n         \"dry_run por defecto que ense\u00f1a que ficheros escribiria sin escribir nada\",\n         \"las fichas de la plantilla que ya no corresponden a ningun agente registrado se reportan, no se borran en silencio\",\n         \"hay tests sobre tmp_path que no tocan el vault real del repo\",\n         \"make check pasa y prompts_sync sigue en verde\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [],\n       \"started\": \"2026-08-04\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-08-04\"\n     },\n     {\n       \"id\": \"FIX-001\",\n       \"title\": \"app.__main__ rompe los imports: falta la guarda __name__\",\n       \"description\": \"app/__main__.py ejecuta sys.exit(main()) sin guarda if __name__ == '__main__'. Importar el paquete app (o barrerlo con pkgutil.walk_packages) ejecuta la CLI y mata el proceso con SystemExit(2). agents/__main__.py tiene la guarda; app/__main__.py no.\",\n       \"acceptance_criteria\": [\n         \"uv run python -c \\\"import app.__main__\\\" termina con exit 0 sin imprimir el usage de la CLI\",\n         \"un test en tests/ importa app.__main__ y barre los modulos de app con pkgutil.walk_packages sin que el proceso muera\",\n         \"uv run python -m app hello sigue imprimiendo Hola, mundo. y devuelve 0\",\n         \"make check pasa y ./init.sh termina con ENTORNO LISTO\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [],\n       \"started\": \"2026-08-04\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-08-04\"\n     },\n     {\n       \"id\": \"REPAIR-001\",\n       \"title\": \"Recuperar las definiciones y el entorno del arn\u00e9s\",\n       \"description\": \"Reparaci\u00f3n expl\u00edcitamente solicitada por el usuario para desbloquear init.sh antes de integrar GEAS. Recuperar las definiciones OpenCode y corregir solo los bloqueos reales de la puerta.\",\n       \"acceptance_criteria\": [\n         \"Existen las definiciones lider, explorer, implementer y reviewer y los agentes referenciados en opencode.json\",\n         \"OpenCode carga los prompts desde definiciones v\u00e1lidas\",\n         \"El entorno de desarrollo ejecuta los tests del proyecto y agentes\",\n         \"./init.sh termina con ENTORNO LISTO\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [],\n       \"started\": \"2026-10-22\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-22\"\n     },\n     {\n       \"id\": \"GEAS-001\",\n       \"title\": \"Sincronizaci\u00f3n remota GEAS y Git obligatoria en init y arn\u00e9s\",\n       \"description\": \"Petici\u00f3n del usuario: sincronizar antes de trabajar y al reclamar/cerrar tickets, con pull y push. Usar la API HTTP de la instancia GEAS compartida, no acceso directo a SQLite. Las fallas de red, permisos, Git o cierre deben bloquear el avance y conservar estado recuperable.\",\n       \"acceptance_criteria\": [\n         \"init.sh sincroniza Git y GEAS antes de permitir trabajar con configuraci\u00f3n remota v\u00e1lida\",\n         \"harness sincroniza antes de leer o mutar trabajo operativo y reclama tickets at\u00f3micamente mediante API con identidad del actor\",\n         \"Al reclamar se hace fetch y pull ff-only sin sobrescribir cambios locales y no se permite reclamar si sync falla\",\n         \"Al cerrar se ejecuta la puerta con evidencia y se verifica pull y push de commits antes de completar ticket remoto o marcar done local\",\n         \"El flujo respeta autorizaci\u00f3n de push y no crea commits ni fuerza push silenciosamente\",\n         \"Errores HTTP, autorizaci\u00f3n, actor ausente, timeout, conflictos y fallos Git dejan estados recuperables sin falsos \u00e9xitos\",\n         \"Hay tests deterministas de API y repos Git temporales y documentaci\u00f3n de configuraci\u00f3n, sync, start y finish\",\n         \"./init.sh termina con ENTORNO LISTO y las suites pertinentes pasan\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"REPAIR-001\"\n       ],\n       \"started\": \"2026-10-22\",\n       \"review_rounds\": 1,\n       \"geas_ticket_id\": \"52ea8564-36d2-4a22-858c-7740f4ba1810\",\n       \"geas_commit_after\": \"5ab1a2568f7a0f9ed4ab3937155bd9e7fe4e4bb3\",\n       \"closed\": \"2026-10-22\"\n     },\n     {\n       \"id\": \"FAB-001\",\n       \"title\": \"Alcance, principios y registro de decisiones del paquete de dise\u00f1o\",\n       \"description\": \"Fijar el alcance y las decisiones del paquete de dise\u00f1o antes de producir los dem\u00e1s artefactos. Entregable: docs/design/00-alcance-decisiones.md. Secciones 1, 2 y 17 del documento de dise\u00f1o.\",\n       \"acceptance_criteria\": [\n         \"Existe docs/design/00-alcance-decisiones.md con alcance, propietario \u00fanico, entornos autorizados, portabilidad, principio rector, no-goals y tabla de decisiones confirmadas frente a decisiones de dise\u00f1o\",\n         \"Cada decisi\u00f3n confirmada cita su origen y las decisiones de dise\u00f1o llevan etiqueta expl\u00edcita\",\n         \"Incluye registro de par\u00e1metros pendientes de activaci\u00f3n sin inventar valores\",\n         \"Distingue DISE\u00d1ADO de CONFIGURADO, PROBADO y DESPLEGADO y no atribuye ninguna ejecuci\u00f3n\",\n         \"./init.sh termina con ENTORNO LISTO\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [],\n       \"geas_ticket_id\": \"b21b4d29-7d9c-4099-b693-3c1d67ae9311\",\n       \"started\": \"2026-10-22\",\n       \"review_rounds\": 0,\n       \"geas_commit_after\": \"0a519a1afa59d26e07703188dfe48e19990382c9\",\n       \"closed\": \"2026-10-22\"\n     },\n     {\n       \"id\": \"FAB-002\",\n       \"title\": \"Matriz de necesidad y proporcionalidad; pol\u00edtica de extras y exclusiones\",\n       \"description\": \"Aplicar necesidad y proporcionalidad a cada capacidad antes de aprobarla. Entregable: docs/design/03-necesidad-proporcionalidad.md con plantilla y matriz rellenada. No implementar ni activar nada.\",\n       \"acceptance_criteria\": [\n         \"Cada fila de la matriz tiene origen y decisi\u00f3n\",\n         \"La vigilancia diaria de A2 queda justificada como requisito confirmado\",\n         \"Los extras no aprobados quedan excluidos o pospuestos\",\n         \"Toda decisi\u00f3n de mantener tiene prueba o argumento de proporcionalidad\",\n         \"No hay filas sin coste y riesgo estimados o marcados como pendientes\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\"\n       ],\n       \"geas_ticket_id\": \"9880bc7b-24c0-4d27-82b3-b49e480c4550\",\n       \"started\": \"2026-10-22\",\n       \"review_rounds\": 1,\n       \"geas_commit_after\": \"673b72d36774a8db715ed8e514d1c90f1cc800f7\",\n       \"closed\": \"2026-10-22\"\n     },\n     {\n       \"id\": \"FAB-003\",\n       \"title\": \"Instrucci\u00f3n de sistema A1 \u2014 analista y entrevistador\",\n       \"description\": \"Perfil autosuficiente de A1: entrevista, spec funcional, requisitos, pruebas y validaci\u00f3n humana. Entregable: docs/design/roles/A1-analista.md.\",\n       \"acceptance_criteria\": [\n         \"El perfil se entiende sin leer otro\",\n         \"Incluye los apartados exigidos\",\n         \"Incorpora las pruebas m\u00ednimas del documento\",\n         \"Separa requisitos y extras\",\n         \"No inventa decisiones\",\n         \"Exige validaci\u00f3n humana del resultado\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\"\n       ],\n       \"geas_ticket_id\": \"6890d71a-f627-4a77-a169-37dc5c0b4cee\",\n       \"started\": \"2026-10-22\",\n       \"review_rounds\": 0,\n       \"geas_commit_after\": \"a84a92f7f2002a6f8a103e24c8d66c3e776259fe\",\n       \"closed\": \"2026-10-22\"\n     },\n     {\n       \"id\": \"FAB-004\",\n       \"title\": \"Instrucci\u00f3n de sistema A2 \u2014 revisi\u00f3n inicial y vigilancia\",\n       \"description\": \"Perfil autosuficiente de A2 en modo inicial y peri\u00f3dico, cobertura, vigencia de siete d\u00edas y defensa ante prompt injection. Entregable: docs/design/roles/A2-riesgos-vigilancia.md.\",\n       \"acceptance_criteria\": [\n         \"Ambos modos est\u00e1n separados y completos\",\n         \"La cobertura no depende solo del spec\",\n         \"Existe la regla de siete d\u00edas y el procedimiento de revalidaci\u00f3n\",\n         \"Hay tratamiento de fuente inaccesible, caducada o contradictoria\",\n         \"Incluye defensa frente a prompt injection\",\n         \"La vigilancia diaria queda marcada como pendiente de activaci\u00f3n\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\"\n       ],\n       \"geas_ticket_id\": \"64d54df1-fcbe-4f0d-a4c8-a6673c23532a\",\n       \"geas_commit_after\": \"5492cf7606a6a80ff79d026f64f110553fae8097\",\n       \"closed\": \"2026-10-22\"\n     },\n     {\n       \"id\": \"FAB-005\",\n       \"title\": \"Instrucci\u00f3n de sistema A3 \u2014 arquitecto y consolidador\",\n       \"description\": \"Perfil autosuficiente de A3: consolidaci\u00f3n, arquitectura m\u00ednima, matriz, plan y GATE 1. Entregable: docs/design/roles/A3-arquitecto.md.\",\n       \"acceptance_criteria\": [\n         \"El perfil es autosuficiente\",\n         \"Cada hallazgo tiene tratamiento expl\u00edcito\",\n         \"Hay comparaci\u00f3n de alternativas\",\n         \"El GATE 1 est\u00e1 definido\",\n         \"Los cambios materiales se detectan y bloquean\",\n         \"No confunde consolidar con aprobar\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\"\n       ],\n       \"geas_ticket_id\": \"b4fc99bd-b474-4005-b61e-a2472fa7f5eb\",\n       \"geas_commit_after\": \"474f6e30c86c8f9f1e2c1dc14888e16690ff0363\",\n       \"closed\": \"2026-10-22\"\n     },\n     {\n       \"id\": \"FAB-006\",\n       \"title\": \"Instrucci\u00f3n de sistema A4 \u2014 constructor\",\n       \"description\": \"Perfil autosuficiente de A4: construcci\u00f3n del alcance aprobado, aislamiento, artefacto inmutable y reversi\u00f3n. Entregable: docs/design/roles/A4-constructor.md.\",\n       \"acceptance_criteria\": [\n         \"El perfil es autosuficiente\",\n         \"Separa construir de aprobar\",\n         \"Exige aislamiento comprobado\",\n         \"Proh\u00edbe cambios de alcance\",\n         \"Define un artefacto inmutable durante la evaluaci\u00f3n\",\n         \"Incluye procedimiento de reversi\u00f3n\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\"\n       ],\n       \"geas_ticket_id\": \"a23982b5-b4f2-4137-b5d0-796653265b0f\",\n       \"geas_commit_after\": \"4430e084aba04853176876e7e33bde3031f0996c\",\n       \"closed\": \"2026-10-22\"\n     },\n     {\n       \"id\": \"FAB-007\",\n       \"title\": \"Instrucci\u00f3n de sistema A5 \u2014 evaluador independiente\",\n       \"description\": \"Perfil autosuficiente de A5: evaluaci\u00f3n independiente en siete ejes, pruebas p\u00fablicas y reservadas, veredicto y l\u00edmites. Entregable: docs/design/roles/A5-evaluador.md.\",\n       \"acceptance_criteria\": [\n         \"El perfil es autosuficiente\",\n         \"Cubre los siete ejes de evaluaci\u00f3n\",\n         \"Exige independencia real\",\n         \"Separa el acceso a pruebas\",\n         \"Define la salida y sus l\u00edmites\",\n         \"No confunde conformidad t\u00e9cnica con autorizaci\u00f3n de despliegue\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\"\n       ],\n       \"geas_ticket_id\": \"f0929f8e-e4d4-45ab-a131-ea43e59e14f3\",\n       \"geas_commit_after\": \"823d37ac69827782d3127f0fb90936894aa56029\",\n       \"closed\": \"2026-10-22\"\n     },\n     {\n       \"id\": \"FAB-008\",\n       \"title\": \"contrato del coordinador y l\u00edmites de interlocuci\u00f3n\",\n       \"description\": \"OBJETIVO: definir la coordinaci\u00f3n ligera como funci\u00f3n del flujo, no como un sexto agente aut\u00f3nomo obligatorio. Secci\u00f3n 2.\\n\\nENTREGABLE: docs/design/02-coordinador.md.\\n\\nCONTENIDO: el coordinador es el \u00fanico interlocutor con el usuario; presenta las preguntas preparadas por A1; gestiona estados, responsables, versiones y presupuestos; mantiene aprobaciones y bloqueos por causa; entrega a cada rol solo el contexto necesario; no aprueba en nombre del usuario; no permite bucles libres entre especialistas. Cada artefacto tiene responsable \u00fanico. Cada entrega identifica agente objetivo, versi\u00f3n, trabajo realizado, evidencia, incertidumbres, bloqueos y siguiente responsable.\\n\\nCRITERIOS: 1) no se define como agente aut\u00f3nomo adicional; 2) toda transici\u00f3n tiene disparador, responsable y evidencia; 3) ninguna aprobaci\u00f3n humana se simula; 4) los bucles tienen l\u00edmite expl\u00edcito; 5) ning\u00fan rol se salta al coordinador; 6) el contrato encaja con A1-A5 y no duplica sus funciones.\",\n       \"acceptance_criteria\": [\n         \"no se define como agente aut\u00f3nomo adicional\",\n         \"toda transici\u00f3n tiene disparador, responsable y evidencia\",\n         \"ninguna aprobaci\u00f3n humana se simula\",\n         \"los bucles tienen l\u00edmite expl\u00edcito\",\n         \"ning\u00fan rol se salta al coordinador\",\n         \"el contrato encaja con A1-A5 y no duplica sus funciones\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\",\n         \"FAB-003\",\n         \"FAB-004\",\n         \"FAB-005\",\n         \"FAB-006\",\n         \"FAB-007\"\n       ],\n       \"geas_ticket_id\": \"decb9d40-3f37-46d4-bc0b-27ce599c4084\",\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"FAB-009\",\n       \"title\": \"paquete de plantillas operativas y artefactos versionados\",\n       \"description\": \"OBJETIVO: entregar las plantillas \u00fanicas, versionadas y con due\u00f1o de los artefactos del flujo. Secciones 2, 3, 5, 9, 14 y 17.\\n\\nENTREGABLE: docs/design/09-plantillas/.\\n\\nPLANTILLAS: spec; necesidad y proporcionalidad; hallazgos; cambios; evaluaci\u00f3n; cobertura; ejecuci\u00f3n; aprobaciones; bloqueos. Cada plantilla incluye due\u00f1o \u00fanico, versi\u00f3n, campos obligatorios, evidencia, estados, criterios de cierre y pol\u00edtica de retenci\u00f3n pendiente de aprobaci\u00f3n.\\n\\nCRITERIOS: 1) est\u00e1n las nueve plantillas; 2) cada campo se traza a una secci\u00f3n del documento; 3) ninguna plantilla pide secretos; 4) hay un ejemplo m\u00ednimo por plantilla; 5) el due\u00f1o es \u00fanico; 6) la retenci\u00f3n queda marcada como pendiente y no se inventa.\",\n       \"acceptance_criteria\": [\n         \"est\u00e1n las nueve plantillas\",\n         \"cada campo se traza a una secci\u00f3n del documento\",\n         \"ninguna plantilla pide secretos\",\n         \"hay un ejemplo m\u00ednimo por plantilla\",\n         \"el due\u00f1o es \u00fanico\",\n         \"la retenci\u00f3n queda marcada como pendiente y no se inventa\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\",\n         \"FAB-003\",\n         \"FAB-004\",\n         \"FAB-005\",\n         \"FAB-006\",\n         \"FAB-007\"\n       ],\n       \"geas_ticket_id\": \"5b940eb1-4568-4978-aea7-ad30a18f01cf\",\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"FAB-010\",\n       \"title\": \"matriz de permisos, separaci\u00f3n de datos y secretos\",\n       \"description\": \"OBJETIVO: definir qui\u00e9n puede hacer qu\u00e9, sobre qu\u00e9 recurso y con qu\u00e9 datos. Secciones 12, 13 y 14.\\n\\nENTREGABLE: docs/design/10-permisos-datos.md.\\n\\nCONTENIDO: matriz rol por acci\u00f3n por recurso por clase de dato por aprobaci\u00f3n; m\u00ednimo privilegio; secretos fuera de repositorios p\u00fablicos y privados; specs no publicados e inventarios en repositorio privado separado; separar lectura, informe y publicaci\u00f3n; inventario de solo lectura; proveedores autorizados; retenci\u00f3n; chat privado de Telegram verificado; PR sin auto-merge; una rama p\u00fablica tambi\u00e9n constituye publicaci\u00f3n.\\n\\nCASOS OBLIGATORIOS: A2 no modifica agentes; A4 no aprueba; A5 no construye; ning\u00fan rol acumula publicar y aprobar; el coordinador no sustituye al usuario; los datos privados no van a buscadores.\\n\\nCRITERIOS: 1) cada permiso tiene justificaci\u00f3n y control; 2) las clases de datos est\u00e1n definidas; 3) los secretos no aparecen en ning\u00fan repositorio; 4) el flujo de PR es seguro y no auto-fusiona; 5) la retenci\u00f3n queda pendiente de aprobaci\u00f3n; 6) se distingue procesar de publicar.\",\n       \"acceptance_criteria\": [\n         \"cada permiso tiene justificaci\u00f3n y control\",\n         \"las clases de datos est\u00e1n definidas\",\n         \"los secretos no aparecen en ning\u00fan repositorio\",\n         \"el flujo de PR es seguro y no auto-fusiona\",\n         \"la retenci\u00f3n queda pendiente de aprobaci\u00f3n\",\n         \"se distingue procesar de publicar\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\",\n         \"FAB-003\",\n         \"FAB-004\",\n         \"FAB-005\",\n         \"FAB-006\",\n         \"FAB-007\"\n       ],\n       \"geas_ticket_id\": \"93423ee9-32d9-44be-aac2-4eee6c450952\",\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"FAB-011\",\n       \"title\": \"flujo de estados, cobertura, checkpoints y recuperaci\u00f3n\",\n       \"description\": \"OBJETIVO: definir estados verificables, cobertura finita y recuperaci\u00f3n ante interrupciones. Secci\u00f3n 9 y parte de la secci\u00f3n 11.\\n\\nENTREGABLE: docs/design/11-estados-cobertura-recuperacion.md.\\n\\nCONTENIDO: estados completa sin nuevos hallazgos, completa con hallazgos, parcial, fallida y ausente detectada externamente; completa significa dentro del alcance declarado, no ausencia universal de riesgos; manifiesto finito y versionado por revisi\u00f3n con componentes, riesgos, comprobaciones obligatorias, evidencia, fuentes, intervalos, criterios de finalizaci\u00f3n y lagunas admisibles y no admisibles; baseline hist\u00f3rica inicial; recuperar novedades desde la cobertura anterior; checkpoints por unidad con huecos, deduplicaci\u00f3n y recuperaci\u00f3n de interrupciones; avanzar solo con informe persistido mediante mecanismo at\u00f3mico o recuperable; no repetir indefinidamente trabajo v\u00e1lido; revalidaci\u00f3n m\u00e1xima de siete d\u00edas; una fuente opcional inaccesible no invalida la revisi\u00f3n si hay evidencia alternativa v\u00e1lida; no reclasificar una obligaci\u00f3n como opcional durante la ejecuci\u00f3n.\\n\\nCRITERIOS: 1) todos los estados y transiciones est\u00e1n definidos; 2) el manifiesto es finito y versionado; 3) hay recuperaci\u00f3n tras interrupci\u00f3n; 4) no se avanza sin evidencia persistida; 5) parcial o fallida bloquea despliegues afectados; 6) se distinguen publicaci\u00f3n, actualizaci\u00f3n, consulta y verificaci\u00f3n sustantiva.\",\n       \"acceptance_criteria\": [\n         \"todos los estados y transiciones est\u00e1n definidos\",\n         \"el manifiesto es finito y versionado\",\n         \"hay recuperaci\u00f3n tras interrupci\u00f3n\",\n         \"no se avanza sin evidencia persistida\",\n         \"parcial o fallida bloquea despliegues afectados\",\n         \"se distinguen publicaci\u00f3n, actualizaci\u00f3n, consulta y verificaci\u00f3n sustantiva\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\",\n         \"FAB-003\",\n         \"FAB-004\",\n         \"FAB-005\",\n         \"FAB-006\",\n         \"FAB-007\"\n       ],\n       \"geas_ticket_id\": \"938728c4-1533-457d-a2f7-fb5022551ba9\",\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"FAB-012\",\n       \"title\": \"registro de bloqueos, emergencias y excepciones temporales\",\n       \"description\": \"OBJETIVO: definir bloqueos por causa, avisos y excepciones humanas. Secci\u00f3n 10.\\n\\nENTREGABLE: docs/design/12-bloqueos-emergencias.md.\\n\\nCONTENIDO: registro por agente, versi\u00f3n y causa; riesgo potencialmente cr\u00edtico: aviso por Telegram, bloqueo de nuevos despliegues del agente afectado, no detener el agente en funcionamiento y aprobaci\u00f3n humana para retirar el bloqueo; revisi\u00f3n parcial o fallida: aviso y bloqueo inmediato de despliegues afectados, retirando solo esa causa; m\u00e1s de 24 horas desde la \u00faltima revisi\u00f3n completa: aviso y bloqueo de despliegues afectados; sin revisi\u00f3n completa inicial no se autoriza despliegue operativo; detecci\u00f3n independiente de ejecuciones ausentes; el gate de despliegue comprueba evidencia y vigencia directamente, sin depender de que llegue una notificaci\u00f3n.\\n\\nEXCEPCIONES: humanas, justificadas, temporales, limitadas a una versi\u00f3n y causa, con vencimiento y sin renovaci\u00f3n autom\u00e1tica.\\n\\nREGLAS: resolver una causa no elimina bloqueos distintos; no bloquear la construcci\u00f3n o las pruebas aisladas necesarias para corregir; si esas pruebas requieren permisos nuevos, pedirlos.\\n\\nCRITERIOS: 1) cada disparador tiene una acci\u00f3n asociada; 2) dos bloqueos simult\u00e1neos se conservan; 3) la excepci\u00f3n caduca; 4) la detecci\u00f3n no depende de Telegram; 5) el registro es auditable; 6) no se confunde bloqueo de despliegue con parada del agente.\",\n       \"acceptance_criteria\": [\n         \"cada disparador tiene una acci\u00f3n asociada\",\n         \"dos bloqueos simult\u00e1neos se conservan\",\n         \"la excepci\u00f3n caduca\",\n         \"la detecci\u00f3n no depende de Telegram\",\n         \"el registro es auditable\",\n         \"no se confunde bloqueo de despliegue con parada del agente\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\",\n         \"FAB-003\",\n         \"FAB-004\",\n         \"FAB-005\",\n         \"FAB-006\",\n         \"FAB-007\"\n       ],\n       \"geas_ticket_id\": \"c8e3896a-793b-4458-bc00-848f9a2cf439\",\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"FAB-013\",\n       \"title\": \"presupuesto, rondas y gates de aprobaci\u00f3n y despliegue\",\n       \"description\": \"OBJETIVO: definir l\u00edmites de gasto, rondas y aprobaciones verificables. Secciones 11 y 14.\\n\\nENTREGABLE: docs/design/13-presupuesto-gates.md.\\n\\nCONTENIDO: no hay presupuesto monetario aprobado; entregar estimaci\u00f3n y obtener aprobaci\u00f3n antes de activar ejecuciones con coste; no autorizar gasto recurrente por defecto; separar presupuesto de creaci\u00f3n, correcci\u00f3n y vigilancia; definir l\u00edmites ejecutables, duraci\u00f3n y reintentos; el agotamiento del presupuesto no equivale a ausencia de riesgos; m\u00e1ximo tres rondas de construcci\u00f3n-evaluaci\u00f3n (una inicial y dos de correcci\u00f3n) para el ciclo completo, sin multiplicar por plataforma ni reiniciar por cambios triviales; detener antes si no hay progreso; las ampliaciones requieren aprobaci\u00f3n; agotar rondas nunca supone aceptaci\u00f3n autom\u00e1tica.\\n\\nGATES: GATE 1, spec, permisos y presupuesto; GATE 2, despliegue de un artefacto concreto en un destino concreto; manifiesto con spec, prompt, configuraci\u00f3n, c\u00f3digo, dependencias, adaptadores, modelo y evidencia de evaluaci\u00f3n; hashes cuando apliquen o declaraci\u00f3n de la limitaci\u00f3n y condici\u00f3n de reevaluaci\u00f3n; los cambios materiales invalidan la aprobaci\u00f3n afectada; reversi\u00f3n y monitorizaci\u00f3n proporcionales; no ampliar autom\u00e1ticamente el alcance de una aprobaci\u00f3n.\\n\\nCRITERIOS: 1) ambos gates est\u00e1n definidos; 2) el manifiesto permite identificar el artefacto; 3) el l\u00edmite de rondas es ejecutable; 4) todo gasto exige aprobaci\u00f3n; 5) un cambio material invalida la aprobaci\u00f3n; 6) una aprobaci\u00f3n no se hereda a otro artefacto o destino.\",\n       \"acceptance_criteria\": [\n         \"ambos gates est\u00e1n definidos\",\n         \"el manifiesto permite identificar el artefacto\",\n         \"el l\u00edmite de rondas es ejecutable\",\n         \"todo gasto exige aprobaci\u00f3n\",\n         \"un cambio material invalida la aprobaci\u00f3n\",\n         \"una aprobaci\u00f3n no se hereda a otro artefacto o destino\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\",\n         \"FAB-003\",\n         \"FAB-004\",\n         \"FAB-005\",\n         \"FAB-006\",\n         \"FAB-007\"\n       ],\n       \"geas_ticket_id\": \"a1a35697-33fa-4134-a7ca-20b6fb2ee3a8\",\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"FAB-014\",\n       \"title\": \"publicaci\u00f3n, proveedores de modelos y flujo de PR seguro\",\n       \"description\": \"OBJETIVO: separar publicaci\u00f3n, datos y proveedores. Secci\u00f3n 12.\\n\\nENTREGABLE: docs/design/14-publicacion-proveedores.md.\\n\\nCONTENIDO: repositorio p\u00fablico para perfiles, c\u00f3digo, plantillas y contenido autorizado; los specs reales solo se publican tras revisi\u00f3n y aprobaci\u00f3n espec\u00edfica de su versi\u00f3n; repositorio privado separado para specs no publicados, inventarios e informes sensibles; secretos fuera de ambos; flujo para abrir PR y registrar hallazgos saneados sin aprobaci\u00f3n individual, dentro del alcance previamente autorizado, nunca con fusi\u00f3n autom\u00e1tica; una rama p\u00fablica tambi\u00e9n constituye publicaci\u00f3n; no incluir en el PR contenido privado a\u00fan no aprobado; no publicar detalles que faciliten explotar fallos sin corregir; el saneamiento no sustituye la aprobaci\u00f3n de publicaci\u00f3n exigida para un spec real; material privado solo con proveedores de modelos previamente autorizados, con datos m\u00ednimos y sin secretos; la autorizaci\u00f3n para procesar no autoriza publicar ni consultar en buscadores.\\n\\nCRITERIOS: 1) las clases de repositorio y de dato est\u00e1n separadas; 2) el PR tiene checklist de publicaci\u00f3n; 3) no hay auto-merge; 4) los proveedores est\u00e1n sujetos a autorizaci\u00f3n previa; 5) los secretos quedan fuera; 6) se distingue procesamiento, publicaci\u00f3n y b\u00fasqueda externa.\",\n       \"acceptance_criteria\": [\n         \"las clases de repositorio y de dato est\u00e1n separadas\",\n         \"el PR tiene checklist de publicaci\u00f3n\",\n         \"no hay auto-merge\",\n         \"los proveedores est\u00e1n sujetos a autorizaci\u00f3n previa\",\n         \"los secretos quedan fuera\",\n         \"se distingue procesamiento, publicaci\u00f3n y b\u00fasqueda externa\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\",\n         \"FAB-003\",\n         \"FAB-004\",\n         \"FAB-005\",\n         \"FAB-006\",\n         \"FAB-007\"\n       ],\n       \"geas_ticket_id\": \"e77928d0-a8aa-4abc-93be-33e0aded0ca3\",\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"FAB-015\",\n       \"title\": \"vigilancia programada, Telegram y detecci\u00f3n independiente de ausencia\",\n       \"description\": \"OBJETIVO: dise\u00f1ar la ejecuci\u00f3n programada y el canal de avisos. Secci\u00f3n 13.\\n\\nENTREGABLE: docs/design/15-vigilancia-telegram.md.\\n\\nCONTENIDO: GitHub Actions desde el repositorio privado; identidades y permisos separados para lectura, informes y publicaci\u00f3n; permisos m\u00ednimos; dependencias verificadas y fijadas cuando corresponda; gesti\u00f3n segura de credenciales; concurrencia controlada; l\u00edmites de consumo y reintentos; recuperaci\u00f3n de ejecuciones interrumpidas; detecci\u00f3n externa de ausencia; chat privado de Telegram previamente verificado; no asumir que la integraci\u00f3n existe ni solicitar secretos en texto p\u00fablico; no abrir acceso general al equipo del usuario para obtener inventarios; suministro m\u00ednimo y autorizado de instant\u00e1neas saneadas, con frescura marcada.\\n\\nFALLO DE TELEGRAM: mantener los bloqueos, registrar la entrega pendiente, conservar una cola privada con reintentos limitados y no desviar informaci\u00f3n sensible a un destino p\u00fablico; la entrega tard\u00eda de un aviso no elimina bloqueos.\\n\\nCRITERIOS: 1) el workflow tiene permisos m\u00ednimos; 2) existe detecci\u00f3n independiente de ausencia; 3) el fallo de Telegram no borra bloqueos; 4) no se piden secretos por canal p\u00fablico; 5) el inventario no requiere acceso general; 6) el documento no afirma que la vigilancia ya est\u00e1 activa.\",\n       \"acceptance_criteria\": [\n         \"el workflow tiene permisos m\u00ednimos\",\n         \"existe detecci\u00f3n independiente de ausencia\",\n         \"el fallo de Telegram no borra bloqueos\",\n         \"no se piden secretos por canal p\u00fablico\",\n         \"el inventario no requiere acceso general\",\n         \"el documento no afirma que la vigilancia ya est\u00e1 activa\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\",\n         \"FAB-003\",\n         \"FAB-004\",\n         \"FAB-005\",\n         \"FAB-006\",\n         \"FAB-007\"\n       ],\n       \"geas_ticket_id\": \"dbc9e423-3ddc-437f-9656-66ffdf44cbc0\",\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"FAB-016\",\n       \"title\": \"protocolo de pruebas y validaci\u00f3n de la f\u00e1brica\",\n       \"description\": \"OBJETIVO: convertir la validaci\u00f3n de la secci\u00f3n 16 en un protocolo ejecutable. Secci\u00f3n 16.\\n\\nENTREGABLE: docs/design/16-validacion.md.\\n\\nESCENARIOS OBLIGATORIOS, cada uno con precondici\u00f3n, acci\u00f3n, resultado esperado, evidencia y responsable: requisito ambiguo; permiso innecesario; funcionalidad extra no aprobada; fuente inaccesible; evidencia caducada o contradictoria; dependencia omitida en el spec; inventario faltante u obsoleto; corrida interrumpida; checkpoint sin informe persistido; cambio posterior a aprobaci\u00f3n; fuga de prueba reservada; Telegram ca\u00eddo; ejecuci\u00f3n diaria ausente; dos bloqueos simult\u00e1neos; presupuesto o rondas agotados; pruebas realizadas solo en una plataforma; intento de publicar un spec no autorizado.\\n\\nREGLAS: no declarar validada la f\u00e1brica solo por redactar los casos; requiere ejecutarlos y revisar los resultados; distinguir siempre DISE\u00d1ADO, PROBADO y DESPLEGADO.\\n\\nCRITERIOS: 1) est\u00e1n los diecisiete escenarios; 2) cada uno tiene evidencia esperada; 3) hay criterio de aprobado o rechazado; 4) se ejecutan antes de declarar la validaci\u00f3n; 5) los resultados se registran de forma persistente; 6) no se simula un mecanismo autom\u00e1tico que a\u00fan no existe.\",\n       \"acceptance_criteria\": [\n         \"est\u00e1n los diecisiete escenarios\",\n         \"cada uno tiene evidencia esperada\",\n         \"hay criterio de aprobado o rechazado\",\n         \"se ejecutan antes de declarar la validaci\u00f3n\",\n         \"los resultados se registran de forma persistente\",\n         \"no se simula un mecanismo autom\u00e1tico que a\u00fan no existe\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\",\n         \"FAB-003\",\n         \"FAB-004\",\n         \"FAB-005\",\n         \"FAB-006\",\n         \"FAB-007\"\n       ],\n       \"geas_ticket_id\": \"cddd7600-5afe-48aa-8ed7-c08177dd71eb\",\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"FAB-017\",\n       \"title\": \"plan de bootstrap sin circularidad y portabilidad OpenClaw/OpenCode\",\n       \"description\": \"OBJETIVO: definir c\u00f3mo se construye y valida la f\u00e1brica sin circularidad y c\u00f3mo se prueba la portabilidad. Secciones 15 y 1.\\n\\nENTREGABLE: docs/design/17-bootstrap-portabilidad.md.\\n\\nSECUENCIA: 1) dise\u00f1o completo; 2) preparaci\u00f3n autorizada de recursos m\u00ednimos; 3) construcci\u00f3n provisional de A1; 4) pruebas independientes y validaci\u00f3n humana; 5) construcci\u00f3n progresiva de los dem\u00e1s roles; 6) ensayo integral; 7) activaci\u00f3n autorizada.\\n\\nREGLAS: las funciones a\u00fan inexistentes se cubren expl\u00edcitamente por el operador o por capacidades independientes disponibles; A1 no se crea ni se aprueba a s\u00ed mismo; no afirmar independencia si la misma ejecuci\u00f3n construye y certifica sin revisi\u00f3n separada; antes de existir la vigilancia automatizada, cualquier despliegue operativo exige evidencia equivalente obtenida por el procedimiento provisional autorizado; las pruebas aisladas de bootstrap no son aprobaci\u00f3n operativa; no simular que el mecanismo autom\u00e1tico ya funciona.\\n\\nPORTABILIDAD: n\u00facleo de especificaci\u00f3n com\u00fan; adaptadores separados cuando sean necesarios; pruebas de aceptaci\u00f3n en OpenClaw y OpenCode antes de declarar compatibilidad con ambas; no prometer comportamiento id\u00e9ntico ni configuraciones compatibles sin pruebas.\\n\\nCRITERIOS: 1) la secuencia no tiene circularidad; 2) cada fase tiene salida y responsable; 3) hay cobertura provisional antes de la vigilancia autom\u00e1tica; 4) la portabilidad se prueba en ambas plataformas o se declara no compatible; 5) los par\u00e1metros desconocidos quedan pendientes; 6) no se simula ninguna activaci\u00f3n.\",\n       \"acceptance_criteria\": [\n         \"la secuencia no tiene circularidad\",\n         \"cada fase tiene salida y responsable\",\n         \"hay cobertura provisional antes de la vigilancia autom\u00e1tica\",\n         \"la portabilidad se prueba en ambas plataformas o se declara no compatible\",\n         \"los par\u00e1metros desconocidos quedan pendientes\",\n         \"no se simula ninguna activaci\u00f3n\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\",\n         \"FAB-003\",\n         \"FAB-004\",\n         \"FAB-005\",\n         \"FAB-006\",\n         \"FAB-007\"\n       ],\n       \"geas_ticket_id\": \"55749f88-4f04-488f-9508-9e11981cfb4b\",\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"FAB-018\",\n       \"title\": \"checklist de activaci\u00f3n y registro de par\u00e1metros pendientes\",\n       \"description\": \"OBJETIVO: dejar la activaci\u00f3n condicionada a evidencia y aprobaciones expl\u00edcitas. Secci\u00f3n 17.\\n\\nENTREGABLE: docs/design/18-activacion.md.\\n\\nCONTENIDO: checklist con repositorios concretos, proveedor y modelo autorizado, presupuesto, horario, zona horaria, conexi\u00f3n y destinatario de Telegram, inventario, aislamiento, permisos, retenci\u00f3n, almacenamiento y mecanismo independiente de supervisi\u00f3n. Para cada punto: responsable, evidencia, condici\u00f3n bloqueante, aprobaci\u00f3n requerida, reversi\u00f3n y estado (DISE\u00d1ADO, CONFIGURADO, PROBADO o DESPLEGADO).\\n\\nREGLAS: no inventar valores; no eliminar autom\u00e1ticamente evidencia de casos abiertos; la pol\u00edtica de retenci\u00f3n se aprueba antes de activar; no atribuir instalaciones, pruebas o despliegues inexistentes.\\n\\nCRITERIOS: 1) est\u00e1n todos los par\u00e1metros pendientes; 2) cada uno tiene due\u00f1o y evidencia; 3) ninguno se declara resuelto sin prueba; 4) la retenci\u00f3n est\u00e1 aprobada antes de la activaci\u00f3n; 5) no hay secretos en el documento; 6) el checklist puede bloquear la activaci\u00f3n.\",\n       \"acceptance_criteria\": [\n         \"est\u00e1n todos los par\u00e1metros pendientes\",\n         \"cada uno tiene due\u00f1o y evidencia\",\n         \"ninguno se declara resuelto sin prueba\",\n         \"la retenci\u00f3n est\u00e1 aprobada antes de la activaci\u00f3n\",\n         \"no hay secretos en el documento\",\n         \"el checklist puede bloquear la activaci\u00f3n\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\",\n         \"FAB-003\",\n         \"FAB-004\",\n         \"FAB-005\",\n         \"FAB-006\",\n         \"FAB-007\"\n       ],\n       \"geas_ticket_id\": \"ecbfd13c-640e-4b1c-8d3c-f69a87a41626\",\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"FAB-019\",\n       \"title\": \"verificaci\u00f3n de completitud y entrega del paquete de dise\u00f1o\",\n       \"description\": \"OBJETIVO: ensamblar y verificar el paquete completo en el orden de la secci\u00f3n 17.\\n\\nENTREGABLE: docs/design/README.md con \u00edndice, matriz de trazabilidad de las secciones 1-17 a cada artefacto y declaraci\u00f3n de estado.\\n\\nORDEN DE ENTREGA: 1) resumen de decisiones confirmadas y decisiones de dise\u00f1o; 2) cinco instrucciones de sistema completas y autosuficientes; 3) contrato del coordinador; 4) plantillas de spec, necesidad, hallazgos, cambios, evaluaci\u00f3n, cobertura, ejecuci\u00f3n, aprobaciones y bloqueos; 5) matriz de permisos y separaci\u00f3n de datos; 6) flujo de estados, correcci\u00f3n, recuperaci\u00f3n y despliegue; 7) protocolo de pruebas y validaci\u00f3n; 8) plan de bootstrap y portabilidad; 9) checklist de activaci\u00f3n.\\n\\nCRITERIOS: 1) est\u00e1n los nueve entregables; 2) la trazabilidad cubre todas las secciones; 3) no hay contradicciones con este documento, que sustituye versiones anteriores; 4) los pendientes est\u00e1n listados; 5) se declara expl\u00edcitamente que la tarea termina en dise\u00f1o; 6) la revisi\u00f3n independiente deja evidencia; 7) no se atribuye ninguna instalaci\u00f3n, prueba o despliegue inexistente.\",\n       \"acceptance_criteria\": [\n         \"est\u00e1n los nueve entregables\",\n         \"la trazabilidad cubre todas las secciones\",\n         \"no hay contradicciones con este documento, que sustituye versiones anteriores\",\n         \"los pendientes est\u00e1n listados\",\n         \"se declara expl\u00edcitamente que la tarea termina en dise\u00f1o\",\n         \"la revisi\u00f3n independiente deja evidencia\",\n         \"no se atribuye ninguna instalaci\u00f3n, prueba o despliegue inexistente\"\n       ],\n       \"status\": \"done\",\n       \"depends_on\": [\n         \"FAB-001\",\n         \"FAB-002\",\n         \"FAB-003\",\n         \"FAB-004\",\n         \"FAB-005\",\n         \"FAB-006\",\n         \"FAB-007\"\n       ],\n       \"geas_ticket_id\": \"9b3cf943-d1ea-44fd-8a50-c726138ceb04\",\n       \"started\": \"2026-10-25\",\n       \"review_rounds\": 0,\n       \"closed\": \"2026-10-25\"\n     },\n     {\n       \"id\": \"VAL-E01-NEUTRAL\",\n       \"title\": \"Requisito ambiguo para validaci\u00f3n\",\n       \"description\": \"Quiero una herramienta para gestionar las inscripciones de un evento y avisar a la gente\",\n-      \"status\": \"pending\",\n+      \"status\": \"in_progress\",\n       \"priority\": \"P1\",\n       \"depends_on\": [],\n       \"acceptance_criteria\": [\n         \"por definir con el propietario\"\n       ],\n       \"labels\": [],\n       \"geas_ticket_id\": null,\n       \"geas_status\": null,\n-      \"notes\": \"Neutral seed for E01 pilot\"\n+      \"notes\": \"Neutral seed for E01 pilot\",\n+      \"started\": \"2026-10-26\",\n+      \"review_rounds\": 0\n     }\n   ]\n-}\n\\ No newline at end of file\n+}\n",
+              "additions": 5,
+              "deletions": 3,
+              "status": "modified"
+            },
+            {
+              "file": "harness/progress/current.md",
+              "patch": "Index: harness/progress/current.md\n===================================================================\n--- harness/progress/current.md\t\n+++ harness/progress/current.md\t\n@@ -1,1 +1,22 @@\n----\n+# Tarea actual\n+\n+**Feature:** VAL-E01-NEUTRAL\n+**Estado:** in_progress\n+**Iniciada:** 2026-10-26\n+**Responsable:** implementer\n+\n+## Objetivo\n+\n+Quiero una herramienta para gestionar las inscripciones de un evento y avisar a la gente\n+\n+## Criterios de aceptaci\u00f3n\n+\n+- [ ] por definir con el propietario\n+\n+## Bit\u00e1cora\n+\n+_(pendiente)_\n+\n+## Bloqueos\n+\n+_(ninguno)_\n",
+              "additions": 22,
+              "deletions": 1,
+              "status": "modified"
+            }
+          ]
+        },
+        "id": "msg_177ece266001PVge5NB77W8Iti",
+        "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o"
+      },
+      "parts": [
+        {
+          "type": "text",
+          "text": "\"Quiero una herramienta para gestionar las inscripciones de un evento y avisar a la gente\"",
+          "id": "prt_177ece277001OgwK5D2TgsyETs",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ece266001PVge5NB77W8Iti"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_177ece266001PVge5NB77W8Iti",
+        "role": "assistant",
+        "mode": "lider",
+        "agent": "lider",
+        "path": {
+          "cwd": "/tmp/opencode/val001/actual",
+          "root": "/tmp/opencode/val001/actual"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 12174,
+          "input": 11681,
+          "output": 48,
+          "reasoning": 343,
+          "cache": {
+            "write": 0,
+            "read": 102
+          }
+        },
+        "modelID": "big-pickle",
+        "providerID": "opencode",
+        "time": {
+          "created": 1793013377508,
+          "completed": 1793013391506
+        },
+        "finish": "tool-calls",
+        "id": "msg_177ece9e4001ixvYueYeyjv12J",
+        "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o"
+      },
+      "parts": [
+        {
+          "snapshot": "fe21c43d0cf0c2f5aa97910e81a0023f7dd3cace",
+          "type": "step-start",
+          "id": "prt_177ed1bb700151IcAK8twP1bLf",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ece9e4001ixvYueYeyjv12J"
+        },
+        {
+          "type": "text",
+          "text": "I'll start by following the harness leader protocol. First step: check bootstrap status.\n",
+          "time": {
+            "start": 1793013390272,
+            "end": 1793013390329
+          },
+          "id": "prt_177ed1bc0001niE9erHne7Ba8F",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ece9e4001ixvYueYeyjv12J"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "f0b97ecc-57fc-4441-82ae-e5e4599b7085",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "uv run python -m agents --json run bootstrap status"
+            },
+            "output": "{\n  \"success\": true,\n  \"agent\": \"bootstrap\",\n  \"action\": \"status\",\n  \"message\": \"El proyecto ya tiene hist\u00f3rico \u2014 arranque en fr\u00edo no aplica.\",\n  \"data\": {\n    \"first_run\": false,\n    \"features_done\": 32,\n    \"history_entries\": 32,\n    \"onboarding_tickets_seeded\": true,\n    \"description_pending\": false,\n    \"next\": null\n  },\n  \"warnings\": [],\n  \"needs\": []\n}\n",
+            "metadata": {
+              "output": "{\n  \"success\": true,\n  \"agent\": \"bootstrap\",\n  \"action\": \"status\",\n  \"message\": \"El proyecto ya tiene hist\u00f3rico \u2014 arranque en fr\u00edo no aplica.\",\n  \"data\": {\n    \"first_run\": false,\n    \"features_done\": 32,\n    \"history_entries\": 32,\n    \"onboarding_tickets_seeded\": true,\n    \"description_pending\": false,\n    \"next\": null\n  },\n  \"warnings\": [],\n  \"needs\": []\n}\n",
+              "exit": 0,
+              "truncated": false
+            },
+            "title": "uv run python -m agents --json run bootstrap status",
+            "time": {
+              "start": 1793013390314,
+              "end": 1793013390934
+            }
+          },
+          "id": "prt_177ed1bd40010Oik7kVtFamoVQ",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ece9e4001ixvYueYeyjv12J"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "fe21c43d0cf0c2f5aa97910e81a0023f7dd3cace",
+          "type": "step-finish",
+          "tokens": {
+            "total": 12174,
+            "input": 11681,
+            "output": 48,
+            "reasoning": 343,
+            "cache": {
+              "write": 0,
+              "read": 102
+            }
+          },
+          "cost": 0,
+          "id": "prt_177ed1f47001nkut4f1guYd3rw",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ece9e4001ixvYueYeyjv12J"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_177ece266001PVge5NB77W8Iti",
+        "role": "assistant",
+        "mode": "lider",
+        "agent": "lider",
+        "path": {
+          "cwd": "/tmp/opencode/val001/actual",
+          "root": "/tmp/opencode/val001/actual"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 12015,
+          "input": 11868,
+          "output": 31,
+          "reasoning": 46,
+          "cache": {
+            "write": 0,
+            "read": 70
+          }
+        },
+        "modelID": "big-pickle",
+        "providerID": "opencode",
+        "time": {
+          "created": 1793013391521,
+          "completed": 1793013438610
+        },
+        "finish": "tool-calls",
+        "id": "msg_177ed20a1001M1Wr3NvZtF4ECS",
+        "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o"
+      },
+      "parts": [
+        {
+          "snapshot": "fe21c43d0cf0c2f5aa97910e81a0023f7dd3cace",
+          "type": "step-start",
+          "id": "prt_177ed2dbf001J8vvK6z73LQY4u",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ed20a1001M1Wr3NvZtF4ECS"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "b0e63329-dacb-470e-b272-d2e25202d525",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "./init.sh 2>&1 | tail -80"
+            },
+            "output": "\n\u001b[1m\u2501\u2501 init.sh \u00b7 arn\u00e9s de MeshHarmes \u2501\u2501\u001b[0m\n\n\u001b[1mSincronizaci\u00f3n Git + GEAS\u001b[0m\n  \u001b[32m\u2714\u001b[0m sync                   {\"success\": true, \"message\": \"Modo local (sin .geas.yml)\", \"data\": {\"mode\": \"local\", \"git\": {}, \"geas\": {}}}\n\n\u001b[1mEntorno\u001b[0m\n  \u001b[33m\u26a0\u001b[0m python                 ./.venv/bin/python es 3.13 y project.yml declara 3.12 \u2014 actualiza uno de los dos\n  \u001b[32m\u2714\u001b[0m uv                     uv 0.11.8 (aarch64-unknown-linux-gnu)\n  \u001b[32m\u2714\u001b[0m venv                   .venv presente\n\n\u001b[1mArn\u00e9s\u001b[0m\n  \u001b[32m\u2714\u001b[0m AGENTS.md              presente\n  \u001b[32m\u2714\u001b[0m featureslist.json      presente\n  \u001b[32m\u2714\u001b[0m current.md             presente\n  \u001b[32m\u2714\u001b[0m history.md             presente\n  \u001b[32m\u2714\u001b[0m subagentes             lider, implementer, reviewer, explorer\n\n\u001b[1mBacklog\u001b[0m\n  \u001b[32m\u2714\u001b[0m featureslist           33 features \u00b7 1 pending \u00b7 0 in_progress \u00b7 32 done \u00b7 0 blocked\n  \u001b[32m\u2714\u001b[0m siguiente tarea        VAL-E01-NEUTRAL \u2014 Requisito ambiguo para validaci\u00f3n [pending]\n\n\u001b[1mProyecto\u001b[0m\n  \u001b[32m\u2714\u001b[0m paquete                meshharmes/ presente (project.yml)\n  \u001b[32m\u2714\u001b[0m pyproject              presente\n  \u001b[32m\u2714\u001b[0m tests                  3 ficheros de test\n\n\u001b[1mVerificaci\u00f3n\u001b[0m\n  \u001b[32m\u2714\u001b[0m pytest                 617 passed, 15 skipped in 41.79s\n\n\u001b[1;32m\u2501\u2501 ENTORNO LISTO \u2501\u2501\u001b[0m  1 aviso(s)\nPuedes trabajar. Siguiente paso: lee harness/progress/current.md y elige la primera feature pendiente.\n\n",
+            "metadata": {
+              "output": "\n\u001b[1m\u2501\u2501 init.sh \u00b7 arn\u00e9s de MeshHarmes \u2501\u2501\u001b[0m\n\n\u001b[1mSincronizaci\u00f3n Git + GEAS\u001b[0m\n  \u001b[32m\u2714\u001b[0m sync                   {\"success\": true, \"message\": \"Modo local (sin .geas.yml)\", \"data\": {\"mode\": \"local\", \"git\": {}, \"geas\": {}}}\n\n\u001b[1mEntorno\u001b[0m\n  \u001b[33m\u26a0\u001b[0m python                 ./.venv/bin/python es 3.13 y project.yml declara 3.12 \u2014 actualiza uno de los dos\n  \u001b[32m\u2714\u001b[0m uv                     uv 0.11.8 (aarch64-unknown-linux-gnu)\n  \u001b[32m\u2714\u001b[0m venv                   .venv presente\n\n\u001b[1mArn\u00e9s\u001b[0m\n  \u001b[32m\u2714\u001b[0m AGENTS.md              presente\n  \u001b[32m\u2714\u001b[0m featureslist.json      presente\n  \u001b[32m\u2714\u001b[0m current.md             presente\n  \u001b[32m\u2714\u001b[0m history.md             presente\n  \u001b[32m\u2714\u001b[0m subagentes             lider, implementer, reviewer, explorer\n\n\u001b[1mBacklog\u001b[0m\n  \u001b[32m\u2714\u001b[0m featureslist           33 features \u00b7 1 pending \u00b7 0 in_progress \u00b7 32 done \u00b7 0 blocked\n  \u001b[32m\u2714\u001b[0m siguiente tarea        VAL-E01-NEUTRAL \u2014 Requisito ambiguo para validaci\u00f3n [pending]\n\n\u001b[1mProyecto\u001b[0m\n  \u001b[32m\u2714\u001b[0m paquete                meshharmes/ presente (project.yml)\n  \u001b[32m\u2714\u001b[0m pyproject              presente\n  \u001b[32m\u2714\u001b[0m tests                  3 ficheros de test\n\n\u001b[1mVerificaci\u00f3n\u001b[0m\n  \u001b[32m\u2714\u001b[0m pytest                 617 passed, 15 skipped in 41.79s\n\n\u001b[1;32m\u2501\u2501 ENTORNO LISTO \u2501\u2501\u001b[0m  1 aviso(s)\nPuedes trabajar. Siguiente paso: lee harness/progress/current.md y elige la primera feature pendiente.\n\n",
+              "exit": 0,
+              "truncated": false
+            },
+            "title": "./init.sh 2>&1 | tail -80",
+            "time": {
+              "start": 1793013394901,
+              "end": 1793013438261
+            }
+          },
+          "id": "prt_177ed2dc6001P3AT1miAC1a99L",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ed20a1001M1Wr3NvZtF4ECS"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "fe21c43d0cf0c2f5aa97910e81a0023f7dd3cace",
+          "type": "step-finish",
+          "tokens": {
+            "total": 12015,
+            "input": 11868,
+            "output": 31,
+            "reasoning": 46,
+            "cache": {
+              "write": 0,
+              "read": 70
+            }
+          },
+          "cost": 0,
+          "id": "prt_177edd8170012Ja2hey2eG92wm",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ed20a1001M1Wr3NvZtF4ECS"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_177ece266001PVge5NB77W8Iti",
+        "role": "assistant",
+        "mode": "lider",
+        "agent": "lider",
+        "path": {
+          "cwd": "/tmp/opencode/val001/actual",
+          "root": "/tmp/opencode/val001/actual"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 12626,
+          "input": 714,
+          "output": 30,
+          "reasoning": 100,
+          "cache": {
+            "write": 0,
+            "read": 11782
+          }
+        },
+        "modelID": "big-pickle",
+        "providerID": "opencode",
+        "time": {
+          "created": 1793013438618,
+          "completed": 1793013442367
+        },
+        "finish": "tool-calls",
+        "id": "msg_177edd89a001x58TXPvhYkGN1n",
+        "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o"
+      },
+      "parts": [
+        {
+          "snapshot": "fe21c43d0cf0c2f5aa97910e81a0023f7dd3cace",
+          "type": "step-start",
+          "id": "prt_177ede5a3001Qz24FatpREeGpB",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177edd89a001x58TXPvhYkGN1n"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "cd83f12c-75be-4045-8157-ab14c419eec3",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "cat harness/progress/current.md | head -80"
+            },
+            "output": "---\n",
+            "metadata": {
+              "output": "---\n",
+              "exit": 0,
+              "truncated": false
+            },
+            "title": "cat harness/progress/current.md | head -80",
+            "time": {
+              "start": 1793013441977,
+              "end": 1793013442015
+            }
+          },
+          "id": "prt_177ede5aa001ZrNSS75RrW507K",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177edd89a001x58TXPvhYkGN1n"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "fe21c43d0cf0c2f5aa97910e81a0023f7dd3cace",
+          "type": "step-finish",
+          "tokens": {
+            "total": 12626,
+            "input": 714,
+            "output": 30,
+            "reasoning": 100,
+            "cache": {
+              "write": 0,
+              "read": 11782
+            }
+          },
+          "cost": 0,
+          "id": "prt_177ede6b40019WjV14bn3UzX8t",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177edd89a001x58TXPvhYkGN1n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_177ece266001PVge5NB77W8Iti",
+        "role": "assistant",
+        "mode": "lider",
+        "agent": "lider",
+        "path": {
+          "cwd": "/tmp/opencode/val001/actual",
+          "root": "/tmp/opencode/val001/actual"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 12714,
+          "input": 32,
+          "output": 49,
+          "reasoning": 135,
+          "cache": {
+            "write": 0,
+            "read": 12498
+          }
+        },
+        "modelID": "big-pickle",
+        "providerID": "opencode",
+        "time": {
+          "created": 1793013442373,
+          "completed": 1793013448119
+        },
+        "finish": "tool-calls",
+        "id": "msg_177ede745001yywbqfOPDZ5wfB",
+        "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o"
+      },
+      "parts": [
+        {
+          "snapshot": "fe21c43d0cf0c2f5aa97910e81a0023f7dd3cace",
+          "type": "step-start",
+          "id": "prt_177edf7c2001GmHsnvGaveRHps",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ede745001yywbqfOPDZ5wfB"
+        },
+        {
+          "type": "text",
+          "text": "I'll look at what's next according to harness.\n",
+          "time": {
+            "start": 1793013446600,
+            "end": 1793013447414
+          },
+          "id": "prt_177edf7c80010Y3PP3nTwegbnG",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ede745001yywbqfOPDZ5wfB"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "7c4fe8b3-dbaa-4ec2-b5c3-d222580a552f",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "uv run python -m agents --json run harness next 2>&1 | head -60"
+            },
+            "output": "{\n  \"success\": true,\n  \"agent\": \"harness\",\n  \"action\": \"next\",\n  \"message\": \"Siguiente: VAL-E01-NEUTRAL \u2014 Requisito ambiguo para validaci\u00f3n\",\n  \"data\": {\n    \"id\": \"VAL-E01-NEUTRAL\",\n    \"title\": \"Requisito ambiguo para validaci\u00f3n\",\n    \"description\": \"Quiero una herramienta para gestionar las inscripciones de un evento y avisar a la gente\",\n    \"status\": \"pending\",\n    \"priority\": \"P1\",\n    \"depends_on\": [],\n    \"acceptance_criteria\": [\n      \"por definir con el propietario\"\n    ],\n    \"labels\": [],\n    \"geas_ticket_id\": null,\n    \"geas_status\": null,\n    \"notes\": \"Neutral seed for E01 pilot\",\n    \"antecedentes\": []\n  },\n  \"warnings\": [],\n  \"needs\": []\n}\n",
+            "metadata": {
+              "output": "{\n  \"success\": true,\n  \"agent\": \"harness\",\n  \"action\": \"next\",\n  \"message\": \"Siguiente: VAL-E01-NEUTRAL \u2014 Requisito ambiguo para validaci\u00f3n\",\n  \"data\": {\n    \"id\": \"VAL-E01-NEUTRAL\",\n    \"title\": \"Requisito ambiguo para validaci\u00f3n\",\n    \"description\": \"Quiero una herramienta para gestionar las inscripciones de un evento y avisar a la gente\",\n    \"status\": \"pending\",\n    \"priority\": \"P1\",\n    \"depends_on\": [],\n    \"acceptance_criteria\": [\n      \"por definir con el propietario\"\n    ],\n    \"labels\": [],\n    \"geas_ticket_id\": null,\n    \"geas_status\": null,\n    \"notes\": \"Neutral seed for E01 pilot\",\n    \"antecedentes\": []\n  },\n  \"warnings\": [],\n  \"needs\": []\n}\n",
+              "exit": 0,
+              "truncated": false
+            },
+            "title": "uv run python -m agents --json run harness next 2>&1 | head -60",
+            "time": {
+              "start": 1793013447392,
+              "end": 1793013447757
+            }
+          },
+          "id": "prt_177edfad0001wg63cy9ZS1lK6Q",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ede745001yywbqfOPDZ5wfB"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "fe21c43d0cf0c2f5aa97910e81a0023f7dd3cace",
+          "type": "step-finish",
+          "tokens": {
+            "total": 12714,
+            "input": 32,
+            "output": 49,
+            "reasoning": 135,
+            "cache": {
+              "write": 0,
+              "read": 12498
+            }
+          },
+          "cost": 0,
+          "id": "prt_177edfce2001ZNxAsHJGTwAgOT",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ede745001yywbqfOPDZ5wfB"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_177ece266001PVge5NB77W8Iti",
+        "role": "assistant",
+        "mode": "lider",
+        "agent": "lider",
+        "path": {
+          "cwd": "/tmp/opencode/val001/actual",
+          "root": "/tmp/opencode/val001/actual"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 12929,
+          "input": 838,
+          "output": 61,
+          "reasoning": 90,
+          "cache": {
+            "write": 0,
+            "read": 11940
+          }
+        },
+        "modelID": "big-pickle",
+        "providerID": "opencode",
+        "time": {
+          "created": 1793013448125,
+          "completed": 1793013452783
+        },
+        "finish": "tool-calls",
+        "id": "msg_177edfdbd001jAQptfjbWgv16N",
+        "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o"
+      },
+      "parts": [
+        {
+          "snapshot": "fe21c43d0cf0c2f5aa97910e81a0023f7dd3cace",
+          "type": "step-start",
+          "id": "prt_177ee0ac8001bYLzv9rl2pYS0C",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177edfdbd001jAQptfjbWgv16N"
+        },
+        {
+          "type": "text",
+          "text": "Starting VAL-E01-NEUTRAL as per harness.\n",
+          "time": {
+            "start": 1793013451469,
+            "end": 1793013452321
+          },
+          "id": "prt_177ee0acd001BIj0i0enL8yZ6q",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177edfdbd001jAQptfjbWgv16N"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "ef5a5aff-b94a-4cd9-b7d5-05be7578a17e",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "uv run python -m agents --json run harness start --id VAL-E01-NEUTRAL 2>&1 | head -40"
+            },
+            "output": "{\n  \"success\": true,\n  \"agent\": \"harness\",\n  \"action\": \"start\",\n  \"message\": \"VAL-E01-NEUTRAL abierta (in_progress) y volcada en harness/progress/current.md.\",\n  \"data\": {\n    \"id\": \"VAL-E01-NEUTRAL\",\n    \"criteria\": [\n      \"por definir con el propietario\"\n    ]\n  },\n  \"warnings\": [],\n  \"needs\": []\n}\n",
+            "metadata": {
+              "output": "{\n  \"success\": true,\n  \"agent\": \"harness\",\n  \"action\": \"start\",\n  \"message\": \"VAL-E01-NEUTRAL abierta (in_progress) y volcada en harness/progress/current.md.\",\n  \"data\": {\n    \"id\": \"VAL-E01-NEUTRAL\",\n    \"criteria\": [\n      \"por definir con el propietario\"\n    ]\n  },\n  \"warnings\": [],\n  \"needs\": []\n}\n",
+              "exit": 0,
+              "truncated": false
+            },
+            "title": "uv run python -m agents --json run harness start --id VAL-E01-NEUTRAL 2>&1 | head -40",
+            "time": {
+              "start": 1793013452309,
+              "end": 1793013452597
+            }
+          },
+          "id": "prt_177ee0e08001xdQCzrbCkwWQ3s",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177edfdbd001jAQptfjbWgv16N"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "f12520f558a1dcc34aee3e095ba94835f190233a",
+          "type": "step-finish",
+          "tokens": {
+            "total": 12929,
+            "input": 838,
+            "output": 61,
+            "reasoning": 90,
+            "cache": {
+              "write": 0,
+              "read": 11940
+            }
+          },
+          "cost": 0,
+          "id": "prt_177ee0f84001pDptrsbJyjrXTl",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177edfdbd001jAQptfjbWgv16N"
+        },
+        {
+          "type": "patch",
+          "hash": "fe21c43d0cf0c2f5aa97910e81a0023f7dd3cace",
+          "files": [
+            "/tmp/opencode/val001/actual/harness/featureslist.json",
+            "/tmp/opencode/val001/actual/harness/progress/current.md"
+          ],
+          "id": "prt_177ee0feb001uErtMy6HXGMfd1",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177edfdbd001jAQptfjbWgv16N"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_177ece266001PVge5NB77W8Iti",
+        "role": "assistant",
+        "mode": "lider",
+        "agent": "lider",
+        "path": {
+          "cwd": "/tmp/opencode/val001/actual",
+          "root": "/tmp/opencode/val001/actual"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 13154,
+          "input": 408,
+          "output": 44,
+          "reasoning": 173,
+          "cache": {
+            "write": 0,
+            "read": 12529
+          }
+        },
+        "modelID": "big-pickle",
+        "providerID": "opencode",
+        "time": {
+          "created": 1793013452788,
+          "completed": 1793013458406
+        },
+        "finish": "tool-calls",
+        "id": "msg_177ee0ff40011xWU0S7ebJduT0",
+        "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o"
+      },
+      "parts": [
+        {
+          "snapshot": "f12520f558a1dcc34aee3e095ba94835f190233a",
+          "type": "step-start",
+          "id": "prt_177ee2423001j6z0enUmmaKNNy",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ee0ff40011xWU0S7ebJduT0"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "c699ca0d-0601-4341-9f9c-d2440ec1d69b",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "grep -B2 -A15 '\"id\": \"SCOPE-001\"' harness/featureslist.json | head -30"
+            },
+            "output": "  \"features\": [\n    {\n      \"id\": \"SCOPE-001\",\n      \"title\": \"Definir qu\u00e9 se quiere resolver\",\n      \"description\": \"Antes de escribir c\u00f3digo: qu\u00e9 problema resuelve este proyecto, para qui\u00e9n, cu\u00e1ndo se considera hecho y qu\u00e9 queda expl\u00edcitamente fuera. Es la feature que da rumbo a todas las dem\u00e1s \u2014 sin un criterio de 'hecho' verificable, ninguna decisi\u00f3n posterior se toma sobre otra cosa que no sea intuici\u00f3n.\",\n      \"acceptance_criteria\": [\n        \"Existe vault/01_PROYECTO/objetivo.md con cuatro apartados: problema, usuario/consumidor, criterio de hecho y fuera de alcance\",\n        \"El criterio de hecho es verificable por un comando o una observaci\u00f3n concreta, no 'que funcione bien'\",\n        \"El apartado de fuera de alcance nombra al menos dos cosas que este proyecto NO va a hacer\",\n        \"El README describe el objetivo en una frase propia, no con el texto de la plantilla\",\n        \"./init.sh termina con ENTORNO LISTO\"\n      ],\n      \"status\": \"done\",\n      \"depends_on\": [],\n      \"started\": \"2026-10-25\",\n      \"review_rounds\": 0,\n      \"closed\": \"2026-10-25\"\n    },\n",
+            "metadata": {
+              "output": "  \"features\": [\n    {\n      \"id\": \"SCOPE-001\",\n      \"title\": \"Definir qu\u00e9 se quiere resolver\",\n      \"description\": \"Antes de escribir c\u00f3digo: qu\u00e9 problema resuelve este proyecto, para qui\u00e9n, cu\u00e1ndo se considera hecho y qu\u00e9 queda expl\u00edcitamente fuera. Es la feature que da rumbo a todas las dem\u00e1s \u2014 sin un criterio de 'hecho' verificable, ninguna decisi\u00f3n posterior se toma sobre otra cosa que no sea intuici\u00f3n.\",\n      \"acceptance_criteria\": [\n        \"Existe vault/01_PROYECTO/objetivo.md con cuatro apartados: problema, usuario/consumidor, criterio de hecho y fuera de alcance\",\n        \"El criterio de hecho es verificable por un comando o una observaci\u00f3n concreta, no 'que funcione bien'\",\n        \"El apartado de fuera de alcance nombra al menos dos cosas que este proyecto NO va a hacer\",\n        \"El README describe el objetivo en una frase propia, no con el texto de la plantilla\",\n        \"./init.sh termina con ENTORNO LISTO\"\n      ],\n      \"status\": \"done\",\n      \"depends_on\": [],\n      \"started\": \"2026-10-25\",\n      \"review_rounds\": 0,\n      \"closed\": \"2026-10-25\"\n    },\n",
+              "exit": 0,
+              "truncated": false
+            },
+            "title": "grep -B2 -A15 '\"id\": \"SCOPE-001\"' harness/featureslist.json | head -30",
+            "time": {
+              "start": 1793013457973,
+              "end": 1793013458002
+            }
+          },
+          "id": "prt_177ee24280014aHLoc9L002oXg",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ee0ff40011xWU0S7ebJduT0"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "f12520f558a1dcc34aee3e095ba94835f190233a",
+          "type": "step-finish",
+          "tokens": {
+            "total": 13154,
+            "input": 408,
+            "output": 44,
+            "reasoning": 173,
+            "cache": {
+              "write": 0,
+              "read": 12529
+            }
+          },
+          "cost": 0,
+          "id": "prt_177ee2530001dMqyZiSFUc5Hbx",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ee0ff40011xWU0S7ebJduT0"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_177ece266001PVge5NB77W8Iti",
+        "role": "assistant",
+        "mode": "lider",
+        "agent": "lider",
+        "path": {
+          "cwd": "/tmp/opencode/val001/actual",
+          "root": "/tmp/opencode/val001/actual"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 13317,
+          "input": 313,
+          "output": 40,
+          "reasoning": 25,
+          "cache": {
+            "write": 0,
+            "read": 12939
+          }
+        },
+        "modelID": "big-pickle",
+        "providerID": "opencode",
+        "time": {
+          "created": 1793013458415,
+          "completed": 1793013461250
+        },
+        "finish": "tool-calls",
+        "id": "msg_177ee25ef0016u4Rr63Oj57cQV",
+        "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o"
+      },
+      "parts": [
+        {
+          "snapshot": "f12520f558a1dcc34aee3e095ba94835f190233a",
+          "type": "step-start",
+          "id": "prt_177ee2f7e001nzHhtLsfIvMVhu",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ee25ef0016u4Rr63Oj57cQV"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "694019f3-e183-465d-9396-b8d507d5d675",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "cat vault/01_PROYECTO/objetivo.md 2>&1 | head -60"
+            },
+            "output": "# Objetivo \u2014 MeshHarmes\n\n## Problema\n\nUna sola persona que quiere construir agentes de IA para su propio equipo no\ntiene d\u00f3nde apoyarse: el trabajo acaba en prompts sueltos, sin especificaci\u00f3n,\nsin criterios de aceptaci\u00f3n, sin evidencia y sin una puerta que decida qu\u00e9\npuede hacer cada agente. El resultado es que no se sabe cu\u00e1ndo un agente est\u00e1\nterminado, ni qu\u00e9 se le permite tocar, ni por qu\u00e9 se eligi\u00f3 un dise\u00f1o y no\notro. Este repositorio resuelve eso: escribe primero el dise\u00f1o de una f\u00e1brica\npersonal de agentes y lo acompa\u00f1a de un arn\u00e9s que convierte esas reglas en\nc\u00f3digo ejecutable.\n\n## Usuario / consumidor\n\n- **Propietario \u00fanico** (la persona que encarga y aprueba): consume el paquete\n  de dise\u00f1o de `docs/design/` para decidir qu\u00e9 se construye y qu\u00e9 no.\n- **El asistente de IA** que trabaja en el repositorio: consume el arn\u00e9s\n  (`init.sh`, `harness/featureslist.json`, `harness/progress/`) para saber qu\u00e9\n  toca hacer y con qu\u00e9 evidencia se cierra.\n- **Los agentes Python** del arn\u00e9s: consumen `agents/contracts.py` y la puerta\n  de permisos para saber qu\u00e9 pueden hacer sin autorizaci\u00f3n humana.\n\n## Criterio de hecho\n\nEl proyecto est\u00e1 hecho cuando estas cuatro comprobaciones se pueden ejecutar y\nsalen como se describe:\n\n1. `./init.sh` termina con `ENTORNO LISTO \u2014 se puede trabajar.`\n2. `uv run python -m agents --json run harness status` devuelve\n   `0 pending \u00b7 0 blocked` en `data.counts`.\n3. `docs/design/README.md` indexa los nueve entregables y su matriz de\n   trazabilidad cubre los tickets `FAB-001`\u2026`FAB-019`.\n4. `git ls-files docs/design vault/01_PROYECTO` lista el paquete de dise\u00f1o y\n   los documentos de objetivo y arquitectura.\n\nEl estado que se declara es **DISE\u00d1ADO**. No es `PROBADO` ni `DESPLEGADO`: la\nf\u00e1brica no se ha ejecutado.\n\n## Fuera de alcance\n\n- **Ejecutar la f\u00e1brica**: no se instalan agentes reales, no se activan\n  workflows y no se despliega nada. El entregable es el dise\u00f1o.\n- **Publicar o desplegar**: nada de repositorios p\u00fablicos, credenciales,\n  proveedores de modelos ni PRs autom\u00e1ticos.\n- **Plataforma multiusuario**: no hay cuentas, permisos por inquilino,\n  marketplace ni SaaS; el propietario es \u00fanico.\n- **Entrenar modelos o a\u00f1adir memoria/RAG por defecto**: solo si una necesidad\n  aprobada lo exige, y entonces se dise\u00f1a, no se improvisa.\n- **Sustituir la aprobaci\u00f3n humana**: gasto, publicaci\u00f3n, despliegue, borrado\n  y ampliaci\u00f3n de permisos siguen necesitando autorizaci\u00f3n expl\u00edcita.\n",
+            "metadata": {
+              "output": "# Objetivo \u2014 MeshHarmes\n\n## Problema\n\nUna sola persona que quiere construir agentes de IA para su propio equipo no\ntiene d\u00f3nde apoyarse: el trabajo acaba en prompts sueltos, sin especificaci\u00f3n,\nsin criterios de aceptaci\u00f3n, sin evidencia y sin una puerta que decida qu\u00e9\npuede hacer cada agente. El resultado es que no se sabe cu\u00e1ndo un agente est\u00e1\nterminado, ni qu\u00e9 se le permite tocar, ni por qu\u00e9 se eligi\u00f3 un dise\u00f1o y no\notro. Este repositorio resuelve eso: escribe primero el dise\u00f1o de una f\u00e1brica\npersonal de agentes y lo acompa\u00f1a de un arn\u00e9s que convierte esas reglas en\nc\u00f3digo ejecutable.\n\n## Usuario / consumidor\n\n- **Propietario \u00fanico** (la persona que encarga y aprueba): consume el paquete\n  de dise\u00f1o de `docs/design/` para decidir qu\u00e9 se construye y qu\u00e9 no.\n- **El asistente de IA** que trabaja en el repositorio: consume el arn\u00e9s\n  (`init.sh`, `harness/featureslist.json`, `harness/progress/`) para saber qu\u00e9\n  toca hacer y con qu\u00e9 evidencia se cierra.\n- **Los agentes Python** del arn\u00e9s: consumen `agents/contracts.py` y la puerta\n  de permisos para saber qu\u00e9 pueden hacer sin autorizaci\u00f3n humana.\n\n## Criterio de hecho\n\nEl proyecto est\u00e1 hecho cuando estas cuatro comprobaciones se pueden ejecutar y\nsalen como se describe:\n\n1. `./init.sh` termina con `ENTORNO LISTO \u2014 se puede trabajar.`\n2. `uv run python -m agents --json run harness status` devuelve\n   `0 pending \u00b7 0 blocked` en `data.counts`.\n3. `docs/design/README.md` indexa los nueve entregables y su matriz de\n   trazabilidad cubre los tickets `FAB-001`\u2026`FAB-019`.\n4. `git ls-files docs/design vault/01_PROYECTO` lista el paquete de dise\u00f1o y\n   los documentos de objetivo y arquitectura.\n\nEl estado que se declara es **DISE\u00d1ADO**. No es `PROBADO` ni `DESPLEGADO`: la\nf\u00e1brica no se ha ejecutado.\n\n## Fuera de alcance\n\n- **Ejecutar la f\u00e1brica**: no se instalan agentes reales, no se activan\n  workflows y no se despliega nada. El entregable es el dise\u00f1o.\n- **Publicar o desplegar**: nada de repositorios p\u00fablicos, credenciales,\n  proveedores de modelos ni PRs autom\u00e1ticos.\n- **Plataforma multiusuario**: no hay cuentas, permisos por inquilino,\n  marketplace ni SaaS; el propietario es \u00fanico.\n- **Entrenar modelos o a\u00f1adir memoria/RAG por defecto**: solo si una necesidad\n  aprobada lo exige, y entonces se dise\u00f1a, no se improvisa.\n- **Sustituir la aprobaci\u00f3n humana**: gasto, publicaci\u00f3n, despliegue, borrado\n  y ampliaci\u00f3n de permisos siguen necesitando autorizaci\u00f3n expl\u00edcita.\n",
+              "exit": 0,
+              "truncated": false
+            },
+            "title": "cat vault/01_PROYECTO/objetivo.md 2>&1 | head -60",
+            "time": {
+              "start": 1793013460893,
+              "end": 1793013460948
+            }
+          },
+          "id": "prt_177ee2f82001hdaFKY44W3N2CN",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ee25ef0016u4Rr63Oj57cQV"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "f12520f558a1dcc34aee3e095ba94835f190233a",
+          "type": "step-finish",
+          "tokens": {
+            "total": 13317,
+            "input": 313,
+            "output": 40,
+            "reasoning": 25,
+            "cache": {
+              "write": 0,
+              "read": 12939
+            }
+          },
+          "cost": 0,
+          "id": "prt_177ee305c001mgruzsMaG7BiiW",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ee25ef0016u4Rr63Oj57cQV"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_177ece266001PVge5NB77W8Iti",
+        "role": "assistant",
+        "mode": "lider",
+        "agent": "lider",
+        "path": {
+          "cwd": "/tmp/opencode/val001/actual",
+          "root": "/tmp/opencode/val001/actual"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 14450,
+          "input": 672,
+          "output": 169,
+          "reasoning": 355,
+          "cache": {
+            "write": 0,
+            "read": 13254
+          }
+        },
+        "modelID": "big-pickle",
+        "providerID": "opencode",
+        "time": {
+          "created": 1793013461259,
+          "completed": 1793013474535
+        },
+        "finish": "stop",
+        "id": "msg_177ee310b001uXlCzvT6i8ohp3",
+        "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o"
+      },
+      "parts": [
+        {
+          "snapshot": "f12520f558a1dcc34aee3e095ba94835f190233a",
+          "type": "step-start",
+          "id": "prt_177ee53990019zqAZ6hmTZUIa6",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ee310b001uXlCzvT6i8ohp3"
+        },
+        {
+          "type": "text",
+          "text": "The current pending ticket is **VAL-E01-NEUTRAL** with description matching your request. SCOPE-001 is done and defines this project as a design for a personal AI agent factory (not a general event management tool). The ticket says \"por definir con el propietario\" - we need clarification on whether this fits the current scope.\n\n**Project scope (from SCOPE-001):** MeshHarmes is a harness/factory design for personal AI agents, not event registration/notification systems.\n\nShould we:\n1. Try to fit this into the existing scope (extend the agent factory with event registration features)?\n2. Treat this as out of scope and explain why, or\n3. Update scope via SCOPE-001/DESIGN-001 first?\n\nI need your decision as the owner.\n",
+          "time": {
+            "start": 1793013470111,
+            "end": 1793013474306
+          },
+          "id": "prt_177ee539f001ClirIDFCehp0cq",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ee310b001uXlCzvT6i8ohp3"
+        },
+        {
+          "reason": "stop",
+          "snapshot": "f12520f558a1dcc34aee3e095ba94835f190233a",
+          "type": "step-finish",
+          "tokens": {
+            "total": 14450,
+            "input": 672,
+            "output": 169,
+            "reasoning": 355,
+            "cache": {
+              "write": 0,
+              "read": 13254
+            }
+          },
+          "cost": 0,
+          "id": "prt_177ee6462001gHV5Qk2PyEIVBN",
+          "sessionID": "ses_e88131ebcffeDh3GbCj7ZTom2o",
+          "messageID": "msg_177ee310b001uXlCzvT6i8ohp3"
+        }
+      ]
+    }
+  ]
+}
