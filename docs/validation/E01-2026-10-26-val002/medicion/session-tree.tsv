@@ -1,0 +1,6 @@
+flow	id	agent	parent_id	directory	model	tokens_input	tokens_output	tokens_reasoning	tokens_cache_read	tokens_cache_write	cost	time_created	time_updated
+actual	ses_e83c374f6ffeNR1B6OVnnwJE3V	lider	None	/tmp/opencode/val002/actual	{"id":"big-pickle","providerID":"opencode","variant":"default"}	16114	1487	1987	120052	0	0.0	1793085704969	1793086339663
+actual	ses_e83bb2770ffehVwVEjbCu0Q79m	explorer	ses_e83c374f6ffeNR1B6OVnnwJE3V	/tmp/opencode/val002/actual	{"id":"big-pickle","providerID":"opencode","variant":"default"}	31076	679	971	39377	0	0.0	1793086249103	1793086286121
+actual	ses_e83ba83fbffe5kvIcyE51BYpQ5	implementer	ses_e83c374f6ffeNR1B6OVnnwJE3V	/tmp/opencode/val002/actual	{"id":"big-pickle","providerID":"opencode","variant":"default"}	16707	311	1128	26156	0	0.0	1793086290948	1793086339251
+actual	ses_e83b99f45ffepnBgttlzOHno9f	reviewer	ses_e83c374f6ffeNR1B6OVnnwJE3V	/tmp/opencode/val002/actual	{"id":"big-pickle","providerID":"opencode","variant":"default"}	0	0	0	0	0	0.0	1793086349498	1793086349585
+simplificado	ses_e83bf35e9ffeYUpnohKYiUTLkG	a1	None	/tmp/opencode/val002/simplificado	{"id":"big-pickle","providerID":"opencode","variant":"default"}	4706	169	733	5927	0	0.0	1793085983255	1793086006536

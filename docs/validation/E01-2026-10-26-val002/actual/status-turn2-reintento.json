@@ -1,0 +1,39 @@
+{
+  "root": "ses_e83c374f6ffeNR1B6OVnnwJE3V",
+  "directory": "/tmp/opencode/val002/actual",
+  "agent": "lider",
+  "model": "opencode/big-pickle",
+  "title": null,
+  "continue_session": "ses_e83c374f6ffeNR1B6OVnnwJE3V",
+  "command": [
+    "opencode",
+    "run",
+    "--agent",
+    "lider",
+    "--model",
+    "opencode/big-pickle",
+    "--format",
+    "json",
+    "--session",
+    "ses_e83c374f6ffeNR1B6OVnnwJE3V",
+    "<input>"
+  ],
+  "input_file": "/tmp/continuacion-actual.txt",
+  "input_sha256_note": "see pre-registro.md",
+  "cap_tokens": 2000000,
+  "cap_seconds": 3600,
+  "started_at": "2026-10-27T07:30:31.049913+00:00",
+  "warnings": [],
+  "aborted_by_cap": "time",
+  "exit_code": -2,
+  "final_tokens": 256045,
+  "elapsed_seconds": 3601.529351711273,
+  "sessions": [
+    "ses_e83c374f6ffeNR1B6OVnnwJE3V",
+    "ses_e83bb2770ffehVwVEjbCu0Q79m",
+    "ses_e83ba83fbffe5kvIcyE51BYpQ5",
+    "ses_e83b99f45ffepnBgttlzOHno9f"
+  ],
+  "db": "/tmp/opencode/val002/xdg_run/opencode/opencode.db",
+  "finished_at": "2026-10-27T08:30:32.579263+00:00"
+}

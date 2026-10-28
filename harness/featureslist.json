@@ -807,12 +807,14 @@
         "la ejecución se hace en un repositorio temporal aislado y no contamina el repo principal",
         "el flujo actual se ejecuta de verdad con lider, explorer, implementer y reviewer, y se conservan los harness record"
       ],
-      "status": "pending",
+      "status": "in_progress",
       "depends_on": [
         "FAB-016",
         "FAB-018"
       ],
-      "geas_ticket_id": "7b146976-abf6-4ef6-8b3f-1404e0b2c796"
+      "geas_ticket_id": "7b146976-abf6-4ef6-8b3f-1404e0b2c796",
+      "started": "2026-10-26",
+      "review_rounds": 0
     }
   ]
 }

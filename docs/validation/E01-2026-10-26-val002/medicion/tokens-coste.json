@@ -1,0 +1,111 @@
+{
+  "actual": {
+    "sessions": [
+      {
+        "id": "ses_e83c374f6ffeNR1B6OVnnwJE3V",
+        "parent_id": null,
+        "agent": "lider",
+        "title": "VAL-002/E01 actual root",
+        "directory": "/tmp/opencode/val002/actual",
+        "model": "{\"id\":\"big-pickle\",\"providerID\":\"opencode\",\"variant\":\"default\"}",
+        "tokens_input": 16114,
+        "tokens_output": 1487,
+        "tokens_reasoning": 1987,
+        "tokens_cache_read": 120052,
+        "tokens_cache_write": 0,
+        "cost": 0.0,
+        "time_created": 1793085704969,
+        "time_updated": 1793086339663
+      },
+      {
+        "id": "ses_e83bb2770ffehVwVEjbCu0Q79m",
+        "parent_id": "ses_e83c374f6ffeNR1B6OVnnwJE3V",
+        "agent": "explorer",
+        "title": "Explorer VAL-E01-NEUTRAL (@explorer subagent)",
+        "directory": "/tmp/opencode/val002/actual",
+        "model": "{\"id\":\"big-pickle\",\"providerID\":\"opencode\",\"variant\":\"default\"}",
+        "tokens_input": 31076,
+        "tokens_output": 679,
+        "tokens_reasoning": 971,
+        "tokens_cache_read": 39377,
+        "tokens_cache_write": 0,
+        "cost": 0.0,
+        "time_created": 1793086249103,
+        "time_updated": 1793086286121
+      },
+      {
+        "id": "ses_e83ba83fbffe5kvIcyE51BYpQ5",
+        "parent_id": "ses_e83c374f6ffeNR1B6OVnnwJE3V",
+        "agent": "implementer",
+        "title": "Implementer VAL-E01-NEUTRAL (@implementer subagent)",
+        "directory": "/tmp/opencode/val002/actual",
+        "model": "{\"id\":\"big-pickle\",\"providerID\":\"opencode\",\"variant\":\"default\"}",
+        "tokens_input": 16707,
+        "tokens_output": 311,
+        "tokens_reasoning": 1128,
+        "tokens_cache_read": 26156,
+        "tokens_cache_write": 0,
+        "cost": 0.0,
+        "time_created": 1793086290948,
+        "time_updated": 1793086339251
+      },
+      {
+        "id": "ses_e83b99f45ffepnBgttlzOHno9f",
+        "parent_id": "ses_e83c374f6ffeNR1B6OVnnwJE3V",
+        "agent": "reviewer",
+        "title": "Reviewer VAL-E01-NEUTRAL (@reviewer subagent)",
+        "directory": "/tmp/opencode/val002/actual",
+        "model": "{\"id\":\"big-pickle\",\"providerID\":\"opencode\",\"variant\":\"default\"}",
+        "tokens_input": 0,
+        "tokens_output": 0,
+        "tokens_reasoning": 0,
+        "tokens_cache_read": 0,
+        "tokens_cache_write": 0,
+        "cost": 0.0,
+        "time_created": 1793086349498,
+        "time_updated": 1793086349585
+      }
+    ],
+    "totals": {
+      "tokens_input": 63897,
+      "tokens_output": 2477,
+      "tokens_reasoning": 4086,
+      "tokens_cache_read": 185585,
+      "tokens_cache_write": 0,
+      "cost": 0.0
+    },
+    "sessions_count": 4
+  },
+  "simplificado": {
+    "sessions": [
+      {
+        "id": "ses_e83bf35e9ffeYUpnohKYiUTLkG",
+        "parent_id": null,
+        "agent": "a1",
+        "title": "VAL-002/E01 simplificado",
+        "directory": "/tmp/opencode/val002/simplificado",
+        "model": "{\"id\":\"big-pickle\",\"providerID\":\"opencode\",\"variant\":\"default\"}",
+        "tokens_input": 4706,
+        "tokens_output": 169,
+        "tokens_reasoning": 733,
+        "tokens_cache_read": 5927,
+        "tokens_cache_write": 0,
+        "cost": 0.0,
+        "time_created": 1793085983255,
+        "time_updated": 1793086006536
+      }
+    ],
+    "totals": {
+      "tokens_input": 4706,
+      "tokens_output": 169,
+      "tokens_reasoning": 733,
+      "tokens_cache_read": 5927,
+      "tokens_cache_write": 0,
+      "cost": 0.0
+    },
+    "sessions_count": 1
+  },
+  "cost_source": "session table (primary) + opencode export",
+  "invoice_verified": false,
+  "measured_at": "2026-10-27T07:43:00.863770+00:00"
+}

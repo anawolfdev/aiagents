@@ -1,0 +1,36 @@
+{
+  "root": "ses_e83bf35e9ffeYUpnohKYiUTLkG",
+  "directory": "/tmp/opencode/val002/simplificado",
+  "agent": "a1",
+  "model": "opencode/big-pickle",
+  "title": "VAL-002/E01 simplificado",
+  "continue_session": null,
+  "command": [
+    "opencode",
+    "run",
+    "--agent",
+    "a1",
+    "--model",
+    "opencode/big-pickle",
+    "--format",
+    "json",
+    "--title",
+    "VAL-002/E01 simplificado",
+    "<input>"
+  ],
+  "input_file": "/tmp/opencode/val002/input.txt",
+  "input_sha256_note": "see pre-registro.md",
+  "cap_tokens": 300000,
+  "cap_seconds": 900,
+  "started_at": "2026-10-27T07:26:21.089298+00:00",
+  "warnings": [],
+  "aborted_by_cap": null,
+  "exit_code": 0,
+  "final_tokens": 11535,
+  "elapsed_seconds": 31.014351844787598,
+  "sessions": [
+    "ses_e83bf35e9ffeYUpnohKYiUTLkG"
+  ],
+  "db": "/tmp/opencode/val002/xdg_run/opencode/opencode.db",
+  "finished_at": "2026-10-27T07:26:52.103645+00:00"
+}
