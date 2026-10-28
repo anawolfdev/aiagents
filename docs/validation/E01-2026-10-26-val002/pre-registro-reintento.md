@@ -1,7 +1,7 @@
 # Pre-registro de reintento — E01 / VAL-002
 
 - **Feature:** VAL-002 — Piloto E01 (repetición observacional con flujo real)
-- **Fecha de congelación:** 2026-10-27T08:XX:XXZ (UTC), antes del reintento
+- **Fecha de congelación:** 2026-10-27T08:45:00Z (UTC), antes del reintento
 - **Sustituye a:** intento fallido del 2026-10-26
 - **Estado:** pre-registrado para reintento con aislamiento corregido
 
@@ -25,7 +25,7 @@ Cita literal registrada:
 
 - **git rev-parse --show-toplevel (sandbox):** `/tmp/opencode/val002/actual` (correcto)
 - **.git del clon (sandbox):** clon aislado en `/tmp/opencode/val002/actual/.git` (directorio propio, sin remoto origin tras preparación)
-- **Entorno heredado OpenCode:** `OPENCODE=1`, `OPENCODE_PID=4073534` presentes en el shell; `XDG_DATA_HOME` vacío. Hay servidor OpenCode corriendo (`opencode serve` en puerto 44587) que fue alcanzado por `opencode run`, haciendo que el cliente se conectara a un servidor existente del repo principal/contexto principal.
+- **Entorno heredado OpenCode:** `OPENCODE=1`, `OPENCODE_PID=4073534` presentes en el shell; `XDG_DATA_HOME` vacío. Hay servidor OpenCode corriendo que fue alcanzado por `opencode run`, haciendo que el cliente se conectara a un servidor existente del repo principal/contexto principal.
 - **Hipótesis confirmada:** `opencode run` se conectó a un servidor ya existente del repo principal.
 
 ## 4. Arreglo de aislamiento
@@ -33,7 +33,7 @@ Cita literal registrada:
 - Usar `XDG_DATA_HOME` aislado con copia propia de `auth.json` (ej. `/tmp/opencode/val002/xdg_reintento/`) para que OpenCode use su propia base de datos de sesiones.
 - Eliminar variables `OPENCODE*` del entorno del wrapper (`env -u OPENCODE -u OPENCODE_PID ...`).
 - Ejecutar desde el sandbox `/tmp/opencode/val002/actual` con cwd correcto.
-- **Prueba de aislamiento (sin entrada del piloto):** Con entorno aislado se creó sesión `ses_e83c9b987ffeS7dKy05m4xy5p6` con `directory=/tmp/opencode/val002/actual` en la DB aislada. **PRUEBA PASA.**
+- **Prueba de aislamiento (sin entrada del piloto):** Con entorno aislado se creó sesión con `directory=/tmp/opencode/val002/actual` en la DB aislada. **PRUEBA PASA.**
 
 ## 5. Parámetros congelados (mismos que pre-registro original)
 
@@ -51,4 +51,5 @@ Cita literal registrada:
 | input_sha256 | `5f35bc01439230eb2579082bdf2ed3efef28f4aa80960fcf343b2c70c8e92582` |
 
 ## 6. Hash
-9e4e6db7e59591c110083c5fba93732e27c9b713ab8e42b2f9a34fde6525a90f
+68bb8ce50b31ac8526c285a2dd9291ad12117486fec729bebd1e4d14a3999d51
+

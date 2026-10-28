@@ -815,6 +815,18 @@
       "geas_ticket_id": "7b146976-abf6-4ef6-8b3f-1404e0b2c796",
       "started": "2026-10-26",
       "review_rounds": 0
+    },
+    {
+      "id": "DOC-VAL-002-README",
+      "title": "Actualizar README con evidencias VAL-002",
+      "description": "Actualizar README.md principal o de validación con referencias a evidencias del piloto VAL-002 tras correcciones.",
+      "acceptance_criteria": [
+        "README actualizado con enlaces a docs/validation/E01-2026-10-26-val002/",
+        "referencias a transcripciones y resultados",
+        "sin romper formato"
+      ],
+      "status": "pending",
+      "depends_on": []
     }
   ]
 }

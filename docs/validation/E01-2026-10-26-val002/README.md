@@ -29,3 +29,15 @@
 ## Notas
 - n=1. No se declara superioridad general ni se autoriza eliminar agentes.
 - Solo se documenta; no se actualiza fila E01 del registro de validación (requiere firma del propietario). Resto sigue NO EJECUTADO.
+
+
+## Matriz criterio 2 (avisos/canal/destinatarios/cuándo)
+
+| Dimensión | ¿Preguntó? | Cita/turno exacto | ¿Decidió en silencio? | Pendiente/supuesto |
+|---|---|---|---|---|
+| avisos | NO PREGUNTADO | transcript.md actual/ses_e83c374f6ffeNR1B6OVnnwJE3V mensaje 6 (líder) - pide aclarar criterios generales, no enumera avisos específicamente | SÍ (implícito) | PENDIENTE - no se definieron tipos de aviso |
+| canal | NO PREGUNTADO | transcript.md - no aparece mención explícita a canal/email/whatsapp/sms | SÍ | PENDIENTE - canal sin definir |
+| destinatarios | NO PREGUNTADO | transcript.md - no aparece | SÍ | PENDIENTE - destinatarios sin definir |
+| cuándo/momento | NO PREGUNTADO | transcript.md - no aparece | SÍ | PENDIENTE - momento/envío sin definir |
+
+Nota: El flujo actual (líder/explorer/implementer) marcó ambigüedad y bloqueó por falta de criterios verificables. No se inventaron respuestas. El flujo simplificado A1 hizo 1 pregunta genérica inicial pero no preguntó por las 4 dimensiones específicas.
