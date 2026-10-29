@@ -284,3 +284,23 @@ uv run python -m agents run knowledge sync_agent_cards --dry_run false --yes
 3. Vacía `harness/featureslist.json` y escribe tu propio backlog — o pídeselo
    al agente: `uv run python -m agents run harness add --id X-001 --title "..." --criteria "a;b"`.
 4. `make setup && make init`.
+
+
+
+## VAL-002 — Piloto E01 (repetición observacional)
+
+**Estado:** Aprobado (reviewer ok, 2026-10-28)
+
+**Evidencia:** `docs/validation/E01-2026-10-26-val002/`
+
+**Resultados clave:**
+- Flujo actual (líder→explorer→implementer→reviewer) ejecutado en sandbox aislado con XDG_DATA_HOME
+- Flujo simplificado A1 sin hijos, mismo modelo Big Pickle
+- n=1: no se declara superioridad general ni se autoriza eliminar agentes
+- Solo se actualiza la fila E01 del registro de validación pendiente de firma del propietario
+- Resto (E02–E17) sigue NO EJECUTADO
+
+**Orden:** actual → simplificado (documentado y cronologiado)
+
+**Autorización:** propietario dijo «continua» el 2026-10-27 para repetir con aislamiento corregido.
+
